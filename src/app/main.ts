@@ -2,6 +2,9 @@
 import { Express } from "express";
 import { Server } from "http";
 
+// Import environments
+import { environments } from "./config/environments";
+
 export class MainApp {
     constructor(
         private app: Express,
@@ -12,6 +15,8 @@ export class MainApp {
      * 🚀 Run the server!
      */
     run(): void {
-        this.http.listen(5050, () => console.log("🚀 Execute app in the port:5050"));
+        const { PORT } = environments;
+        const message = `🚀 Execute app in port:${ PORT }`;
+        this.http.listen(PORT, () => console.log(message));
     }
 }
