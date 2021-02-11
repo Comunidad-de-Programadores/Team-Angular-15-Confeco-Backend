@@ -1,6 +1,10 @@
 // Imports modules.
 import { Router } from "express";
 
+// Imports controllers
+import { AuthControllerComponents } from "./auth.controller";
+const { register, login } = new AuthControllerComponents();
+
 export class AuthRoutesComponent {
     constructor(public router: Router) {
         this.register();
@@ -8,10 +12,10 @@ export class AuthRoutesComponent {
     }
 
     private register(): void {
-        this.router.get("/auth/register", (req, res) => res.json({ message:  "Register pages" }));
+        this.router.get("/auth/register", register);
     }
 
     private login(): void {
-        this.router.get("/auth/login", (req, res) => res.json({ message:  "Login pages" }));
+        this.router.get("/auth/login", login);
     }
 };
