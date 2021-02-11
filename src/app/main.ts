@@ -2,6 +2,7 @@
 import express from "express";
 import { Server } from "http";
 import morgan from "morgan";
+import cors from "cors";
 
 // 🏔️ Import environments
 import { environments } from "./config/environments";
@@ -23,6 +24,9 @@ export class MainApp {
      */
     private middleware(): void {
         this.app.use(morgan("dev"));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cors());
     }
 
     /**

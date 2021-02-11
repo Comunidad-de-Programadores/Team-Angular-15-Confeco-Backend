@@ -1,11 +1,16 @@
+// Imports modules.
 import { Request, Response } from "express";
 
 export class AuthControllerComponents {
-    register(req: Request, res: Response): void {
+    async register(req: Request, res: Response): Promise<void> {
         res.json({ message: "Register from controller" });
     }
 
-    login(req: Request, res: Response): void {
+    async login(req: Request, res: Response): Promise<void> {
         res.json({ message: "Login from controller" });
+    }
+
+    async google(req: Request, res: Response): Promise<void> {
+        res.status(200).json({ message: "Auth wit google" });
     }
 }
