@@ -7,6 +7,8 @@ if (process.env.NODE_ENV !== "production") config();
 export const environments = {
     PORT: process.env.PORT,
 
+    MONGODB_URI: process.env.MONGODB_URI,
+
     JWT_ACCESS_TOKEN_KEY: process.env.JWT_ACCESS_TOKEN_KEY,
     JWT_REFRESH_TOKEN_KEY: process.env.JWT_REFRESH_TOKEN_KEY,
     JWT_RESET_PASSWORD_KEY: process.env.JWT_RESET_PASSWORD_KEY,
