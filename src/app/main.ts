@@ -7,7 +7,7 @@ import morgan from "morgan";
 import { environments } from "./config/environments";
 
 // 🚦 Imports routes.
-import { MainRoutes } from "./routes/index.routes";
+import { IndexRoutes } from "./routes/index.routes";
 
 export class MainApp {
     constructor(
@@ -29,7 +29,7 @@ export class MainApp {
      * 🚦 record server routes.
      */
     private routes(): void {
-        const { main } = new MainRoutes(express());
+        const { main } = new IndexRoutes(express());
         this.app.use(main);
     }
 
