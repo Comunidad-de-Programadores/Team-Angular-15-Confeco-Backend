@@ -1,21 +1,36 @@
 // 📦 Imports modules.
-import { Express } from "express";
+import express from "express";
 import { Server } from "http";
 import morgan from "morgan";
 
-// Import environments
+// 🏔️ Import environments
 import { environments } from "./config/environments";
+
+// 🚦 Imports routes.
+import { MainRoutes } from "./routes/index.routes";
 
 export class MainApp {
     constructor(
-        private app: Express,
+        private app: express.Express,
         private http: Server
     ) {
         this.middleware();
+        this.routes();
     }
 
+    /**
+     * ✨ Registers global middleware.
+     */
     private middleware(): void {
         this.app.use(morgan("dev"));
+    }
+
+    /**
+     * 🚦 record server routes.
+     */
+    private routes(): void {
+        const { main } = new MainRoutes(express());
+        this.app.use(main);
     }
 
     /**
