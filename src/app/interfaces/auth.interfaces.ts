@@ -11,8 +11,9 @@ export interface IRegisterParams {
 }
 
 export interface IEmailVerificacionToken {
-    token: string;
+    url: string;
     email: string;
+    nickname: string;
 };
 
 export interface IAuthRes {

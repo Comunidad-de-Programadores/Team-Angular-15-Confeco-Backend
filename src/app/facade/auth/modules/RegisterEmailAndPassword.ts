@@ -19,7 +19,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken |
 
     async auth(): Promise<IEmailVerificacionToken | HttpError> {
         // Check if the user exists.
-        const { email } = this.data;
+        const { email, nickname } = this.data;
         const res = await this.repository.getByEmail(email);
         
         if (res) throw createError(403, "Este email ya se encuentra en uso.", {
@@ -37,6 +37,8 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken |
         const { generate } = new JsonWebToken();
         const token = generate({ _id, email }, new JwtEmailToken());
 
-        return { email, token: `${ environments.URL }/${ token }` };
+        // Generate url.
+        const url = `${ environments.URL }/auth/verify_email/${ token }`;
+        return { email, nickname, url  };
     }
 };
