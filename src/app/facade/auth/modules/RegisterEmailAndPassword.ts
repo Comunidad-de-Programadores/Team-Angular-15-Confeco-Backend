@@ -8,6 +8,7 @@ import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interf
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+import { environments } from "../../../config/environments";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken | HttpError> {
     constructor(
@@ -36,6 +37,6 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken |
         const { generate } = new JsonWebToken();
         const token = generate({ _id, email }, new JwtEmailToken());
 
-        return { email, token };
+        return { email, token: `${ environments.URL }/${ token }` };
     }
 };
