@@ -5,9 +5,6 @@ import { HttpError } from "http-errors";
 // Imports facades
 import { AuthFacade } from "../../facade/auth/auth.facade";
 
-// Imports interfaces.
-import { IEmailVerificacionToken } from "../../interfaces/auth.interfaces";
-
 // Imports mails
 import { Mail } from "../../mails/Mail";
 import { MailtrapConfirmEmail } from "../../mails/strategies/MailtrapConfirmEmail";
@@ -21,21 +18,19 @@ export class AuthPostmanComponent {
         this.mail = new Mail();
     }
 
-    async register(req: Request): Promise<IEmailVerificacionToken | HttpError> {
-        const data = await this.auth.register(req.body);
-
-        // Inicialice strategy
-        const mail: MailtrapConfirmEmail = new MailtrapConfirmEmail({
-            from: "ivanzaldivar16@gmail.com",
-            to: data.email,
-            nickname: data.nickname,
-            url: data.url,
-            subject: "📧 Verifica la direccion de correo electronico con Team Angular 15",
-        });
+    async register(req: Request): Promise<object | HttpError> {
+        const { email,  nickname, url } = await this.auth.register(req.body);
 
         // Send email.
-        this.mail.send(mail);
+        this.mail.send(
+            {
+                from: "ivanzaldivar16@gmail.com",
+                to: email,
+                subject: "📧 Verifica la direccion de correo electronico con Team Angular 15"
+            },
+            new MailtrapConfirmEmail(nickname, url)
+        );
 
-        return data;
+        return { nickname };
     }
 };

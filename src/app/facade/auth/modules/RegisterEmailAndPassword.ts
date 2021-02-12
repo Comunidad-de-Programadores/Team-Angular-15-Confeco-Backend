@@ -2,13 +2,15 @@
 import { v4 as uuid } from "uuid";
 import createError, { HttpError } from "http-errors";
 
+// Imports environments.
+import { environments } from "../../../config/environments";
+
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
-import { environments } from "../../../config/environments";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken | HttpError> {
     constructor(

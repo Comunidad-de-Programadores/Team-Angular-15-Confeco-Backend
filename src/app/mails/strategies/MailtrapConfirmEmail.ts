@@ -6,15 +6,19 @@ import Mail from "nodemailer/lib/mailer";
 import { environments } from "../../config/environments";
 
 // Imports interfaces.
-import { IMailConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IMail, ISendMail } from "../../interfaces/mail.interfaces";
 
 // Import template
 import { confirmEmailHtml } from "../template/ConfirmEmailHtml";
 
 export class MailtrapConfirmEmail implements ISendMail {
+    private nickname: string;
+    private url: string;
     private mail: Mail;
 
-    constructor(private email: IMailConfirmEmail) {
+    constructor(nickname: string, url: string) {
+        this.nickname = nickname;
+        this.url = url;
         this.mail = nodemailer.createTransport({
             host: environments.MAILTRAP_HOST,
             port: Number(environments.MAILTRAP_PORT),
@@ -25,10 +29,13 @@ export class MailtrapConfirmEmail implements ISendMail {
         });
     }
 
-    async send(): Promise<void> {
+    async send(email: IMail): Promise<void> {
         // Generate template.
-        const { from, to, subject, text, nickname, url } = this.email;
-        const html: string = confirmEmailHtml({ nickname, url });
+        const { from, to, subject, text } = email;
+        const html: string = confirmEmailHtml({
+            nickname: this.nickname,
+            url: this.url
+        });
 
         // Send mail.
         await this.mail.sendMail({ from, to, subject, text, html });

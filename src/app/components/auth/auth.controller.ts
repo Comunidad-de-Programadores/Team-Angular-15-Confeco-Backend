@@ -8,8 +8,8 @@ const authPostman = new AuthPostmanComponent();
 export class AuthControllerComponents {
     async register(req: Request, res: Response): Promise<void> {
         try {
-            const { email } = await authPostman.register(req);
-            res.status(200).json({ email });
+            const data = await authPostman.register(req);
+            res.status(200).json(data);
         } catch (error) {
             const { name, message, statusCode } = error;
             res.status(statusCode).json({ name, message });

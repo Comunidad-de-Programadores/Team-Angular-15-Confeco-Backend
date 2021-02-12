@@ -1,7 +1,3 @@
-export interface ISendMail {
-    send(): Promise<void>;
-};
-
 export interface IMail {
     from: string;
     to: string;
@@ -9,7 +5,6 @@ export interface IMail {
     text?: string;
 }
 
-export interface IMailConfirmEmail extends IMail {
-    nickname: string;
-    url: string;
-}
+export interface ISendMail {
+    send(mail: IMail): Promise<void>;
+};
