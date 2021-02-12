@@ -6,7 +6,7 @@ export class JsonWebToken {
         return feature.generate(payload);
     }
 
-    verify(token: string, feature: IVerifyToken<IPayloadJwt>) {
+    verify(token: string, feature: IVerifyToken<IPayloadJwt | null>) {
         return feature.verify(token);
     }
 };

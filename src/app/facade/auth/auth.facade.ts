@@ -11,6 +11,7 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/BcryptPassword";
 import { IRegisterParams } from "../../interfaces/auth.interfaces";
+import { VerifyEmailToken } from "./modules/VerifyEmail";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -25,4 +26,8 @@ export class AuthFacade {
         const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
         return await register.auth();
     }
+
+    async verifyEmail(token: string | undefined): Promise<any> {
+        return await new VerifyEmailToken(token).auth();
+    };
 };

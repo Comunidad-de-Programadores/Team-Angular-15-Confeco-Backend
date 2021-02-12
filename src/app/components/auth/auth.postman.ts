@@ -33,4 +33,8 @@ export class AuthPostmanComponent {
 
         return { nickname };
     }
+
+    async verifyEmail(req: Request) {
+        return await this.auth.verifyEmail(req.params.token);
+    }
 };
