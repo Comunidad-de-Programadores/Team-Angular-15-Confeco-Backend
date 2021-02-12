@@ -1,27 +1,33 @@
 // Imports modules.
-import createError, { HttpError } from "http-errors";
+import createError from "http-errors";
+
+// Imports jsonwebtokens.
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
 
 // Imports interfaces.
 import { IAuth } from "../../../interfaces/auth.interfaces";
+import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
+import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 
-export class VerifyEmailToken implements IAuth<any> {
+export class VerifyEmailToken implements IAuth<IPayloadJwt> {
     constructor(
-        private token: string | undefined
+        private repository: IDatabaseUserRepository,
+        private token: string
     ) {}
 
-    async auth(): Promise<any> {
-        const error = createError(403, "El token es invalido.", {
-            name: "invalid-token"
-        });
-        if (!this.token) throw error;
+    async auth(): Promise<IPayloadJwt> {
+        try {
+            // Verify token.
+            const jwt = new JsonWebToken();
+            const payload = jwt.verify(this.token, new JwtEmailToken);
 
-        // Verify token.
-        const jwt = new JsonWebToken();
-        const payload = jwt.verify(this.token, new JwtEmailToken);
-        if (!payload) throw error;
-
-        return payload
+            // Update email status.
+            await this.repository.updateEmailStatus(payload._id, true);
+            return payload;
+        } catch (error) {
+            const { name, message } = error;
+            throw createError(403, message, { name });
+        }
     }
 }

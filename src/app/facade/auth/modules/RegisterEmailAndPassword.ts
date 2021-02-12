@@ -1,6 +1,6 @@
 // Imports modules.
 import { v4 as uuid } from "uuid";
-import createError, { HttpError } from "http-errors";
+import createError from "http-errors";
 
 // Imports environments.
 import { environments } from "../../../config/environments";
@@ -9,23 +9,25 @@ import { environments } from "../../../config/environments";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
+
+// Imports jsonwebtokens.
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
 
-export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken | HttpError> {
+export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     constructor(
         private repository: IDatabaseUserRepository,
         private encrypt: IEncrypt,
         private data: IRegisterParams
     ) {}
 
-    async auth(): Promise<IEmailVerificacionToken | HttpError> {
+    async auth(): Promise<IEmailVerificacionToken> {
         // Check if the user exists.
         const { email, nickname } = this.data;
         const res = await this.repository.getByEmail(email);
         
         if (res) throw createError(403, "Este email ya se encuentra en uso.", {
-            name: "email-already-exist"
+            name: "EmailAlreadyExist"
         });
 
         // Encrypt password.
@@ -40,7 +42,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken |
         const token = generate({ _id, email }, new JwtEmailToken());
 
         // Generate url.
-        const url = `${ environments.URL }/auth/verify_email/${ token }`;
+        const url = `${ environments.URL }/api/auth/verify_email/${ token }`;
         return { email, nickname, url  };
     }
 };

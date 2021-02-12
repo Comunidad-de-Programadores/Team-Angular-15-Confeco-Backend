@@ -27,7 +27,7 @@ export class AuthFacade {
         return await register.auth();
     }
 
-    async verifyEmail(token: string | undefined): Promise<any> {
-        return await new VerifyEmailToken(token).auth();
+    async verifyEmail(token: string): Promise<any> {
+        return await new VerifyEmailToken(this.repository, token).auth();
     };
 };

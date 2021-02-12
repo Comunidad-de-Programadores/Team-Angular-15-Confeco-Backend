@@ -31,4 +31,17 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         const data: any = await models.User.findOne({ email });
         return data ? new User(data) : null;
     }
+
+    /**
+     * Modify the status of the email.
+     * @param id 
+     * @param value 
+     */
+    async updateEmailStatus(id: string, value: boolean): Promise<boolean> {
+        const result = await models.User.updateOne(
+            { _id: id },
+            { $set: { verified_email: value, updated_at: Date.now() } }
+        );
+        return !!result;
+    }
 };
