@@ -8,22 +8,19 @@ import uniqid from "uniqid";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
-import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 
 // Imports jsonwebtokens.
-import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
-import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
+import { JwtFacade } from "../../Jwt/JwtFacade";
 
 export class RegisterGoogle implements IAuth<IAuthRes> {
-    private jwt: JsonWebToken;
+    private jwt: JwtFacade;
 
     constructor(
         private repository: IDatabaseUserRepository,
         private encrypt: IEncrypt,
         private data: TokenPayload
     ) {
-        this.jwt = new JsonWebToken();
+        this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
@@ -40,11 +37,9 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
         });
 
         // Generate tokens.
-        const payload: IPayloadJwt = { _id: user._id, email: user.email };
-        const access_token: string = this.jwt.generate(payload, new JwtAccessToken);
-        const refresh_token: string = this.jwt.generate(payload, new JwtRefreshToken);
+        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
 
         delete user.password;
-        return { user, tokens: { access_token, refresh_token } };
+        return { user, tokens };
     }
 };

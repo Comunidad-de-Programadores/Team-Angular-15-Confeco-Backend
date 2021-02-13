@@ -5,23 +5,20 @@ import createHttpError, { HttpError } from "http-errors";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IAuthRes, ICredentials } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
-import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
-import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
-import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
+import { JwtFacade } from "../../Jwt/JwtFacade";
 
 export class LoginEmailAndPassword implements IAuth<IAuthRes> {
-    private jwt: JsonWebToken;
+    private jwt: JwtFacade;
 
     constructor(
         private repository: IDatabaseUserRepository,
         private encrypt: IEncrypt,
         private credentials: ICredentials
     ) {
-        this.jwt = new JsonWebToken();
+        this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
@@ -38,11 +35,9 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         if (!result) throw credentialsIncorrect;
 
         // Generate tokens.
-        const payload: IPayloadJwt = { _id: user._id, email: user.email };
-        const access_token: string = this.jwt.generate(payload, new JwtAccessToken());
-        const refresh_token: string = this.jwt.generate(payload, new JwtRefreshToken());
+        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
 
         delete user.password;
-        return { user, tokens: { access_token, refresh_token } };
+        return { user, tokens };
     }
 };

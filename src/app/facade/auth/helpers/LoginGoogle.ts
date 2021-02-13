@@ -1,22 +1,19 @@
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
-import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens
-import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
-import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
+import { JwtFacade } from "../../Jwt/JwtFacade";
 
 export class LoginGoogle implements IAuth<IAuthRes> {
-    private jwt: JsonWebToken;
+    private jwt: JwtFacade;
 
     constructor(
         private repository: IDatabaseUserRepository,
         private user: User
     ) {
-        this.jwt = new JsonWebToken();
+        this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
@@ -29,11 +26,9 @@ export class LoginGoogle implements IAuth<IAuthRes> {
         if (user.provider !== "google") await this.repository.update(user._id, user);
 
         // Generate tokens.
-        const payload: IPayloadJwt = { ...user };
-        const access_token: string = this.jwt.generate(payload, new JwtAccessToken);
-        const refresh_token: string = this.jwt.generate(payload, new JwtRefreshToken);
+        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
 
         delete user.password;
-        return { user, tokens: { access_token, refresh_token } };
+        return { user, tokens };
     }
 };
