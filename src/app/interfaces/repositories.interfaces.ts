@@ -8,5 +8,4 @@ export interface IDatabaseRepository<Tval> {
 
 export interface IDatabaseUserRepository extends IDatabaseRepository<User> {
     getByEmail(email: string): Promise<User | null>;
-    updateEmailStatus(id: string, value: boolean): Promise<boolean>;
 };

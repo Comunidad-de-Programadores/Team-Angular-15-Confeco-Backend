@@ -1,48 +1,58 @@
 // Imports modules.
-import { v4 as uuid } from "uuid";
 import createError from "http-errors";
-
-// Imports environments.
-import { environments } from "../../../config/environments";
+import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
-import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes, IRegisterParams } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
+import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
+import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
 
-export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
+export class RegisterEmailAndPassword implements IAuth<IAuthRes> {
     constructor(
         private repository: IDatabaseUserRepository,
         private encrypt: IEncrypt,
         private data: IRegisterParams
     ) {}
 
-    async auth(): Promise<IEmailVerificacionToken> {
+    async auth(): Promise<IAuthRes> {
         // Check if the user exists.
-        const { email, nickname } = this.data;
-        const res = await this.repository.getByEmail(email);
+        let params: IRegisterParams = Object.assign({}, this.data);
+        const result: User | null = await this.repository.getByEmail(params.email);
         
-        if (res) throw createError(403, "Este email ya se encuentra en uso.", {
+        if (result) throw createError(403, "Este email ya se encuentra en uso.", {
             name: "EmailAlreadyExist"
         });
 
         // Encrypt password.
-        this.data.password = await this.encrypt.encrypt(this.data.password);
+        params.password = await this.encrypt.encrypt(params.password);
 
         // Save user to the database.
-        const _id: string = uuid();
-        await this.repository.create({ _id, verified_email: false, ...this.data });
+        await this.repository.create({ _id: uuid(), ...params });
 
-        // Generate token.
+        // Get fields user.
+        const user = await this.repository.getByEmail(params.email);
+        if (!user) throw createError(400, "Sucedio un error en la autenticacion.", {
+            name: "AuthenticationError"
+        });
+
+        // Generate tokens.
         const { generate } = new JsonWebToken();
-        const token = generate({ _id, email }, new JwtEmailToken());
+        const access_token: string = generate(
+            { _id: user._id, email: params.email },
+            new JwtAccessToken()
+        );
+        const refresh_token: string = generate(
+            { _id: user._id, email: params.email },
+            new JwtRefreshToken()
+        );
 
-        // Generate url.
-        const url = `${ environments.URL }/api/auth/verify_email/${ token }`;
-        return { email, nickname, url  };
+        delete user.password;
+        return { user, tokens: { access_token, refresh_token } };
     }
 };

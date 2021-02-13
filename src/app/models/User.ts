@@ -3,7 +3,6 @@ export class User {
     nickname: string;
     email: string;
     password?: string;
-    verified_email: boolean = false;
     provider?: string;
     created_at?: number;
     updated_at?: number;
@@ -13,7 +12,6 @@ export class User {
         this.nickname = user?.nickname;
         this.email = user?.email;
         this.password = user.password;
-        this.verified_email = user.verified_email;
         this.provider = user.provider;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
