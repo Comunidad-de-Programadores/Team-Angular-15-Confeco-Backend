@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IAuthRes, IRegisterParams } from "../../../interfaces/auth.interfaces";
+import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { User } from "../../../models/User";
 
@@ -43,14 +44,9 @@ export class RegisterEmailAndPassword implements IAuth<IAuthRes> {
 
         // Generate tokens.
         const { generate } = new JsonWebToken();
-        const access_token: string = generate(
-            { _id: user._id, email: params.email },
-            new JwtAccessToken()
-        );
-        const refresh_token: string = generate(
-            { _id: user._id, email: params.email },
-            new JwtRefreshToken()
-        );
+        const payload: IPayloadJwt = { _id: user._id, email: user.email };
+        const access_token: string = generate(payload, new JwtAccessToken());
+        const refresh_token: string = generate(payload, new JwtRefreshToken());
 
         delete user.password;
         return { user, tokens: { access_token, refresh_token } };
