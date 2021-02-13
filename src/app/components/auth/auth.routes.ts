@@ -1,6 +1,10 @@
 // Imports modules.
 import { Router } from "express";
 
+// Imports rules.
+import { AuthenticationRules } from "../../rules/Authenticationrules";
+const { checkFieldsBeforeRegistration } = new AuthenticationRules();
+
 // Imports controllers
 import { AuthControllerComponents } from "./auth.controller";
 const { register, login, google } = new AuthControllerComponents();
@@ -13,7 +17,7 @@ export class AuthRoutesComponent {
     }
 
     private register(): void {
-        this.router.post("/auth/register", register);
+        this.router.post("/auth/register", checkFieldsBeforeRegistration, register);
     }
 
     private login(): void {

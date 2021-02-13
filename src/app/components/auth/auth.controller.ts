@@ -1,14 +1,22 @@
 // Imports modules.
 import { Request, Response } from "express";
 
+// Imports interfaces.
+import { IAuthRes } from "../../interfaces/auth.interfaces";
+
 // Imports postman
 import { AuthPostmanComponent } from "./auth.postman";
 const authPostman = new AuthPostmanComponent();
 
 export class AuthControllerComponents {
+    /**
+     * Controller responsible for registering the user.
+     * @param req 
+     * @param res 
+     */
     async register(req: Request, res: Response): Promise<void> {
         try {
-            const data = await authPostman.register(req);
+            const data: IAuthRes = await authPostman.register(req);
             res.status(200).json(data);
         } catch (error) {
             const { name, message, statusCode } = error;
