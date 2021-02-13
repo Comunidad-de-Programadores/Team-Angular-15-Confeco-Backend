@@ -3,7 +3,10 @@ import { Router } from "express";
 
 // Imports rules.
 import { AuthenticationRules } from "../../rules/Authenticationrules";
-const { checkFieldsBeforeRegistration } = new AuthenticationRules();
+const {
+    checkFieldsBeforeRegistration,
+    checkFieldsBeforeLogin
+} = new AuthenticationRules();
 
 // Imports controllers
 import { AuthControllerComponents } from "./auth.controller";
@@ -21,7 +24,7 @@ export class AuthRoutesComponent {
     }
 
     private login(): void {
-        this.router.post("/auth/login", login);
+        this.router.post("/auth/login", checkFieldsBeforeLogin, login);
     }
 
     private google(): void {

@@ -4,6 +4,11 @@ export interface IAuth<Tval> {
     auth(): Promise<Tval>;
 };
 
+export interface ICredentials {
+    email: string;
+    password: string;
+}
+
 export interface IRegisterParams {
     nickname: string;
     email: string;

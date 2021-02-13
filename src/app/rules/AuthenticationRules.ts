@@ -34,4 +34,23 @@ export class AuthenticationRules {
 
         !errors.length ? next() : res.status(400).json(errors);
     }
+
+    checkFieldsBeforeLogin(req: Request, res: Response, next: NextFunction) {
+        const { email, password } = req.body;
+
+        const errors: IRuleError[] = new ValidateFields([
+            {
+                field: "email",
+                value: email,
+                types: [rules.required, rules.email]
+            },
+            {
+                field: "password",
+                value: password,
+                types: [rules.required, rules.password]
+            }
+        ]).validate();
+
+        !errors.length ? next() : res.status(400).json(errors);
+    }
 };

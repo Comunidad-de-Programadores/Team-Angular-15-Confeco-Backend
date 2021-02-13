@@ -1,9 +1,10 @@
 // Imports authentications methods.
 import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
+import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
 
 // Imports interfaces
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IAuthRes, IRegisterParams } from "../../interfaces/auth.interfaces";
+import { IAuthRes, ICredentials, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
@@ -24,5 +25,10 @@ export class AuthFacade {
     async register(data: IRegisterParams): Promise<IAuthRes> {
         const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
         return await register.auth();
+    }
+
+    async login(credentials: ICredentials): Promise<IAuthRes> {
+        const login = new LoginEmailAndPassword(this.repository, this.encrypt, credentials);
+        return await login.auth();
     }
 };

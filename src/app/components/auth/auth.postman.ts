@@ -15,4 +15,8 @@ export class AuthPostmanComponent {
     async register(req: Request): Promise<IAuthRes> {
         return await this.auth.register(req.body);
     }
+
+    async login(req: Request): Promise<IAuthRes> {
+        return await this.auth.login(req.body);
+    }
 };
