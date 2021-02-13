@@ -17,18 +17,19 @@ export class LoginGoogle implements IAuth<IAuthRes> {
     }
 
     async auth(): Promise<IAuthRes> {
-        const user = Object.defineProperties(this.user, {
+        const user = Object.assign({}, this.user);
+        const values = Object.defineProperties(user, {
             provider: { value: "google" },
             password: { value: "" }
         });
 
         // Update fields user.
-        if (user.provider !== "google") await this.repository.update(user._id, user);
+        if (this.user.provider !== "google") await this.repository.update(values._id, values);
 
         // Generate tokens.
-        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
+        const tokens = this.jwt.generateTokens({ _id: values._id, email: values.email });
 
-        delete user.password;
-        return { user, tokens };
+        delete values.password;
+        return { user: values, tokens };
     }
 };
