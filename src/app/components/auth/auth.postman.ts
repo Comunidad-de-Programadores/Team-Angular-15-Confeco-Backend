@@ -19,4 +19,9 @@ export class AuthPostmanComponent {
     async login(req: Request): Promise<IAuthRes> {
         return await this.auth.login(req.body);
     }
+
+    async google(req: Request): Promise<IAuthRes> {
+        const { token } = req.body;
+        return await this.auth.google(token);
+    }
 };

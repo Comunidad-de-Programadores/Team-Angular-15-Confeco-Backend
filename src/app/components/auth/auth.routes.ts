@@ -2,7 +2,7 @@
 import { Router } from "express";
 
 // Imports rules.
-import { AuthenticationRules } from "../../rules/Authenticationrules";
+import { AuthenticationRules } from "../../rules/AuthenticationRules";
 const {
     checkFieldsBeforeRegistration,
     checkFieldsBeforeLogin

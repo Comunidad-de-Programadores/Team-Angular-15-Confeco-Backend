@@ -30,6 +30,12 @@ export class AuthControllerComponents {
     }
 
     async google(req: Request, res: Response): Promise<void> {
-        res.status(200).json({ message: "Auth wit google" });
+        try {
+            const data: IAuthRes = await authPostman.google(req);
+            res.status(200).json(data);
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode).json({ name, message });
+        }
     }
 }

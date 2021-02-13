@@ -4,6 +4,7 @@ import { resolve } from "path";
 import express from "express";
 import { Server } from "http";
 import morgan from "morgan";
+import helmet from "helmet";
 import cors from "cors";
 
 // 🏔️ Import environments
@@ -27,6 +28,7 @@ export class MainApp {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(history());
+        this.app.use(helmet());
         this.app.use(cors());
     }
 
