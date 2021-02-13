@@ -3,6 +3,7 @@ import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
 // Imports interfaces
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
+import { IAuthRes, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
@@ -10,7 +11,6 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/BcryptPassword";
-import { IRegisterParams } from "../../interfaces/auth.interfaces";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -21,7 +21,7 @@ export class AuthFacade {
         this.encrypt = new BcryptPassword();
     }
 
-    async register(data: IRegisterParams) {
+    async register(data: IRegisterParams): Promise<IAuthRes> {
         const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
         return await register.auth();
     }

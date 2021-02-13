@@ -17,22 +17,11 @@ export class MainApp {
         private app: express.Express,
         private http: Server
     ) {
-        this.settings();
         this.middleware();
         this.routes();
         this.filesPublic();
     }
 
-    /**
-     * ⚙️ Server settings.
-     */
-    private settings(): void {
-        this.app.set('view engine', 'ejs');
-    }
-
-    /**
-     * ✨ Registers global middleware.
-     */
     private middleware(): void {
         this.app.use(morgan("dev"));
         this.app.use(express.json());
@@ -41,9 +30,6 @@ export class MainApp {
         this.app.use(cors());
     }
 
-    /**
-     * 🚦 record server routes.
-     */
     private routes(): void {
         const { main } = new IndexRoutes(express());
         this.app.use(main);
@@ -54,9 +40,6 @@ export class MainApp {
         this.app.use(express.static(root));
     }
 
-    /**
-     * 🚀 Run the server!
-     */
     run(): void {
         const { PORT } = environments;
         const message = `🚀 Execute app in port:${ PORT }`;

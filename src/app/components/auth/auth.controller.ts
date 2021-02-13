@@ -9,11 +9,6 @@ import { AuthPostmanComponent } from "./auth.postman";
 const authPostman = new AuthPostmanComponent();
 
 export class AuthControllerComponents {
-    /**
-     * Controller responsible for registering the user.
-     * @param req 
-     * @param res 
-     */
     async register(req: Request, res: Response): Promise<void> {
         try {
             const data: IAuthRes = await authPostman.register(req);

@@ -1,13 +1,8 @@
 // Imports modules.
-import { Express, Router } from "express";
+import { Express } from "express";
 
 // Server routes.
-import { AuthRoutesComponent } from "../components/auth/auth.routes";
-
-const routes: Router[] = [
-    // Components routes...
-    new AuthRoutesComponent(Router()).router
-];
+import { routes } from "./routes";
 
 export class IndexRoutes {
     constructor(public main: Express) {
