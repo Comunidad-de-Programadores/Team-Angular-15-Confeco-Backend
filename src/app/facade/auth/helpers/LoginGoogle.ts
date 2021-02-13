@@ -1,11 +1,11 @@
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
 import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
 

@@ -10,21 +10,16 @@ import { IDatabaseUserRepository } from "../../../interfaces/repositories.interf
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 
-// Imports jsonwebtokens.
-import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
+// Imports authentication google.
 import { RegisterGoogle } from "../helpers/RegisterGoogle";
 import { LoginGoogle } from "../helpers/LoginGoogle";
 
 export class AuthGoogle implements IAuth<IAuthRes> {
-    private jwt: JsonWebToken;
-
     constructor(
         private repository: IDatabaseUserRepository,
         private encrypt: IEncrypt,
         private token: string
-    ) {
-        this.jwt = new JsonWebToken();
-    }
+    ) {}
 
     async auth(): Promise<IAuthRes> {
         const { GOOGLE_CLIENT_ID } = environments;
