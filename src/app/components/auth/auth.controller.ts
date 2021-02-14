@@ -29,6 +29,10 @@ export class AuthControllerComponents {
         }
     }
 
+    async sendPwdResetEmail(req: Request, res: Response): Promise<void> {
+        res.json({ message: "Reset password" });
+    }
+
     async google(req: Request, res: Response): Promise<void> {
         try {
             const data: IAuthRes = await authPostman.google(req);

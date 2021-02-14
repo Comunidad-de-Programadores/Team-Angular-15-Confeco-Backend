@@ -5,17 +5,22 @@ import { Router } from "express";
 import { AuthenticationRules } from "../../rules/AuthenticationRules";
 const {
     checkFieldsBeforeRegistration,
-    checkFieldsBeforeLogin
+    checkFieldsBeforeLogin,
+    checkFieldsSendPwdPasswordReset
 } = new AuthenticationRules();
 
 // Imports controllers
 import { AuthControllerComponents } from "./auth.controller";
-const { register, login, google } = new AuthControllerComponents();
+const {
+    register, login, google,
+    sendPwdResetEmail
+} = new AuthControllerComponents();
 
 export class AuthRoutesComponent {
     constructor(public router: Router) {
         this.register();
         this.login();
+        this.sendPwdResetEmail();
         this.google();
     }
 
@@ -25,6 +30,14 @@ export class AuthRoutesComponent {
 
     private login(): void {
         this.router.post("/auth/login", checkFieldsBeforeLogin, login);
+    }
+
+    private sendPwdResetEmail(): void {
+        this.router.post(
+            "/auth/sendPwdResetEmail",
+            checkFieldsSendPwdPasswordReset,
+            sendPwdResetEmail
+        );
     }
 
     private google(): void {

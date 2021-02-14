@@ -11,7 +11,11 @@ import { ValidateFields } from "../helpers/ValidateFields";
 import { rules } from "../config/rules";
 
 export class AuthenticationRules {
-    checkFieldsBeforeRegistration(req: Request, res: Response, next: NextFunction) {
+    checkFieldsBeforeRegistration(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
         const { nickname, email, password } = req.body;
 
         const errors: IRuleError[] = new ValidateFields([
@@ -35,7 +39,11 @@ export class AuthenticationRules {
         !errors.length ? next() : res.status(400).json(errors);
     }
 
-    checkFieldsBeforeLogin(req: Request, res: Response, next: NextFunction) {
+    checkFieldsBeforeLogin(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
         const { email, password } = req.body;
 
         const errors: IRuleError[] = new ValidateFields([
@@ -50,6 +58,20 @@ export class AuthenticationRules {
                 types: [rules.required, rules.password]
             }
         ]).validate();
+
+        !errors.length ? next() : res.status(400).json(errors);
+    }
+
+    checkFieldsSendPwdPasswordReset(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void {
+        const errors: IRuleError[] = new ValidateFields([{
+            field: "email",
+            value: req.body.email,
+            types: [rules.required, rules.email]
+        }]).validate();
 
         !errors.length ? next() : res.status(400).json(errors);
     }
