@@ -1,4 +1,4 @@
-export function PasswordResetHtml(data: any) {
+export function passwordResetHtml(data: any) {
     return `
         <style>
         * {

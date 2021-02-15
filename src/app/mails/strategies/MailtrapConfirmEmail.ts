@@ -9,7 +9,7 @@ import { environments } from "../../config/environments";
 import { IMail, ISendMail } from "../../interfaces/mail.interfaces";
 
 // Import template
-import { PasswordResetHtml } from "../template/PasswordReset";
+import { passwordResetHtml } from "../template/PasswordReset";
 
 export class MailtrapConfirmEmail implements ISendMail {
     private nickname: string;
@@ -32,7 +32,7 @@ export class MailtrapConfirmEmail implements ISendMail {
     async send(email: IMail): Promise<void> {
         // Generate template.
         const { from, to, subject, text } = email;
-        const html: string = PasswordResetHtml({
+        const html: string = passwordResetHtml({
             nickname: this.nickname,
             url: this.url
         });
