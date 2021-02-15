@@ -32,6 +32,7 @@ export class AuthControllerComponents {
     }
 
     async verificationEmail(req: Request, res: Response): Promise<void> {
+        await authPostman.verifyEmail(req);
         res.status(200).json({ message: req.params.token });
     }
 

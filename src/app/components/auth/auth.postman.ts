@@ -20,6 +20,10 @@ export class AuthPostmanComponent {
         return await this.auth.login(req.body);
     }
 
+    async verifyEmail(req: Request) {
+        return await this.auth.verifyEmail(req.params.token);
+    }
+
     async google(req: Request): Promise<IAuthRes> {
         const { token } = req.body;
         return await this.auth.google(token);

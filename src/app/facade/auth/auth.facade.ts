@@ -13,6 +13,7 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/BcryptPassword";
 import { AuthGoogle } from "./modules/AuthGoogle";
+import { VerifyEmail } from "./modules/VerifyEmail";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -31,6 +32,11 @@ export class AuthFacade {
     async login(credentials: ICredentials): Promise<IAuthRes> {
         const login = new LoginEmailAndPassword(this.repository, this.encrypt, credentials);
         return await login.auth();
+    }
+
+    async verifyEmail(token: string): Promise<void> {
+        const verify = new VerifyEmail(this.repository, token);
+        await verify.auth();
     }
 
     async google(token: string): Promise<IAuthRes> {
