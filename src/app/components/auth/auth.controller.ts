@@ -11,8 +11,10 @@ const authPostman = new AuthPostmanComponent();
 export class AuthControllerComponents {
     async register(req: Request, res: Response): Promise<void> {
         try {
-            const data: IAuthRes = await authPostman.register(req);
-            res.status(200).json(data);
+            const { nickname } = req.body;
+            await authPostman.register(req);
+
+            res.status(200).json({ message: `¡Felicidades ${ nickname }! Te has registrado correctamente. Te hemos enviado un email de confirmacion para verificar que eres tu.` });
         } catch (error) {
             const { name, message, statusCode } = error;
             res.status(statusCode).json({ name, message });
@@ -27,6 +29,10 @@ export class AuthControllerComponents {
             const { name, message, statusCode } = error;
             res.status(statusCode).json({ name, message });
         }
+    }
+
+    async verificationEmail(req: Request, res: Response): Promise<void> {
+        res.status(200).json({ message: req.params.token });
     }
 
     async sendPwdResetEmail(req: Request, res: Response): Promise<void> {

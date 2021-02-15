@@ -3,7 +3,7 @@ import { Request } from "express";
 
 // Imports facades
 import { AuthFacade } from "../../facade/auth/auth.facade";
-import { IAuthRes } from "../../interfaces/auth.interfaces";
+import { IAuthRes, IEmailVerificacionToken } from "../../interfaces/auth.interfaces";
 
 export class AuthPostmanComponent {
     private auth: AuthFacade;
@@ -12,7 +12,7 @@ export class AuthPostmanComponent {
         this.auth = new AuthFacade();
     }
 
-    async register(req: Request): Promise<IAuthRes> {
+    async register(req: Request): Promise<IEmailVerificacionToken> {
         return await this.auth.register(req.body);
     }
 

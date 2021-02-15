@@ -4,7 +4,7 @@ import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
 
 // Imports interfaces
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IAuthRes, ICredentials, IRegisterParams } from "../../interfaces/auth.interfaces";
+import { IAuthRes, ICredentials, IEmailVerificacionToken, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
@@ -23,7 +23,7 @@ export class AuthFacade {
         this.encrypt = new BcryptPassword();
     }
 
-    async register(data: IRegisterParams): Promise<IAuthRes> {
+    async register(data: IRegisterParams): Promise<IEmailVerificacionToken> {
         const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
         return await register.auth();
     }

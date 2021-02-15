@@ -4,14 +4,14 @@ import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
-import { IAuth, IAuthRes, IRegisterParams } from "../../../interfaces/auth.interfaces";
+import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
 
-export class RegisterEmailAndPassword implements IAuth<IAuthRes> {
+export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private jwt: JwtFacade;
 
     constructor(
@@ -22,7 +22,7 @@ export class RegisterEmailAndPassword implements IAuth<IAuthRes> {
         this.jwt = new JwtFacade();
     }
 
-    async auth(): Promise<IAuthRes> {
+    async auth(): Promise<IEmailVerificacionToken> {
         // Check if the user exists.
         let params: IRegisterParams = Object.assign({}, this.data);
         const result: User | null = await this.repository.getByEmail(params.email);
@@ -43,10 +43,8 @@ export class RegisterEmailAndPassword implements IAuth<IAuthRes> {
             name: "AuthenticationError"
         });
 
-        // Generate tokens.
-        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        delete user.password;
-        return { user, tokens };
+        // Generate confirmation link.
+        const url: string = this.jwt.generateEmailConfirmationLink({ _id: user._id, email: user.email });
+        return { nickname: user.nickname, email: user.email, url };
     }
 };
