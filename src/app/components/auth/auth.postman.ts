@@ -24,6 +24,10 @@ export class AuthPostmanComponent {
         return await this.auth.verifyEmail(req.params.token);
     }
 
+    async forgotPassword(req: Request): Promise<void> {
+        await this.auth.forgotPassword(req.body.email);
+    }
+
     async google(req: Request): Promise<IAuthRes> {
         const { token } = req.body;
         return await this.auth.google(token);

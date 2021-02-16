@@ -1,19 +1,19 @@
 // Imports modules.
 import { createTransport } from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
-
-// Imports environments
 import { environments } from "../../config/environments";
 
 // Imports interfaces.
-import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
-import { confirmEmail } from "../template/confirmEmail";
+import { IConfirmEmail, IMail, ISendMail } from "../../interfaces/mail.interfaces";
 
-export class MailtrapVerificacionEmail implements ISendMail {
-    private transport: Mail;
+// Imports template.
+import { forgotPasswordHtml } from "../template/forgotPassword";
+
+export class MailtrapForgotPassword implements ISendMail {
+    private mail: Mail;
 
     constructor(private data: IConfirmEmail) {
-        this.transport = createTransport({
+        this.mail = createTransport({
             host: environments.MAILTRAP_HOST,
             port: Number(environments.MAILTRAP_PORT),
             auth: {
@@ -23,13 +23,13 @@ export class MailtrapVerificacionEmail implements ISendMail {
         });
     }
 
-    async send() {
-        this.transport.sendMail({
+    async send(): Promise<void> {
+        this.mail.sendMail({
             from: "support@teamangular15",
             to: this.data.email,
-            subject: "Verificacion de correo electronico",
-            text: "Solo tienes que seguir los pasos correctamente, y estara todo listo.",
-            html: confirmEmail(this.data)
+            subject: "Cambio de contraseña",
+            text: "Ha realizado una solicitud de cambio de contraseña, solo sigue las instrucciones y tendremos todo listo.",
+            html: forgotPasswordHtml(this.data)
         });
     }
 };

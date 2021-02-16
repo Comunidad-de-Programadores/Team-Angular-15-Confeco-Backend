@@ -21,6 +21,7 @@ export class PasswordResetsRepositoryMongo implements IDatabasePasswordResetRepo
     }
 
     async update(_id: string, data: PasswordReset): Promise<void> {
+        data.updated_at = Date.now();
         await models.PasswordReset.updateOne({ _id }, data);
     }
 

@@ -6,6 +6,7 @@ import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtAccessToken } from "../../helpers/jsonwebtokens/strategies/AccessToken";
 import { JwtRefreshToken } from "../../helpers/jsonwebtokens/strategies/RefreshToken";
 import { JwtEmailToken } from "../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+import { JwtPasswordToken } from "../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
 
 export class JwtFacade {
     private jwt: JsonWebToken;
@@ -26,5 +27,9 @@ export class JwtFacade {
 
     checkEmailVerificationLink(token: string) {
         return this.jwt.verify(token, new JwtEmailToken);
+    }
+
+    generatePasswordResetToken(payload: IPayloadJwt) {
+        return this.jwt.generate(payload, new JwtPasswordToken);
     }
 };

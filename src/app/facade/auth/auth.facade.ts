@@ -14,6 +14,7 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 import { BcryptPassword } from "../../helpers/BcryptPassword";
 import { AuthGoogle } from "./modules/AuthGoogle";
 import { VerifyEmail } from "./modules/VerifyEmail";
+import { ForgotPassword } from "./modules/ForgotPassword";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -37,6 +38,11 @@ export class AuthFacade {
     async verifyEmail(token: string): Promise<IAuthRes> {
         const verify = new VerifyEmail(this.repository, token);
         return await verify.auth();
+    }
+
+    async forgotPassword(email: string): Promise<void> {
+        const action = new ForgotPassword(this.repository, email);
+        await action.auth();
     }
 
     async google(token: string): Promise<IAuthRes> {

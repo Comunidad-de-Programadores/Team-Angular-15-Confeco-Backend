@@ -5,7 +5,8 @@ const passwordResetsSchema = new Schema({
     _id: { type: String, required: true },
     email: { type: String, required: true },
     token: { type: String, required: true },
-    created_at: { type: Number, default: Date.now() }
+    created_at: { type: Number, default: Date.now() },
+    updated_at: { type: Number, default: Date.now() }
 });
 
 export const passwordResetModel = model("password_resets", passwordResetsSchema);

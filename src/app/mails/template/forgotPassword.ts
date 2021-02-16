@@ -1,7 +1,7 @@
 // Imports interfaces.
 import { IConfirmEmail } from "../../interfaces/mail.interfaces";
 
-export function passwordResetHtml(data: IConfirmEmail) {
+export function forgotPasswordHtml(data: IConfirmEmail) {
     return `
         <style>
         * {
@@ -103,8 +103,8 @@ export function passwordResetHtml(data: IConfirmEmail) {
                                     <h1>
                                         <strong>¿Olvidaste tu contraseña?</strong>
                                     </h1>
-                                    <p>¡No te preocupes!, tenemos todo bajo control. Consigamos una nueva contraseña. Pero por favor, no seas tan olvidadizo. 😂</p>
-                                    <a href="">
+                                    <p>¡No te preocupes ${ data.nickname }!, tenemos todo bajo control. Consigamos una nueva contraseña. Pero por favor, no seas tan olvidadizo. 😂</p>
+                                    <a href="${ data.url }">
                                         <button>Nueva contraseña</button>
                                     </a>
                                 </div>
