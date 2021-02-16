@@ -17,9 +17,14 @@ export class MainApp {
         private app: express.Express,
         private http: Server
     ) {
+        this.settings();
         this.middleware();
         this.routes();
         this.filesPublic();
+    }
+
+    private settings(): void {
+        this.app.set("view engine", "ejs");
     }
 
     private middleware(): void {

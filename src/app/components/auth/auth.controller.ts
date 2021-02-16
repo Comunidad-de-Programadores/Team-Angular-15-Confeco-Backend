@@ -32,11 +32,12 @@ export class AuthControllerComponents {
 
     async verificationEmail(req: Request, res: Response): Promise<void> {
         try {
-            const data: IAuthRes = await authPostman.verifyEmail(req);
-            res.status(200).json(data);
+            const { user }: IAuthRes = await authPostman.verifyEmail(req);
+            res.render("success/verifiedEmail", {
+                nickname: user.nickname
+            });
         } catch (error) {
-            const { name, message, statusCode } = error;
-            res.status(statusCode || 400).json({ name, message });
+            res.render("errors/tokenInvalid");
         }
     }
 
