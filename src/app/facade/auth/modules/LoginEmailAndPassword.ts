@@ -25,10 +25,16 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         // Verify user existence.
         const { email, password } = this.credentials;
         const user: User | null = await this.repository.getByEmail(email);
+
         const credentialsIncorrect: HttpError = createHttpError(403, "Las credenciales son incorrectas.", {
             name: "CredentialsIncorrect"
         });
-        if (!user)  throw credentialsIncorrect;
+        
+        if (!user) throw credentialsIncorrect;
+
+        if (!user.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para iniciar sesion.", {
+            name: "UnverifiedEmail"
+        });
 
         // Compare password
         const result = await this.encrypt.compare(password, user.password as string);
