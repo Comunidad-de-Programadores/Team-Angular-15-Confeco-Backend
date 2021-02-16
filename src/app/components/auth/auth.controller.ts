@@ -13,11 +13,10 @@ export class AuthControllerComponents {
         try {
             const { nickname } = req.body;
             await authPostman.register(req);
-
             res.status(200).json({ message: `¡Felicidades ${ nickname }! Te has registrado correctamente. Te hemos enviado un email de confirmacion para verificar que eres tu.` });
         } catch (error) {
             const { name, message, statusCode } = error;
-            res.status(statusCode).json({ name, message });
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 
@@ -27,13 +26,18 @@ export class AuthControllerComponents {
             res.status(200).json(data);
         } catch (error) {
             const { name, message, statusCode } = error;
-            res.status(statusCode).json({ name, message });
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 
     async verificationEmail(req: Request, res: Response): Promise<void> {
-        await authPostman.verifyEmail(req);
-        res.status(200).json({ message: req.params.token });
+        try {
+            const data: IAuthRes = await authPostman.verifyEmail(req);
+            res.status(200).json(data);
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
     }
 
     async sendPwdResetEmail(req: Request, res: Response): Promise<void> {
@@ -46,7 +50,7 @@ export class AuthControllerComponents {
             res.status(200).json(data);
         } catch (error) {
             const { name, message, statusCode } = error;
-            res.status(statusCode).json({ name, message });
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 }

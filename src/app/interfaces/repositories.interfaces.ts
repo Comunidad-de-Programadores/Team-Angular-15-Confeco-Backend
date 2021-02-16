@@ -9,4 +9,5 @@ export interface IDatabaseRepository<Tval> {
 
 export interface IDatabaseUserRepository extends IDatabaseRepository<User> {
     getByEmail(email: string): Promise<User | null>;
+    updateStatusEmail(id: string, status: boolean): Promise<void>;
 };

@@ -20,7 +20,7 @@ export class AuthPostmanComponent {
         return await this.auth.login(req.body);
     }
 
-    async verifyEmail(req: Request) {
+    async verifyEmail(req: Request): Promise<IAuthRes> {
         return await this.auth.verifyEmail(req.params.token);
     }
 

@@ -22,7 +22,10 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
 
     async update(id: string, data: User) {
         data.updated_at = Date.now();
-        console.log(data);
         await models.User.updateOne({ _id: id }, data);
+    }
+
+    async updateStatusEmail(id: string, verified_email: boolean): Promise<void> {
+        await models.User.updateOne({ _id: id }, { $set: { verified_email } });
     }
 };

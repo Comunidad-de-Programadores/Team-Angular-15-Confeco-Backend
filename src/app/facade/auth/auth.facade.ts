@@ -34,9 +34,9 @@ export class AuthFacade {
         return await login.auth();
     }
 
-    async verifyEmail(token: string): Promise<void> {
+    async verifyEmail(token: string): Promise<IAuthRes> {
         const verify = new VerifyEmail(this.repository, token);
-        await verify.auth();
+        return await verify.auth();
     }
 
     async google(token: string): Promise<IAuthRes> {

@@ -3,6 +3,7 @@ export class User {
     nickname: string;
     email: string;
     password?: string;
+    verified_email?: boolean;
     provider?: string;
     created_at?: number;
     updated_at?: number;
@@ -15,5 +16,6 @@ export class User {
         this.provider = user.provider;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
+        this.verified_email = user.verified_email;
     }
 };

@@ -27,4 +27,8 @@ export class JwtFacade {
         const token: string = this.jwt.generate(payload, new JwtEmailToken);
         return `${ environments.URL }/api/auth/confirm_email/${ token }`;
     }
+
+    checkEmailVerificationLink(token: string) {
+        return this.jwt.verify(token, new JwtEmailToken);
+    }
 };
