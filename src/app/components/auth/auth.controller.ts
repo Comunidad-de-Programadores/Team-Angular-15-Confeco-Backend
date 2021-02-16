@@ -51,6 +51,16 @@ export class AuthControllerComponents {
         }
     }
 
+    async showResetPassword(req: Request, res: Response): Promise<void> {
+        res.render("pages/reset_password", {
+            token: req.params.token
+        });
+    }
+
+    async resetPassword(req: Request, res: Response): Promise<void> {
+        res.status(200).json({ ...req.body });
+    }
+
     async google(req: Request, res: Response): Promise<void> {
         try {
             const data: IAuthRes = await authPostman.google(req);

@@ -19,6 +19,8 @@ export class AuthRoutesComponent {
         this.login();
         this.verificationEmail();
         this.forgotPassword();
+        this.showResetPassword();
+        this.resetPassword();
         this.google();
     }
 
@@ -36,10 +38,18 @@ export class AuthRoutesComponent {
 
     private forgotPassword(): void {
         this.router.post(
-            "/auth/forgot_password",
+            "/auth/password/forgot",
             checkFieldsSendPwdPasswordReset,
             auth.forgotPassword
         );
+    }
+
+    private showResetPassword(): void {
+        this.router.get("/auth/password/reset/:token", auth.showResetPassword);
+    }
+
+    private resetPassword(): void {
+        this.router.post("/auth/password/reset", auth.resetPassword);
     }
 
     private google(): void {

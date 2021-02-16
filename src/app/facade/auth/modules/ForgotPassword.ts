@@ -43,7 +43,7 @@ export class ForgotPassword implements IAuth<void> {
         this.mail.send(new MailtrapForgotPassword({
             nickname: user.nickname,
             email: user.email,
-            url: `${ environments.URL }/auth/reset_password/${ token }`
+            url: `${ environments.URL }/api/auth/password/reset/${ token }`
         }));
     }
 };
