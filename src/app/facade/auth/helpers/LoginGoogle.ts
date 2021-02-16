@@ -19,8 +19,7 @@ export class LoginGoogle implements IAuth<IAuthRes> {
     async auth(): Promise<IAuthRes> {
         const user = Object.assign({}, this.user);
         const values = Object.defineProperties(user, {
-            provider: { value: "google" },
-            password: { value: "" }
+            provider: { value: "google" }
         });
 
         // Update fields user.
