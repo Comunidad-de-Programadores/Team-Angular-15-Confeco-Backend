@@ -11,8 +11,13 @@ import { User } from "../../../models/User";
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
 
+// Imports mails
+import { Mail } from "../../../mails/Mail";
+import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private jwt: JwtFacade;
+    private mail: Mail;
 
     constructor(
         private repository: IDatabaseUserRepository,
@@ -20,6 +25,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         private data: IRegisterParams
     ) {
         this.jwt = new JwtFacade();
+        this.mail = new Mail();
     }
 
     async auth(): Promise<IEmailVerificacionToken> {
@@ -44,7 +50,11 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         });
 
         // Generate confirmation link.
-        const url: string = this.jwt.generateEmailConfirmationLink({ _id: user._id, email: user.email });
-        return { nickname: user.nickname, email: user.email, url };
+        const { _id, nickname, email } = user;
+        const url: string = this.jwt.generateEmailConfirmationLink({ _id, email });
+
+        // Send email.
+        this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));
+        return { nickname, email, url };
     }
 };

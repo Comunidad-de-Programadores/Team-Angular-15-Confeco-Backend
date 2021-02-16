@@ -111,13 +111,13 @@ export function confirmEmail(data: IConfirmEmail) {
                             <img class="img" src="https://res.cloudinary.com/dlkfpx8lb/image/upload/v1613430744/send-confirmation-email_ze6qq2.png">
                         </div>
                         <div class="card-body">
-                            <h1 class="text-center">¡IvanZ123 confirma tu email!</h1>
+                            <h1 class="text-center">¡${ data.nickname } confirma tu email!</h1>
                             <p class="text-center text-muted">
                                 <strong>Team Angular 15</strong> te da la bienvenida. 
-                                Para poder validar tu cuenta y la direccion de correo electronico, es necesario que presiones
+                                Para poder validar tu cuenta y la direccion de correo electronico ${ data.email }, es necesario que presiones
                                 el boton de abajo, y estara todo listo.
                             </p>
-                            <a href="">
+                            <a href="${ data.url }" target="_blank">
                                 <button class="btn">Confirmar email</button>
                             </a>
                         </div>
