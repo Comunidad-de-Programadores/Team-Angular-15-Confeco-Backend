@@ -1,4 +1,7 @@
-export function passwordResetHtml(data: any) {
+// Imports interfaces.
+import { IConfirmEmail } from "../../interfaces/mail.interfaces";
+
+export function passwordResetHtml(data: IConfirmEmail) {
     return `
         <style>
         * {

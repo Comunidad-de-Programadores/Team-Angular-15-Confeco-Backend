@@ -3,8 +3,14 @@ export interface IMail {
     to: string;
     subject: string;
     text?: string;
-}
+};
+
+export interface IConfirmEmail {
+    nickname: string;
+    email: string;
+    url: string;
+};
 
 export interface ISendMail {
-    send(mail: IMail): Promise<void>;
+    send(): Promise<void>;
 };
