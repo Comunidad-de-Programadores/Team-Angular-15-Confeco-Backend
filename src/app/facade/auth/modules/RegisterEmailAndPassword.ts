@@ -2,6 +2,9 @@
 import createError from "http-errors";
 import { v4 as uuid } from "uuid";
 
+// Imports environments
+import { environments } from "../../../config/environments";
+
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
@@ -51,7 +54,8 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
 
         // Generate confirmation link.
         const { _id, nickname, email } = user;
-        const url: string = this.jwt.generateEmailConfirmationLink({ _id, email });
+        const token: string = this.jwt.generateEmailConfirmationLink({ _id, email });
+        const url = `${ environments.URL }/api/auth/confirm_email/${ token }`;
 
         // Send email.
         this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));

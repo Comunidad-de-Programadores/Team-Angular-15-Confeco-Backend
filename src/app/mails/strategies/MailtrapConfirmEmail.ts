@@ -8,9 +8,6 @@ import { environments } from "../../config/environments";
 // Imports interfaces.
 import { ISendMail } from "../../interfaces/mail.interfaces";
 
-// Import template
-import { passwordResetHtml } from "../template/PasswordReset";
-
 export class MailtrapConfirmEmail implements ISendMail {
     constructor(private nickname: string, private url: string) {}
     async send(): Promise<void> {}

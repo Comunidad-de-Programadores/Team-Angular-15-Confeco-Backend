@@ -36,7 +36,7 @@ export class AuthRoutesComponent {
 
     private sendPwdResetEmail(): void {
         this.router.post(
-            "/auth/sendPwdResetEmail",
+            "/auth/forgot_password",
             checkFieldsSendPwdPasswordReset,
             auth.sendPwdResetEmail
         );

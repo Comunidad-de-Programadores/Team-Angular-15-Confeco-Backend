@@ -28,4 +28,8 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
     async updateStatusEmail(id: string, verified_email: boolean): Promise<void> {
         await models.User.updateOne({ _id: id }, { $set: { verified_email } });
     }
+
+    async delete(id: string): Promise<void> {
+        await models.User.deleteOne({ _id: id });
+    }
 };

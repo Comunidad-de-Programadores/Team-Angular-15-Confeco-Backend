@@ -1,9 +1,6 @@
 // Imports interfaces.
 import { IPayloadJwt } from "../../interfaces/jwt.interfaces";
 
-// Import environments
-import { environments } from "../../config/environments";
-
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtAccessToken } from "../../helpers/jsonwebtokens/strategies/AccessToken";
@@ -24,8 +21,7 @@ export class JwtFacade {
     }
 
     generateEmailConfirmationLink(payload: IPayloadJwt): string {
-        const token: string = this.jwt.generate(payload, new JwtEmailToken);
-        return `${ environments.URL }/api/auth/confirm_email/${ token }`;
+        return this.jwt.generate(payload, new JwtEmailToken);
     }
 
     checkEmailVerificationLink(token: string) {
