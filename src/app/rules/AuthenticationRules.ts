@@ -75,4 +75,27 @@ export class AuthenticationRules {
 
         !errors.length ? next() : res.status(400).json(errors);
     }
+
+    checkFieldsBeforePasswordReset(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const { token, password } = req.body;
+
+        const verifyToken: boolean | string = rules.required(token);
+        if (typeof verifyToken === "string") {
+            return res.status(400).json({
+                message: "Necesitas proveer un token, para poder continuar."
+            });
+        }
+
+        const verifyPwd: boolean | string = rules.password(password);
+        if (typeof verifyPwd === "string") {
+            req.flash("message", verifyPwd);
+            return res.redirect(`/api/auth/password/reset/${ token }`);
+        }
+
+        return next();
+    }
 };

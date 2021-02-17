@@ -6,7 +6,8 @@ import { AuthenticationRules } from "../../rules/AuthenticationRules";
 const {
     checkFieldsBeforeRegistration,
     checkFieldsBeforeLogin,
-    checkFieldsSendPwdPasswordReset
+    checkFieldsSendPwdPasswordReset,
+    checkFieldsBeforePasswordReset
 } = new AuthenticationRules();
 
 // Imports controllers
@@ -49,7 +50,11 @@ export class AuthRoutesComponent {
     }
 
     private resetPassword(): void {
-        this.router.post("/auth/password/reset", auth.resetPassword);
+        this.router.post(
+            "/auth/password/reset",
+            checkFieldsBeforePasswordReset,
+            auth.resetPassword
+        );
     }
 
     private google(): void {

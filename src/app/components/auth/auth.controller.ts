@@ -53,7 +53,8 @@ export class AuthControllerComponents {
 
     async showResetPassword(req: Request, res: Response): Promise<void> {
         res.render("pages/reset_password", {
-            token: req.params.token
+            token: req.params.token,
+            message: req.flash("message")
         });
     }
 

@@ -1,4 +1,6 @@
 // 📦 Imports modules.
+import session from "express-session";
+import flash from "connect-flash";
 import { resolve } from "path";
 import express from "express";
 import { Server } from "http"
@@ -33,6 +35,12 @@ export class MainApp {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(helmet());
         this.app.use(cors());
+        this.app.use(session({
+            secret: "team-angular-15-nodejs-api",
+            resave: false,
+            saveUninitialized: true
+        }));
+        this.app.use(flash());
     }
 
     private routes(): void {
