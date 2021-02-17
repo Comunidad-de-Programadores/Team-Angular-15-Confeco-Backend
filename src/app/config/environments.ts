@@ -19,6 +19,7 @@ export const environments = {
     MAILTRAP_USER: process.env.MAILTRAP_USER,
     MAILTRAP_PASS: process.env.MAILTRAP_PASS,
 
+    SENDGRID_FROM_EMAIL: process.env.SENDGRID_FROM_EMAIL,
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
