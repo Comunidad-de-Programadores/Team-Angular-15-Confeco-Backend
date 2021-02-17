@@ -37,7 +37,7 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         });
 
         // Compare password
-        const result = await this.encrypt.compare(password, user.password as string);
+        const result = await this.encrypt.compare(password, user.password || "");
         if (!result) throw credentialsIncorrect;
 
         // Generate tokens.

@@ -25,6 +25,6 @@ export class AuthFacebook implements IAuth<IAuthRes> {
             return await action.auth();
         }
 
-        return await new LoginFacebook(user).auth();
+        return await new LoginFacebook(this.repository, user).auth();
     }
 };

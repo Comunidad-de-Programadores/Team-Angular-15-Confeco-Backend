@@ -44,7 +44,7 @@ export class AuthGoogle implements IAuth<IAuthRes> {
         }
 
         // Login with google.
-        const login = new LoginGoogle(user);
+        const login = new LoginGoogle(this.repository, user);
         return await login.auth();
     }
 }
