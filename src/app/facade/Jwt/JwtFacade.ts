@@ -32,4 +32,8 @@ export class JwtFacade {
     generatePasswordResetToken(payload: IPayloadJwt) {
         return this.jwt.generate(payload, new JwtPasswordToken);
     }
+
+    checkPasswordResetToken(token: string): IPayloadJwt {
+        return this.jwt.verify(token, new JwtPasswordToken);
+    }
 };

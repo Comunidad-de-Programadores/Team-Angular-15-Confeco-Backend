@@ -12,6 +12,7 @@ export interface IDatabaseRepository<Tval> {
 export interface IDatabaseUserRepository extends IDatabaseRepository<User> {
     getByEmail(email: string): Promise<User | null>;
     updateStatusEmail(id: string, status: boolean): Promise<void>;
+    updatePassword(email: string, password: string): Promise<void>;
 };
 
 export interface IDatabasePasswordResetRepository extends IDatabaseRepository<PasswordReset> {

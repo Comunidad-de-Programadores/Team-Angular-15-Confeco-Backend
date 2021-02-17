@@ -1,6 +1,7 @@
 // Imports interfaces.
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 import { IDatabasePasswordResetRepository } from "../../interfaces/repositories.interfaces";
+import { IPayloadJwt } from "../../interfaces/jwt.interfaces";
 
 // Imports repositories.
 import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories/PasswordResetsRepositoryMongo";
@@ -8,6 +9,7 @@ import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories
 // Imports encrypts
 import { BcryptPassword } from "../../helpers/BcryptPassword";
 import { GeneratePasswordResetToken } from "./modules/GeneratePasswordResetToken";
+import { CheckPasswordResetToken } from "./modules/CheckPasswordResetToken";
 
 export class PasswordFacade {
     private repository: IDatabasePasswordResetRepository;
@@ -21,5 +23,10 @@ export class PasswordFacade {
     async generatePasswordResetToken(email: string): Promise<string> {
         const action = new GeneratePasswordResetToken(this.repository, this.encrypt);
         return await action.generate(email);
+    }
+
+    async verifyToken(token: string): Promise<IPayloadJwt> {
+        const password = new CheckPasswordResetToken(this.repository, this.encrypt);
+        return await password.verify(token);
     }
 };

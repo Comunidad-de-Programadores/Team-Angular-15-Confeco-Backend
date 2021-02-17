@@ -37,7 +37,7 @@ export class AuthControllerComponents {
                 nickname: user.nickname
             });
         } catch (error) {
-            res.render("errors/tokenInvalid");
+            res.status(400).render("errors/tokenInvalid");
         }
     }
 
@@ -58,7 +58,14 @@ export class AuthControllerComponents {
     }
 
     async resetPassword(req: Request, res: Response): Promise<void> {
-        res.status(200).json({ ...req.body });
+        try {
+            await authPostman.resetPassword(req);
+            res.render("success/resetPassword");
+        } catch (error) {
+            res.status(400).render("errors/resetPassword", {
+                message: error.message
+            });
+        }
     }
 
     async google(req: Request, res: Response): Promise<void> {

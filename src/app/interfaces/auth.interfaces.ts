@@ -15,6 +15,11 @@ export interface IRegisterParams {
     password: string;
 }
 
+export interface IPasswordReset {
+    token: string;
+    password: string;
+}
+
 export interface IEmailVerificacionToken {
     url: string;
     email: string;

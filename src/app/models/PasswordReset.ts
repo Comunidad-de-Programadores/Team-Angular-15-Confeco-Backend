@@ -8,7 +8,7 @@ export class PasswordReset {
     constructor(data: PasswordReset) {
         this._id = data._id;
         this.email = data.email;
-        this.token = data._id;
+        this.token = data.token;
         this.created_at = data.created_at;
         this.updated_at = data.updated_at;
     }

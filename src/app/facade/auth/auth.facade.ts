@@ -4,7 +4,7 @@ import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
 
 // Imports interfaces
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IAuthRes, ICredentials, IEmailVerificacionToken, IRegisterParams } from "../../interfaces/auth.interfaces";
+import { IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
@@ -15,6 +15,7 @@ import { BcryptPassword } from "../../helpers/BcryptPassword";
 import { AuthGoogle } from "./modules/AuthGoogle";
 import { VerifyEmail } from "./modules/VerifyEmail";
 import { ForgotPassword } from "./modules/ForgotPassword";
+import { PasswordReset } from "./modules/PasswordReset";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -42,7 +43,12 @@ export class AuthFacade {
 
     async forgotPassword(email: string): Promise<void> {
         const action = new ForgotPassword(this.repository, email);
-        await action.auth();
+        return await action.auth();
+    }
+
+    async resetPassword(data: IPasswordReset): Promise<void> {
+        const action = new PasswordReset(this.repository, this.encrypt, data);
+        return await action.auth();
     }
 
     async google(token: string): Promise<IAuthRes> {

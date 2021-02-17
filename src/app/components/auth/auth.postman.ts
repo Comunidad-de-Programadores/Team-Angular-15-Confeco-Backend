@@ -28,6 +28,10 @@ export class AuthPostmanComponent {
         await this.auth.forgotPassword(req.body.email);
     }
 
+    async resetPassword(req: Request): Promise<void> {
+        return await this.auth.resetPassword(req.body);
+    }
+
     async google(req: Request): Promise<IAuthRes> {
         const { token } = req.body;
         return await this.auth.google(token);
