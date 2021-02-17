@@ -8,7 +8,6 @@ import { environments } from "../../../config/environments";
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../interfaces/encrypt.interface";
 
 // Imports authentication google.
 import { RegisterGoogle } from "../helpers/RegisterGoogle";
@@ -17,7 +16,6 @@ import { LoginGoogle } from "../helpers/LoginGoogle";
 export class AuthGoogle implements IAuth<IAuthRes> {
     constructor(
         private repository: IDatabaseUserRepository,
-        private encrypt: IEncrypt,
         private token: string
     ) {}
 
@@ -41,12 +39,12 @@ export class AuthGoogle implements IAuth<IAuthRes> {
 
         // Register with google.
         if (!user) {
-            const register = new RegisterGoogle(this.repository, this.encrypt, fields);
+            const register = new RegisterGoogle(this.repository, fields);
             return await register.auth();
         }
 
         // Login with google.
-        const login = new LoginGoogle(this.repository, user);
+        const login = new LoginGoogle(user);
         return await login.auth();
     }
 }

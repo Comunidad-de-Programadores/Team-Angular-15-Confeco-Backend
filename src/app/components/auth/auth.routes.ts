@@ -23,6 +23,7 @@ export class AuthRoutesComponent {
         this.showResetPassword();
         this.resetPassword();
         this.google();
+        this.facebook();
     }
 
     private register(): void {
@@ -72,9 +73,10 @@ export class AuthRoutesComponent {
     }
 
     private google(): void {
-        this.router.post(
-            "/auth/google",
-            auth.google
-        );
+        this.router.post("/auth/google", auth.google);
+    }
+
+    private facebook(): void {
+        this.router.post("/auth/facebook", auth.facebook);
     }
 };

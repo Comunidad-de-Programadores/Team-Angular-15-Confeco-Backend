@@ -89,4 +89,14 @@ export class AuthControllerComponents {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async facebook(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await auth.facebook(req.body.token);
+            res.status(200).json(data);
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 }

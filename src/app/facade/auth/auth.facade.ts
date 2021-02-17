@@ -1,6 +1,12 @@
 // Imports authentications methods.
-import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
+import { AuthGoogle } from "./modules/AuthGoogle";
+import { VerifyEmail } from "./modules/VerifyEmail";
+import { AuthFacebook } from "./modules/AuthFacebook";
+import { PasswordReset } from "./modules/PasswordReset";
+import { ForgotPassword } from "./modules/ForgotPassword";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
+import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
+import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
 // Imports interfaces
 import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
@@ -13,11 +19,6 @@ import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories
 
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/BcryptPassword";
-import { AuthGoogle } from "./modules/AuthGoogle";
-import { VerifyEmail } from "./modules/VerifyEmail";
-import { ForgotPassword } from "./modules/ForgotPassword";
-import { PasswordReset } from "./modules/PasswordReset";
-import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -61,7 +62,12 @@ export class AuthFacade {
     }
 
     async google(token: string): Promise<IAuthRes> {
-        const google = new AuthGoogle(this.repository, this.encrypt, token);
+        const google = new AuthGoogle(this.repository, token);
         return await google.auth();
+    }
+
+    async facebook(token: string): Promise<IAuthRes> {
+        const facebook = new AuthFacebook(this.repository, token);
+        return await facebook.auth();
     }
 };

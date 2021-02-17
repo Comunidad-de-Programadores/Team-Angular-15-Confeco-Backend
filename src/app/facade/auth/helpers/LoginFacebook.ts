@@ -2,10 +2,10 @@
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 import { User } from "../../../models/User";
 
-// Imports jsonwebtokens
+// Imports facades.
 import { JwtFacade } from "../../Jwt/JwtFacade";
 
-export class LoginGoogle implements IAuth<IAuthRes> {
+export class LoginFacebook implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
 
     constructor(private user: User) {

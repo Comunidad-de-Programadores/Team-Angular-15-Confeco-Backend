@@ -7,7 +7,6 @@ import uniqid from "uniqid";
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../interfaces/encrypt.interface";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -17,7 +16,6 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
 
     constructor(
         private repository: IDatabaseUserRepository,
-        private encrypt: IEncrypt,
         private data: TokenPayload
     ) {
         this.jwt = new JwtFacade();
@@ -25,12 +23,12 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Save user.
-        const nickname = `${ this.data.given_name }${ Math.round(Math.random() * (1000 - 100)) }`
-        const email = this.data.email || `${ uniqid() }@gmail.com`;
-        const password = await this.encrypt.encrypt(uuid());
-        const provider = "google";
-        await this.repository.create({ _id: uuid(), email, nickname, password, provider });
+        const nickname: string = `${ this.data.given_name }${ Math.round(Math.random() * (1000 - 100)) }`
+        const email: string = this.data.email || `${ uniqid() }@gmail.com`;
+        const verified_email: boolean = !!this.data.email_verified;
+        await this.repository.create({ _id: uuid(), email, nickname, verified_email });
 
+        // Get fields user.
         const user = await this.repository.getByEmail(email);
         if (!user) throw createHttpError(400, "Sucedio un error durante la operacion", {
             name: "ErrorRegister"
