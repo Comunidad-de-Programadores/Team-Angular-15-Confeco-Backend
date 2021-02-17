@@ -8,6 +8,10 @@ import { IAuthRes } from "../../interfaces/auth.interfaces";
 import { AuthPostmanComponent } from "./auth.postman";
 const authPostman = new AuthPostmanComponent();
 
+// Imports facades.
+import { AuthFacade } from "../../facade/auth/auth.facade";
+const auth = new AuthFacade();
+
 export class AuthControllerComponents {
     async register(req: Request, res: Response): Promise<void> {
         try {
@@ -52,10 +56,17 @@ export class AuthControllerComponents {
     }
 
     async showResetPassword(req: Request, res: Response): Promise<void> {
-        res.render("pages/reset_password", {
-            token: req.params.token,
-            message: req.flash("message")
-        });
+        try {
+            await auth.checkValidityToken(req.params.token);
+            res.render("pages/reset_password", {
+                token: req.params.token,
+                message: req.flash("message")
+            });
+        } catch (error) {
+            res.status(400).render("errors/resetPassword", {
+                message: error.message
+            });
+        }
     }
 
     async resetPassword(req: Request, res: Response): Promise<void> {

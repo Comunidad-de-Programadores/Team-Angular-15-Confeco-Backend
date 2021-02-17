@@ -26,15 +26,26 @@ export class AuthRoutesComponent {
     }
 
     private register(): void {
-        this.router.post("/auth/register", checkFieldsBeforeRegistration, auth.register);
+        this.router.post(
+            "/auth/register",
+            checkFieldsBeforeRegistration,
+            auth.register
+        );
     }
 
     private login(): void {
-        this.router.post("/auth/login", checkFieldsBeforeLogin, auth.login);
+        this.router.post(
+            "/auth/login",
+            checkFieldsBeforeLogin,
+            auth.login
+        );
     }
 
     private verificationEmail(): void {
-        this.router.get("/auth/confirm_email/:token", auth.verificationEmail);
+        this.router.get(
+            "/auth/confirm_email/:token",
+            auth.verificationEmail
+        );
     }
 
     private forgotPassword(): void {
@@ -46,7 +57,10 @@ export class AuthRoutesComponent {
     }
 
     private showResetPassword(): void {
-        this.router.get("/auth/password/reset/:token", auth.showResetPassword);
+        this.router.get(
+            "/auth/password/reset/:token",
+            auth.showResetPassword
+        );
     }
 
     private resetPassword(): void {
@@ -58,6 +72,9 @@ export class AuthRoutesComponent {
     }
 
     private google(): void {
-        this.router.post("/auth/google", auth.google);
+        this.router.post(
+            "/auth/google",
+            auth.google
+        );
     }
 };

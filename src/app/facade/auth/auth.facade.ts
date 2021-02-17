@@ -3,12 +3,13 @@ import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
 
 // Imports interfaces
-import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
+import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
 import { IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
 import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
+import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories/PasswordResetsRepositoryMongo";
 
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/BcryptPassword";
@@ -16,13 +17,16 @@ import { AuthGoogle } from "./modules/AuthGoogle";
 import { VerifyEmail } from "./modules/VerifyEmail";
 import { ForgotPassword } from "./modules/ForgotPassword";
 import { PasswordReset } from "./modules/PasswordReset";
+import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
+    private pwdRepository: IDatabasePasswordResetRepository;
     private encrypt: IEncrypt;
 
     constructor() {
         this.repository = new UserRepositoryMongo();
+        this.pwdRepository = new PasswordResetsRepositoryMongo();
         this.encrypt = new BcryptPassword();
     }
 
@@ -43,6 +47,11 @@ export class AuthFacade {
 
     async forgotPassword(email: string): Promise<void> {
         const action = new ForgotPassword(this.repository, email);
+        return await action.auth();
+    }
+
+    async checkValidityToken(token: string): Promise<void> {
+        const action = new VerifyPasswordResetToken(this.pwdRepository, token);
         return await action.auth();
     }
 
