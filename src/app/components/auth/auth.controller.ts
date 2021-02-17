@@ -48,7 +48,7 @@ export class AuthControllerComponents {
     async forgotPassword(req: Request, res: Response): Promise<void> {
         try {
             await authPostman.forgotPassword(req);
-            res.status(200).json({ message: "Se ha enviado un email a tu cuenta de correco electronico para que puedas modificar tu contraseña." });
+            res.status(200).json({ message: "Se ha enviado un email a tu cuenta de correo electronico para que puedas modificar tu contraseña." });
         } catch (error) {
             const { name, message, statusCode } = error;
             res.status(statusCode || 400).json({ name, message });

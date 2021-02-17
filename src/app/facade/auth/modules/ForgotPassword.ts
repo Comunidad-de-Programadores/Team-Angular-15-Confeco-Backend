@@ -32,7 +32,7 @@ export class ForgotPassword implements IAuth<void> {
             name: "NonExistentEmail"
         });
 
-        if (!user.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para iniciar sesion.", {
+        if (!user.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para realizar esta accion.", {
             name: "UnverifiedEmail"
         });
 
