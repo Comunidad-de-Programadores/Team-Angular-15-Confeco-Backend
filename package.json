@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
-    "start": "tsc && node dist/",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "node dist/",
     "serve": "cross-env NODE_ENV=development nodemon dist/"
   },
   "keywords": [],
