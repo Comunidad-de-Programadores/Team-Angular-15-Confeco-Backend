@@ -10,7 +10,7 @@ import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../../../interfaces/j
 export class JwtAccessToken implements IGenerateToken<IPayloadJwt>, IVerifyToken<IPayloadJwt> {
     generate(payload: IPayloadJwt): string {
         const { JWT_ACCESS_TOKEN_KEY } = environments;
-        return sign(payload, JWT_ACCESS_TOKEN_KEY as string, { expiresIn: "5m" });
+        return sign(payload, JWT_ACCESS_TOKEN_KEY as string, { expiresIn: "10h" });
     }
 
     verify(token: string) {

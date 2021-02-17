@@ -8,7 +8,7 @@ import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../../../interfaces/j
 export class JwtRefreshToken implements IGenerateToken<IPayloadJwt>, IVerifyToken<IPayloadJwt> {
     generate(data: IPayloadJwt): string {
         const { JWT_REFRESH_TOKEN_KEY } = environments;
-        return sign(data, JWT_REFRESH_TOKEN_KEY as string, { expiresIn: "10m" });
+        return sign(data, JWT_REFRESH_TOKEN_KEY as string, { expiresIn: "1d" });
     }
 
     verify(token: string): IPayloadJwt {

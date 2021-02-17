@@ -8,7 +8,7 @@ import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../../../interfaces/j
 export class JwtEmailToken implements IGenerateToken<IPayloadJwt>, IVerifyToken<IPayloadJwt> {
     generate(payload: IPayloadJwt): string {
         const { JWT_EMAIL_VERIFICACION } = environments;
-        return sign(payload, JWT_EMAIL_VERIFICACION as string, { expiresIn: "5m" });
+        return sign(payload, JWT_EMAIL_VERIFICACION as string);
     }
 
     verify(token: string): IPayloadJwt {

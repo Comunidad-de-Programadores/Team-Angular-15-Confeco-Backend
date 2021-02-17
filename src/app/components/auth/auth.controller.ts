@@ -37,7 +37,8 @@ export class AuthControllerComponents {
                 nickname: user.nickname
             });
         } catch (error) {
-            res.status(400).render("errors/tokenInvalid");
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 
@@ -59,9 +60,8 @@ export class AuthControllerComponents {
                 message: req.flash("message")
             });
         } catch (error) {
-            res.status(400).render("errors/resetPassword", {
-                message: error.message
-            });
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 
