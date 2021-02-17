@@ -16,7 +16,7 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 
 // Imports mails
 import { Mail } from "../../../mails/Mail";
-import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private jwt: JwtFacade;
@@ -58,7 +58,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         const url = `${ environments.URL }/api/auth/confirm_email/${ token }`;
 
         // Send email.
-        this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));
+        this.mail.send(new SendgridVerificationEmail({ url, nickname, email }));
         return { nickname, email, url };
     }
 };

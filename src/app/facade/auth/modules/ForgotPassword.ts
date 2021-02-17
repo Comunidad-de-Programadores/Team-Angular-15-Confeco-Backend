@@ -8,7 +8,7 @@ import { IDatabaseUserRepository } from "../../../interfaces/repositories.interf
 
 // Imports mails.
 import { Mail } from "../../../mails/Mail";
-import { MailtrapForgotPassword } from "../../../mails/strategies/MailtrapForgotPassword";
+import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
 
 // Imports facades
 import { PasswordFacade } from "../../password/PasswordFacade";
@@ -40,7 +40,7 @@ export class ForgotPassword implements IAuth<void> {
         const token: string = await this.password.generatePasswordResetToken(user.email);
 
         // Send email.
-        this.mail.send(new MailtrapForgotPassword({
+        this.mail.send(new SendgridForgotPassword({
             nickname: user.nickname,
             email: user.email,
             url: `${ environments.URL }/api/auth/password/reset/${ token }`

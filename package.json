@@ -11,6 +11,7 @@
   "author": "team-angular-15-aomfeco-backend",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
