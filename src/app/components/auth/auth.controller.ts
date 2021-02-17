@@ -70,9 +70,8 @@ export class AuthControllerComponents {
             await auth.resetPassword(req.body);
             res.render("success/resetPassword");
         } catch (error) {
-            res.status(400).render("errors/resetPassword", {
-                message: error.message
-            });
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
         }
     }
 

@@ -13,7 +13,7 @@ connect(environments.MONGODB_URI as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log("Connection to the database successfully"))
+.then(() => console.log("🔥 Connection to the database successfully"))
 .catch(console.error);
 
 export const models = {
