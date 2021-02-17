@@ -26,7 +26,6 @@ export class CheckPasswordResetToken {
 
         // Consult in the database.
         const data = await this.repository.getByEmail(payload.email);
-        console.log(data);
 
         if (!data) throw createHttpError(401, "Este token ya ha sido utilizado.", {
             name: "PasswordResetError"
