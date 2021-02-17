@@ -1,10 +1,9 @@
 // Imports modules.
-import { createTransport } from "nodemailer";
+import createTransport from "../../config/nodemailer";
 import Mail from "nodemailer/lib/mailer";
-import { environments } from "../../config/environments";
 
 // Imports interfaces.
-import { IConfirmEmail, IMail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
 
 // Imports template.
 import { forgotPasswordHtml } from "../template/forgotPassword";
@@ -13,14 +12,7 @@ export class MailtrapForgotPassword implements ISendMail {
     private mail: Mail;
 
     constructor(private data: IConfirmEmail) {
-        this.mail = createTransport({
-            host: environments.MAILTRAP_HOST,
-            port: Number(environments.MAILTRAP_PORT),
-            auth: {
-                user: environments.MAILTRAP_USER,
-                pass: environments.MAILTRAP_PASS
-            }
-        });
+        this.mail = createTransport;
     }
 
     async send(): Promise<void> {

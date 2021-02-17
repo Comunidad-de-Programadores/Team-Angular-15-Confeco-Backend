@@ -1,9 +1,6 @@
 // Imports modules.
-import { createTransport } from "nodemailer";
+import createTransport from "../../config/nodemailer";
 import Mail from "nodemailer/lib/mailer";
-
-// Imports environments
-import { environments } from "../../config/environments";
 
 // Imports interfaces.
 import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
@@ -13,14 +10,7 @@ export class MailtrapVerificacionEmail implements ISendMail {
     private transport: Mail;
 
     constructor(private data: IConfirmEmail) {
-        this.transport = createTransport({
-            host: environments.MAILTRAP_HOST,
-            port: Number(environments.MAILTRAP_PORT),
-            auth: {
-                user: environments.MAILTRAP_USER,
-                pass: environments.MAILTRAP_PASS
-            }
-        });
+        this.transport = createTransport;
     }
 
     async send() {
