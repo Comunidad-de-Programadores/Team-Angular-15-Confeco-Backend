@@ -5,11 +5,9 @@ import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
 import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
 import { PasswordFacade } from "../../password/PasswordFacade";
 
 export class PasswordReset implements IAuth<void> {
-    private jwt: JwtFacade;
     private password: PasswordFacade;
 
     constructor(
@@ -17,7 +15,6 @@ export class PasswordReset implements IAuth<void> {
         private encrypt: IEncrypt,
         private data: IPasswordReset
     ) {
-        this.jwt = new JwtFacade();
         this.password = new PasswordFacade();
     }
 

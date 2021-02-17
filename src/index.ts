@@ -1,4 +1,4 @@
-// 📦 Imports modules.
+// Imports modules.
 import express from "express";
 import http from "http";
 

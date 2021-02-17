@@ -10,7 +10,7 @@ import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
 // Imports interfaces
 import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 
 // Imports repositories.
@@ -33,41 +33,45 @@ export class AuthFacade {
 
     async register(data: IRegisterParams): Promise<IEmailVerificacionToken> {
         const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
-        return await register.auth();
+        return await this.execute(register);
     }
 
     async login(credentials: ICredentials): Promise<IAuthRes> {
         const login = new LoginEmailAndPassword(this.repository, this.encrypt, credentials);
-        return await login.auth();
+        return await this.execute(login);
     }
 
     async verifyEmail(token: string): Promise<IAuthRes> {
         const verify = new VerifyEmail(this.repository, token);
-        return await verify.auth();
+        return await this.execute(verify);
     }
 
     async forgotPassword(email: string): Promise<void> {
         const action = new ForgotPassword(this.repository, email);
-        return await action.auth();
+        return await this.execute(action);
     }
 
     async checkValidityToken(token: string): Promise<void> {
         const action = new VerifyPasswordResetToken(this.pwdRepository, token);
-        return await action.auth();
+        return await this.execute(action);
     }
 
     async resetPassword(data: IPasswordReset): Promise<void> {
         const action = new PasswordReset(this.repository, this.encrypt, data);
-        return await action.auth();
+        return await this.execute(action);
     }
 
     async google(token: string): Promise<IAuthRes> {
         const google = new AuthGoogle(this.repository, token);
-        return await google.auth();
+        return await this.execute(google);
     }
 
     async facebook(token: string): Promise<IAuthRes> {
         const facebook = new AuthFacebook(this.repository, token);
-        return await facebook.auth();
+        return await this.execute(facebook);
+    }
+
+    private async execute<Tval>(strategy: IAuth<Tval>) {
+        return await strategy.auth();
     }
 };

@@ -1,4 +1,4 @@
-// 📦 Imports modules.
+// Imports modules.
 import session from "express-session";
 import flash from "connect-flash";
 import { resolve } from "path";
@@ -8,10 +8,10 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 
-// 🏔️ Import environments
+// Import environments
 import { environments } from "./config/environments";
 
-// 🚦 Imports routes.
+// Imports routes.
 import { IndexRoutes } from "./routes/index.routes";
 
 export class MainApp {
