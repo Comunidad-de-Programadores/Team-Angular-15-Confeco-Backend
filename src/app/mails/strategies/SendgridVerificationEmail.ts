@@ -5,7 +5,7 @@ import sendgrid from "../../config/sendgrid";
 import { environments } from "../../config/environments";
 
 // Imports interfaces.
-import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
 import { confirmEmail } from "../template/confirmEmail";
 
 export class SendgridVerificationEmail implements ISendMail {

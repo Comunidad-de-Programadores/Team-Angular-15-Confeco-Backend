@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IConfirmEmail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail } from "../interfaces/mail.interfaces";
 
 export function confirmEmail(data: IConfirmEmail) {
     return  `

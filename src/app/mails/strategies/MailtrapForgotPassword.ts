@@ -3,7 +3,7 @@ import createTransport from "../../config/nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
 // Imports interfaces.
-import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
 
 // Imports template.
 import { forgotPasswordHtml } from "../template/forgotPassword";

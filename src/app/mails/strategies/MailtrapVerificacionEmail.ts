@@ -3,7 +3,7 @@ import createTransport from "../../config/nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
 // Imports interfaces.
-import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
 import { confirmEmail } from "../template/confirmEmail";
 
 export class MailtrapVerificacionEmail implements ISendMail {

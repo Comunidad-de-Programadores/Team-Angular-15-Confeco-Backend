@@ -5,7 +5,7 @@ import sendgrid from "../../config/sendgrid";
 import { environments } from "../../config/environments";
 
 // Imports interfaces.
-import { IConfirmEmail, ISendMail } from "../../interfaces/mail.interfaces";
+import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
 import { forgotPasswordHtml } from "../template/forgotPassword";
 
 export class SendgridForgotPassword implements ISendMail {
