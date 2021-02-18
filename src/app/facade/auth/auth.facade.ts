@@ -11,14 +11,14 @@ import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 // Imports interfaces
 import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../database/interfaces/repositories.interfaces";
 import { IAuth, IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "./interfaces/auth.interfaces";
-import { IEncrypt } from "../../interfaces/encrypt.interface";
+import { IEncrypt } from "../../helpers/encryptors/interfaces/encrypt.interface";
 
 // Imports repositories.
 import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
 import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories/PasswordResetsRepositoryMongo";
 
 // Imports encrypt password.
-import { BcryptPassword } from "../../helpers/BcryptPassword";
+import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;

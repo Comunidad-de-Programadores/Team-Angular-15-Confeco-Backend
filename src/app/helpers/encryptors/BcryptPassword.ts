@@ -2,7 +2,7 @@
 import { genSalt, hash, compare } from "bcryptjs";
 
 // Imports interfaces.
-import { IEncrypt } from "../interfaces/encrypt.interface";
+import { IEncrypt } from "./interfaces/encrypt.interface";
 
 export class BcryptPassword implements IEncrypt {
     async encrypt(password: string): Promise<string> {

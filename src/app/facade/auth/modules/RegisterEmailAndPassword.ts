@@ -8,7 +8,7 @@ import { environments } from "../../../config/environments";
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../interfaces/encrypt.interface";
+import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.

@@ -2,7 +2,7 @@
 import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
-import { IEncrypt } from "../../../interfaces/encrypt.interface";
+import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens

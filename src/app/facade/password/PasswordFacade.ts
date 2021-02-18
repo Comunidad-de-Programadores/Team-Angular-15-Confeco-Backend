@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IEncrypt } from "../../interfaces/encrypt.interface";
+import { IEncrypt } from "../../helpers/encryptors/interfaces/encrypt.interface";
 import { IDatabasePasswordResetRepository } from "../../database/interfaces/repositories.interfaces";
 import { IPayloadJwt } from "../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 
@@ -7,7 +7,7 @@ import { IPayloadJwt } from "../../helpers/jsonwebtokens/interfaces/jwt.interfac
 import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories/PasswordResetsRepositoryMongo";
 
 // Imports encrypts
-import { BcryptPassword } from "../../helpers/BcryptPassword";
+import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 import { GeneratePasswordResetToken } from "./modules/GeneratePasswordResetToken";
 import { CheckPasswordResetToken } from "./modules/CheckPasswordResetToken";
 

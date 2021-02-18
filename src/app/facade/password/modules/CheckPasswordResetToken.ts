@@ -2,7 +2,7 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
-import { IEncrypt } from "../../../interfaces/encrypt.interface";
+import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { IPayloadJwt } from "../../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
 
