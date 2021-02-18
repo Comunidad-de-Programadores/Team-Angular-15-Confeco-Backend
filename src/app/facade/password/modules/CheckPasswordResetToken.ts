@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 
 // Imports interfaces.
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
-import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
+import { IPayloadJwt } from "../../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens.

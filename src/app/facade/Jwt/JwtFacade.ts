@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IPayloadJwt } from "../../interfaces/jwt.interfaces";
+import { IPayloadJwt } from "../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";

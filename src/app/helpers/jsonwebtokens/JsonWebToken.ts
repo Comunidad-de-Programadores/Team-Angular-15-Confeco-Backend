@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../../interfaces/jwt.interfaces";
+import { IGenerateToken, IPayloadJwt, IVerifyToken } from "./interfaces/jwt.interfaces";
 
 export class JsonWebToken {
     generate(payload: IPayloadJwt, feature: IGenerateToken<IPayloadJwt>) {

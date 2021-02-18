@@ -1,7 +1,7 @@
 // Imports interfaces.
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 import { IDatabasePasswordResetRepository } from "../../database/interfaces/repositories.interfaces";
-import { IPayloadJwt } from "../../interfaces/jwt.interfaces";
+import { IPayloadJwt } from "../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 
 // Imports repositories.
 import { PasswordResetsRepositoryMongo } from "../../database/mongo/repositories/PasswordResetsRepositoryMongo";

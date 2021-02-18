@@ -5,7 +5,7 @@ import { sign, verify } from "jsonwebtoken";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../../../interfaces/jwt.interfaces";
+import { IGenerateToken, IPayloadJwt, IVerifyToken } from "../interfaces/jwt.interfaces";
 
 export class JwtAccessToken implements IGenerateToken<IPayloadJwt>, IVerifyToken<IPayloadJwt> {
     generate(payload: IPayloadJwt): string {
