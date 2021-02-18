@@ -4,7 +4,7 @@ import { environments } from "../../../config/environments";
 
 // Imports interfaces.
 import { IAuth } from "../../../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports mails.
 import { Mail } from "../../../mails/Mail";

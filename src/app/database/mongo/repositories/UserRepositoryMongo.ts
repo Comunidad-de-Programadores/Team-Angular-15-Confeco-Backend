@@ -2,7 +2,7 @@
 import { models } from "../index";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
 import { User } from "../../../models/User";
 
 export class UserRepositoryMongo implements IDatabaseUserRepository {

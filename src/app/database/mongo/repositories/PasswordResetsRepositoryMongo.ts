@@ -2,7 +2,7 @@
 import { models } from "../index";
 
 // Imports interfaces.
-import { IDatabasePasswordResetRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabasePasswordResetRepository } from "../../interfaces/repositories.interfaces";
 import { PasswordReset } from "../../../models/PasswordReset";
 
 export class PasswordResetsRepositoryMongo implements IDatabasePasswordResetRepository {

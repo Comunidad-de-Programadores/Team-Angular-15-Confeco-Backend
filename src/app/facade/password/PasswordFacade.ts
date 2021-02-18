@@ -1,6 +1,6 @@
 // Imports interfaces.
 import { IEncrypt } from "../../interfaces/encrypt.interface";
-import { IDatabasePasswordResetRepository } from "../../interfaces/repositories.interfaces";
+import { IDatabasePasswordResetRepository } from "../../database/interfaces/repositories.interfaces";
 import { IPayloadJwt } from "../../interfaces/jwt.interfaces";
 
 // Imports repositories.

@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import uniqid from "uniqid";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 
 // Imports jsonwebtokens.

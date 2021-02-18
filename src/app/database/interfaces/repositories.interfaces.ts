@@ -1,6 +1,6 @@
 // Imports models.
-import { PasswordReset } from "../models/PasswordReset";
-import { User } from "../models/User";
+import { PasswordReset } from "../../models/PasswordReset";
+import { User } from "../../models/User";
 
 export interface IDatabaseRepository<Tval> {
     create(entity: Tval): Promise<void>;

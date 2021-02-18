@@ -6,7 +6,7 @@ import createHttpError from "http-errors";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
 
 // Imports authentication google.

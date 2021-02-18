@@ -2,7 +2,7 @@
 import { IAuth, IPasswordReset } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports facades.
 import { PasswordFacade } from "../../password/PasswordFacade";

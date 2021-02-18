@@ -9,7 +9,7 @@ import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
 import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
 // Imports interfaces
-import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
+import { IDatabasePasswordResetRepository, IDatabaseUserRepository } from "../../database/interfaces/repositories.interfaces";
 import { IAuth, IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../interfaces/encrypt.interface";
 

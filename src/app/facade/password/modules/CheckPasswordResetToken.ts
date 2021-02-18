@@ -4,7 +4,7 @@ import createHttpError from "http-errors";
 // Imports interfaces.
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { IPayloadJwt } from "../../../interfaces/jwt.interfaces";
-import { IDatabasePasswordResetRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";

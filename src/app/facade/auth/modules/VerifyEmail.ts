@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports facades.
 import { JwtFacade } from "../../Jwt/JwtFacade";

@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { User } from "../../../models/User";
