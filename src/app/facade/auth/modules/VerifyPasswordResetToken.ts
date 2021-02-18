@@ -1,5 +1,5 @@
 // Implements interfaces.
-import { IAuth } from "../../../interfaces/auth.interfaces";
+import { IAuth } from "../interfaces/auth.interfaces";
 import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtoken.

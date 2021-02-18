@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { User } from "../../../models/User";
 

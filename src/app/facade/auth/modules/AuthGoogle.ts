@@ -7,7 +7,7 @@ import { environments } from "../../../config/environments";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 
 // Imports authentication google.
 import { RegisterGoogle } from "../helpers/RegisterGoogle";

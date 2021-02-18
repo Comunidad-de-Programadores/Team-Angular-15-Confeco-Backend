@@ -3,7 +3,7 @@ import createHttpError, { HttpError } from "http-errors";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth, IAuthRes, ICredentials } from "../../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../interfaces/encrypt.interface";
 import { User } from "../../../models/User";
 

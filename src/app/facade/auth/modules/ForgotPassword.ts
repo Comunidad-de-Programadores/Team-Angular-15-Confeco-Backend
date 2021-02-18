@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { IAuth } from "../../../interfaces/auth.interfaces";
+import { IAuth } from "../interfaces/auth.interfaces";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports mails.

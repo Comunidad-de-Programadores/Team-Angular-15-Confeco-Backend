@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 
 // Imports interfaces.
-import { IAuthRes } from "../../interfaces/auth.interfaces";
+import { IAuthRes } from "../../facade/auth/interfaces/auth.interfaces";
 
 // Imports facades.
 import { AuthFacade } from "../../facade/auth/auth.facade";

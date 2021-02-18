@@ -6,7 +6,7 @@ import uniqid from "uniqid";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth, IAuthRes } from "../../../interfaces/auth.interfaces";
+import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
