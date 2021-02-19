@@ -5,6 +5,7 @@ import createHttpError from "http-errors";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
+import { User } from "../../../models/User";
 import { IAuth } from "../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
@@ -30,18 +31,19 @@ export class ForgotPassword implements IAuth<void> {
     }
 
     async auth(): Promise<void> {
-        const user = await this.repository.getByEmail(this.email);
+        const data = await this.repository.getByEmail(this.email);
 
-        if (!user) throw createHttpError(403, "El email no existe.", {
+        if (!data) throw createHttpError(403, "El email no existe.", {
             name: "NonExistentEmail"
         });
 
-        if (!user.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para realizar esta accion.", {
+        if (!data.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para realizar esta accion.", {
             name: "UnverifiedEmail"
         });
 
         // Generate tokens.
-        const token = this.jwt.generatePasswordResetToken({ _id: user._id, email: user.email });
+        const user = Object.assign({}, new User(data));
+        const token = this.jwt.generatePasswordResetToken(user);
 
         // Encrypt token.
         const tokenEncrypted = await this.encryptor.encrypt(token);
@@ -50,10 +52,8 @@ export class ForgotPassword implements IAuth<void> {
         await this.repository.updatePasswordResetToken(user._id, tokenEncrypted);
 
         // Send email.
-        this.mail.send(new SendgridForgotPassword({
-            nickname: user.nickname,
-            email: user.email,
-            url: `${ environments.URL }/v1/auth/password/reset/${ token }`
-        }));
+        const { nickname, email } = user;
+        const url = `${ environments.URL }/v1/auth/password/reset/${ token }`;
+        this.mail.send(new SendgridForgotPassword({ email, nickname, url }));
     }
 };

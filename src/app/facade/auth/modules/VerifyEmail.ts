@@ -2,6 +2,7 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
+import { User } from "../../../models/User";
 import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
@@ -24,21 +25,21 @@ export class VerifyEmail implements IAuth<IAuthRes> {
 
         // Check status account.
         const result = await this.repository.get(res._id);
-        if (result?.verified_email) throw createHttpError(403, "Tu cuenta ya esta verificada.");
+        if (result?.verified_email) throw createHttpError(403, "Tu correo electronico ya ha sido verificado.");
 
         // Update status user.
         await this.repository.updateStatusEmail(res._id, true);
 
         // Get fields user.
-        const user = await this.repository.get(res._id);
+        const data = await this.repository.get(res._id);
 
-        if (!user || !user.verified_email) throw createHttpError(403, "Ha ocurrido un error durante la operacion", {
+        if (!data || !data.verified_email) throw createHttpError(403, "Ha ocurrido un error durante la operacion", {
             name: "ErrorExecution"
         });
 
         // Generate tokens.
-        const tokens = this.jwt.generateTokens({ ...user });
-
+        const user = Object.assign({}, new User(data));
+        const tokens = this.jwt.generateTokens(user);
         return { user, tokens };
     }
 };

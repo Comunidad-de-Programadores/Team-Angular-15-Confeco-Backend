@@ -22,8 +22,8 @@ export class LoginGoogle implements IAuth<IAuthRes> {
         const data = Object.defineProperties(this.user, {
             verified_email: { value: true }
         });
-        const user = new User(data);
-        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
+        const user = Object.assign({}, new User(data));
+        const tokens = this.jwt.generateTokens(user);
         return { user, tokens };
     }
 };

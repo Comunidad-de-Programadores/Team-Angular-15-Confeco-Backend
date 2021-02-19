@@ -1,5 +1,5 @@
-// Imports interfaces.
-import { IPayloadJwt } from "../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
+// Imports models.
+import { User } from "../../models/User";
 
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";
@@ -15,13 +15,13 @@ export class JwtFacade {
         this.jwt = new JsonWebToken();
     }
 
-    generateTokens(payload: IPayloadJwt) {
+    generateTokens(payload: User) {
         const access_token: string = this.jwt.generate(payload, new JwtAccessToken);
         const refresh_token: string = this.jwt.generate(payload, new JwtRefreshToken);
         return { access_token, refresh_token };
     }
 
-    generateEmailConfirmationLink(payload: IPayloadJwt): string {
+    generateEmailConfirmationLink(payload: User): string {
         return this.jwt.generate(payload, new JwtEmailToken);
     }
 
@@ -29,11 +29,11 @@ export class JwtFacade {
         return this.jwt.verify(token, new JwtEmailToken);
     }
 
-    generatePasswordResetToken(payload: IPayloadJwt) {
+    generatePasswordResetToken(payload: User) {
         return this.jwt.generate(payload, new JwtPasswordToken);
     }
 
-    checkPasswordResetToken(token: string): IPayloadJwt {
+    checkPasswordResetToken(token: string): User {
         return this.jwt.verify(token, new JwtPasswordToken);
     }
 };

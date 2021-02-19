@@ -41,8 +41,8 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
         });
 
         // Generate tokens.
-        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        return { user: new User(user), tokens };
+        const newUser = Object.assign({}, new User(user));
+        const tokens = this.jwt.generateTokens(newUser);
+        return { user: newUser, tokens };
     }
 };

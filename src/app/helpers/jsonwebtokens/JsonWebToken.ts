@@ -1,12 +1,13 @@
 // Imports interfaces.
-import { IGenerateToken, IPayloadJwt, IVerifyToken } from "./interfaces/jwt.interfaces";
+import { User } from "../../models/User";
+import { IGenerateToken, IVerifyToken } from "./interfaces/jwt.interfaces";
 
 export class JsonWebToken {
-    generate(payload: IPayloadJwt, feature: IGenerateToken<IPayloadJwt>) {
+    generate(payload: User, feature: IGenerateToken<User>) {
         return feature.generate(payload);
     }
 
-    verify(token: string, feature: IVerifyToken<IPayloadJwt>) {
+    verify(token: string, feature: IVerifyToken<User>) {
         return feature.verify(token);
     }
 };

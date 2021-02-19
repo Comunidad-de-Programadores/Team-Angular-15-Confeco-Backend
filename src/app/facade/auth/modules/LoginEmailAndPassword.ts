@@ -2,10 +2,10 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
 import { User } from "../../../models/User";
+import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -41,8 +41,8 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         if (!result) throw credentialsIncorrect;
 
         // Generate tokens.
-        const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        return { user: new User(user), tokens };
+        const newUser = Object.assign({}, new User(user));
+        const tokens = this.jwt.generateTokens(newUser);
+        return { user: newUser, tokens };
     }
 };

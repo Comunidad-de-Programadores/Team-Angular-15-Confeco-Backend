@@ -6,9 +6,10 @@ import { v4 as uuid } from "uuid";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
+import { User } from "../../../models/User";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
+import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -46,17 +47,18 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         await this.repository.create({ _id: uuid(), ...params });
 
         // Get fields user.
-        const user = await this.repository.getByEmail(params.email);
-        if (!user) throw createError(400, "Sucedio un error en la autenticacion.", {
+        const data = await this.repository.getByEmail(params.email);
+        if (!data) throw createError(400, "Sucedio un error durante autenticacion.", {
             name: "AuthenticationError"
         });
 
         // Generate confirmation link.
-        const { _id, nickname, email } = user;
-        const token: string = this.jwt.generateEmailConfirmationLink({ _id, email });
-        const url = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
-
+        const user = Object.assign({}, new User(data));
+        const { nickname, email } = user;
+        const token: string = this.jwt.generateEmailConfirmationLink(user);
+        
         // Send email.
+        const url = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
         this.mail.send(new SendgridVerificationEmail({ url, nickname, email }));
         return { nickname, email, url };
     }
