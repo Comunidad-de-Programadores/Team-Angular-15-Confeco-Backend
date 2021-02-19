@@ -2,6 +2,9 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 
+// Imports environments.
+import { environments } from "../config/environments";
+
 // Imports my rules.
 import { rules } from "../config/rules";
 
@@ -36,7 +39,7 @@ export function checkFieldsResetPassword(
     const verifyPwd: boolean | string = rules.password(password);
     if (typeof verifyPwd === "string") {
         req.flash("message", verifyPwd);
-        return res.redirect(`/api/auth/password/reset/${ token }`);
+        return res.redirect(`${ environments.URL }/v1/auth/password/reset/${ token }`);
     }
 
     return next();

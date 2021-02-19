@@ -43,7 +43,7 @@ export class ForgotPassword implements IAuth<void> {
         this.mail.send(new SendgridForgotPassword({
             nickname: user.nickname,
             email: user.email,
-            url: `${ environments.URL }/api/auth/password/reset/${ token }`
+            url: `${ environments.URL }/v1/auth/password/reset/${ token }`
         }));
     }
 };

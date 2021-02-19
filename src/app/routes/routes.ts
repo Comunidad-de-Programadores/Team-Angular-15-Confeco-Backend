@@ -1,9 +1,9 @@
-// Imports modules.
-import { Router } from "express";
+// Imports interfaces.
+import { IRoute } from "./interfaces/routes.interfaces";
 
 // Imports components routes.
-import { AuthRoutesComponent } from "../components/auth/auth.routes";
+import { authRoutes } from "../components/auth/auth.routes";
 
-export const routes: Router[] = [
-    new AuthRoutesComponent(Router()).router
+export const routes: IRoute[] = [
+    authRoutes
 ];

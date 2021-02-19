@@ -55,7 +55,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         // Generate confirmation link.
         const { _id, nickname, email } = user;
         const token: string = this.jwt.generateEmailConfirmationLink({ _id, email });
-        const url = `${ environments.URL }/api/auth/confirm_email/${ token }`;
+        const url = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
 
         // Send email.
         this.mail.send(new SendgridVerificationEmail({ url, nickname, email }));

@@ -10,19 +10,24 @@ const auth = new AuthControllerComponents();
 
 export class AuthRoutesComponent {
     constructor(public router: Router) {
+        // Auth local.
         this.register();
         this.login();
         this.verificationEmail();
+
+        // Password
         this.forgotPassword();
         this.showResetPassword();
         this.resetPassword();
+
+        // Social auth
         this.google();
         this.facebook();
     }
 
     private register(): void {
         this.router.post(
-            "/auth/register",
+            "/register",
             [rules.email, rules.password, rules.nickname, rules.conditionRequestRules],
             auth.register
         );
@@ -30,19 +35,19 @@ export class AuthRoutesComponent {
 
     private login(): void {
         this.router.post(
-            "/auth/login",
+            "/login",
             [rules.email, rules.password, rules.conditionRequestRules],
             auth.login
         );
     }
 
     private verificationEmail(): void {
-        this.router.get("/auth/confirm_email/:token", auth.verificationEmail);
+        this.router.get("/confirm_email/:token", auth.verificationEmail);
     }
 
     private forgotPassword(): void {
         this.router.post(
-            "/auth/password/forgot",
+            "/password/forgot",
             [rules.email, rules.conditionRequestRules],
             auth.forgotPassword
         );
@@ -50,24 +55,29 @@ export class AuthRoutesComponent {
 
     private showResetPassword(): void {
         this.router.get(
-            "/auth/password/reset/:token",
+            "/password/reset/:token",
             auth.showResetPassword
         );
     }
 
     private resetPassword(): void {
         this.router.post(
-            "/auth/password/reset",
+            "/password/reset",
             rules.checkFieldsResetPassword,
             auth.resetPassword
         );
     }
 
     private google(): void {
-        this.router.post("/auth/google", auth.google);
+        this.router.post("/google", auth.google);
     }
 
     private facebook(): void {
-        this.router.post("/auth/facebook", auth.facebook);
+        this.router.post("/facebook", auth.facebook);
     }
+};
+
+export const authRoutes = {
+    path: "/api/v1/auth",
+    component: new AuthRoutesComponent(Router()).router
 };
