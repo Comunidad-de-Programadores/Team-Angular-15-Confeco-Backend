@@ -1,6 +1,9 @@
 // Imports modules.
 import { Router } from "express";
 
+// Imports interfaces.
+import { IRoute } from "../../routes/interfaces/routes.interfaces";
+
 // Imports rules.
 import * as rules from "../../rules/rules";
 
@@ -77,7 +80,7 @@ export class AuthRoutesComponent {
     }
 };
 
-export const authRoutes = {
+export const authRoutes: IRoute = {
     path: "/api/v1/auth",
     component: new AuthRoutesComponent(Router()).router
 };
