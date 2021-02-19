@@ -22,6 +22,10 @@ export class VerifyEmail implements IAuth<IAuthRes> {
         // Verify email.
         const res = this.jwt.checkEmailVerificationLink(this.token);
 
+        // Check status account.
+        const result = await this.repository.get(res._id);
+        if (result?.verified_email) throw createHttpError(403, "Tu cuenta ya esta verificada.");
+
         // Update status user.
         await this.repository.updateStatusEmail(res._id, true);
 
