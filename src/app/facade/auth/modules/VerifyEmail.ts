@@ -39,7 +39,6 @@ export class VerifyEmail implements IAuth<IAuthRes> {
         // Generate tokens.
         const tokens = this.jwt.generateTokens({ ...user });
 
-        delete user.password;
         return { user, tokens };
     }
 };

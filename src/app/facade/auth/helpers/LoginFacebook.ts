@@ -9,24 +9,20 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 export class LoginFacebook implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private user: User
-    ) {
+    constructor(private repository: IDatabaseUserRepository, private user: User) {
         this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
-        const user: User = Object.defineProperties(this.user, {
-            verified_email: { value: true }
-        });
-
-        await this.repository.updateStatusEmail(user._id, true);
+        // Update status email.
+        if (!this.user.verified_email) await this.repository.updateStatusEmail(this.user._id, true);
 
         // Generate tokens.
+        const data = Object.defineProperties(this.user, {
+            verified_email: { value: true }
+        });
+        const user = new User(data);
         const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        delete user.password;
         return { user, tokens };
     }
 };

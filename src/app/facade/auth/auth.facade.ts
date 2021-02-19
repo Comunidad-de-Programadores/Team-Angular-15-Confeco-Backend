@@ -47,12 +47,12 @@ export class AuthFacade {
     }
 
     async forgotPassword(email: string): Promise<void> {
-        const action = new ForgotPassword(this.repository, email);
+        const action = new ForgotPassword(this.repository, this.encrypt, email);
         return await this.execute(action);
     }
 
     async checkValidityToken(token: string): Promise<void> {
-        const action = new VerifyPasswordResetToken(this.pwdRepository, token);
+        const action = new VerifyPasswordResetToken(this.repository, token);
         return await this.execute(action);
     }
 

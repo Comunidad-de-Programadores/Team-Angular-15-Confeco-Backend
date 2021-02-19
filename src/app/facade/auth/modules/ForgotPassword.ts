@@ -1,28 +1,32 @@
 // Imports modules.
 import createHttpError from "http-errors";
+
+// Imports environments.
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
 import { IAuth } from "../interfaces/auth.interfaces";
+import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports mails.
 import { Mail } from "../../../mails/Mail";
 import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
 
-// Imports facades
-import { PasswordFacade } from "../../password/PasswordFacade";
+// Imports facades.
+import { JwtFacade } from "../../Jwt/JwtFacade";
 
 export class ForgotPassword implements IAuth<void> {
     private mail: Mail;
-    private password: PasswordFacade;
+    private jwt: JwtFacade;
 
     constructor(
         private repository: IDatabaseUserRepository,
+        private encryptor: IEncrypt,
         private email: string
     ) {
         this.mail = new Mail();
-        this.password = new PasswordFacade();
+        this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<void> {
@@ -36,8 +40,14 @@ export class ForgotPassword implements IAuth<void> {
             name: "UnverifiedEmail"
         });
 
-        // Generate token.
-        const token: string = await this.password.generatePasswordResetToken(user.email);
+        // Generate tokens.
+        const token = this.jwt.generatePasswordResetToken({ _id: user._id, email: user.email });
+
+        // Encrypt token.
+        const tokenEncrypted = await this.encryptor.encrypt(token);
+
+        // Update password reset tokens.
+        await this.repository.updatePasswordResetToken(user._id, tokenEncrypted);
 
         // Send email.
         this.mail.send(new SendgridForgotPassword({

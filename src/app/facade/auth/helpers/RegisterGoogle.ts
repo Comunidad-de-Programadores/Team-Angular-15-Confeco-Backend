@@ -10,6 +10,7 @@ import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
+import { User } from "../../../models/User";
 
 export class RegisterGoogle implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
@@ -23,10 +24,15 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Save user.
-        const nickname: string = `${ this.data.given_name }${ Math.round(Math.random() * (1000 - 100)) }`
+        const nickname: string = `${ this.data.given_name }${ Math.round(Math.random() * (1000 - 100)) }`;
         const email: string = this.data.email || `${ uniqid() }@gmail.com`;
-        const verified_email: boolean = !!this.data.email_verified;
-        await this.repository.create({ _id: uuid(), email, nickname, verified_email });
+        await this.repository.create({
+            email,
+            nickname,
+            _id: uuid(),
+            password: "",
+            verified_email: !!this.data.email_verified,
+        });
 
         // Get fields user.
         const user = await this.repository.getByEmail(email);
@@ -37,7 +43,6 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
         // Generate tokens.
         const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
 
-        delete user.password;
-        return { user, tokens };
+        return { user: new User(user), tokens };
     }
 };

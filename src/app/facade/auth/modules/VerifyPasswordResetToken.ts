@@ -1,17 +1,19 @@
+// Imports modules.
+import createHttpError from "http-errors";
+
 // Implements interfaces.
 import { IAuth } from "../interfaces/auth.interfaces";
-import { IDatabasePasswordResetRepository } from "../../../database/interfaces/repositories.interfaces";
+import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtoken.
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtPasswordToken } from "../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
-import createHttpError from "http-errors";
 
 export class VerifyPasswordResetToken implements IAuth<void> {
     private jwt: JsonWebToken;
 
     constructor(
-        private repository: IDatabasePasswordResetRepository,
+        private repository: IDatabaseUserRepository,
         private token: string
     ) {
         this.jwt = new JsonWebToken();
@@ -24,7 +26,7 @@ export class VerifyPasswordResetToken implements IAuth<void> {
         // Get data
         const data = await this.repository.getByEmail(payload.email);
 
-        if (!data) throw createHttpError(403, "El token ya ha sido utilizado.", {
+        if (!data?.passwordResetToken) throw createHttpError(403, "El token ya ha sido utilizado.", {
             name: "UsedTokenError"
         });
     }

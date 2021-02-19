@@ -1,6 +1,6 @@
 // Imports models.
 import { PasswordReset } from "../../models/PasswordReset";
-import { User } from "../../models/User";
+import { IUserDatabase } from "./user.interfaces";
 
 export interface IDatabaseRepository<Tval> {
     create(entity: Tval): Promise<void>;
@@ -9,10 +9,11 @@ export interface IDatabaseRepository<Tval> {
     delete(id: string): Promise<void>;
 };
 
-export interface IDatabaseUserRepository extends IDatabaseRepository<User> {
-    getByEmail(email: string): Promise<User | null>;
+export interface IDatabaseUserRepository extends IDatabaseRepository<IUserDatabase> {
+    getByEmail(email: string): Promise<IUserDatabase | null>;
     updateStatusEmail(id: string, status: boolean): Promise<void>;
     updatePassword(email: string, password: string): Promise<void>;
+    updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
 };
 
 export interface IDatabasePasswordResetRepository extends IDatabaseRepository<PasswordReset> {

@@ -3,24 +3,24 @@ import { models } from "../index";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { User } from "../../../models/User";
+import { IUserDatabase } from "../../interfaces/user.interfaces";
 
 export class UserRepositoryMongo implements IDatabaseUserRepository {
-    async create(user: User): Promise<void> {
+    async create(user: IUserDatabase): Promise<void> {
         await new models.User(user).save();
     }
 
-    async get(id: string): Promise<User | null> {
+    async get(id: string): Promise<IUserDatabase | null> {
         const data: any = await models.User.findById(id, { __v: 0 });
-        return data ? new User(data) : null;
+        return data;
     }
 
-    async getByEmail(email: string): Promise<User | null> {
+    async getByEmail(email: string): Promise<IUserDatabase | null> {
         const data: any = await models.User.findOne({ email });
-        return data ? new User(data) : null;
+        return data;
     }
 
-    async update(id: string, data: User) {
+    async update(id: string, data: IUserDatabase) {
         data.updated_at = Date.now();
         await models.User.updateOne({ _id: id }, data);
     }
@@ -30,6 +30,10 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
             { email },
             { $set: { password, updated_at: Date.now() } }
         );
+    }
+
+    async updatePasswordResetToken(_id: string, token: string): Promise<void> {
+        await models.User.updateOne({ _id }, { $set: { passwordResetToken: token } });
     }
 
     async updateStatusEmail(id: string, verified_email: boolean): Promise<void> {

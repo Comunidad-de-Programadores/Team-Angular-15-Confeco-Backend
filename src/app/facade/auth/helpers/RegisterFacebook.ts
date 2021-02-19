@@ -8,6 +8,7 @@ import { IDatabaseUserRepository } from "../../../database/interfaces/repositori
 
 // Imports facades.
 import { JwtFacade } from "../../Jwt/JwtFacade";
+import { User } from "../../../models/User";
 
 export class RegisterFacebook implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
@@ -23,11 +24,15 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
         // Establishing data.
         const _id: string = uuid();
         const nickname: string = `${ this.data.last_name }${ Math.round(Math.random() * (1000 - 100)) }`;
-        const email: string = this.data.email || "";
-        const verified_email: boolean = !!this.data.email;
 
         // Save user.
-        await this.repository.create({ _id, email, nickname, verified_email });
+        await this.repository.create({
+            _id,
+            nickname,
+            password: "",
+            email: this.data.email || "",
+            verified_email: !!this.data.email
+        });
 
         // Get fields user.
         const user = await this.repository.get(_id);
@@ -38,8 +43,6 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
 
         // Generate tokens.
         const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        delete user.password;
-        return { user, tokens };
+        return { user: new User(user), tokens };
     }
 };

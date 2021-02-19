@@ -1,5 +1,6 @@
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
+import { IUserDatabase } from "../../../database/interfaces/user.interfaces";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { User } from "../../../models/User";
 
@@ -9,24 +10,20 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 export class LoginGoogle implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
 
-    constructor(private repository: IDatabaseUserRepository ,private user: User) {
+    constructor(private repository: IDatabaseUserRepository, private user: IUserDatabase) {
         this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
-        // Define properties.
-        const values = Object.assign({}, this.user);
-        const user = Object.defineProperties(values, {
-            verified_email: { value: true }
-        });
-
         // Update status email.
-        if (!this.user.verified_email) await this.repository.updateStatusEmail(user._id, true);
+        if (!this.user.verified_email) await this.repository.updateStatusEmail(this.user._id, true);
 
         // Generate tokens.
+        const data = Object.defineProperties(this.user, {
+            verified_email: { value: true }
+        });
+        const user = new User(data);
         const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
-
-        delete user.password;
         return { user, tokens };
     }
 };

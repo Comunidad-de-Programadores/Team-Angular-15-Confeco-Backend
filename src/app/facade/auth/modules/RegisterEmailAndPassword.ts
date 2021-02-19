@@ -9,7 +9,6 @@ import { environments } from "../../../config/environments";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
-import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -34,7 +33,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
     async auth(): Promise<IEmailVerificacionToken> {
         // Check if the user exists.
         let params: IRegisterParams = Object.assign({}, this.data);
-        const result: User | null = await this.repository.getByEmail(params.email);
+        const result = await this.repository.getByEmail(params.email);
         
         if (result) throw createError(403, "Este email ya se encuentra en uso.", {
             name: "EmailAlreadyExist"

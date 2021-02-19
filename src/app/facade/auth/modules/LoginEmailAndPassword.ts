@@ -1,11 +1,11 @@
 // Imports modules.
-import createHttpError, { HttpError } from "http-errors";
+import createHttpError from "http-errors";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { User } from "../../../models/User";
+import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -24,9 +24,9 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
     async auth(): Promise<IAuthRes> {
         // Verify user existence.
         const { email, password } = this.credentials;
-        const user: User | null = await this.repository.getByEmail(email);
+        const user = await this.repository.getByEmail(email);
 
-        const credentialsIncorrect: HttpError = createHttpError(403, "Las credenciales son incorrectas.", {
+        const credentialsIncorrect = createHttpError(403, "Las credenciales son incorrectas.", {
             name: "CredentialsIncorrect"
         });
         
@@ -43,7 +43,6 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         // Generate tokens.
         const tokens = this.jwt.generateTokens({ _id: user._id, email: user.email });
 
-        delete user.password;
-        return { user, tokens };
+        return { user: new User(user), tokens };
     }
 };
