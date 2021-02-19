@@ -6,7 +6,6 @@ import { environments } from "../../config/environments";
 
 // Imports models.
 import { userModel } from "./models/user.model";
-import { passwordResetModel } from "./models/passwordResets.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -17,6 +16,5 @@ connect(environments.MONGODB_URI as string, {
 .catch(console.error);
 
 export const models = {
-    User: userModel,
-    PasswordReset: passwordResetModel
+    User: userModel
 };

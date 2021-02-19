@@ -1,5 +1,4 @@
-// Imports models.
-import { PasswordReset } from "../../models/PasswordReset";
+// Imports interfaces.
 import { IUserDatabase } from "./user.interfaces";
 
 export interface IDatabaseRepository<Tval> {
@@ -15,7 +14,3 @@ export interface IDatabaseUserRepository extends IDatabaseRepository<IUserDataba
     updatePassword(email: string, password: string): Promise<void>;
     updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
 };
-
-export interface IDatabasePasswordResetRepository extends IDatabaseRepository<PasswordReset> {
-    getByEmail(email: string): Promise<PasswordReset | null>;
-}
