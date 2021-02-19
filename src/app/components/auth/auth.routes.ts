@@ -2,13 +2,7 @@
 import { Router } from "express";
 
 // Imports rules.
-import { AuthenticationRules } from "../../rules/AuthenticationRules";
-const {
-    checkFieldsBeforeRegistration,
-    checkFieldsBeforeLogin,
-    checkFieldsSendPwdPasswordReset,
-    checkFieldsBeforePasswordReset
-} = new AuthenticationRules();
+import * as rules from "../../rules/rules";
 
 // Imports controllers
 import { AuthControllerComponents } from "./auth.controller";
@@ -29,7 +23,7 @@ export class AuthRoutesComponent {
     private register(): void {
         this.router.post(
             "/auth/register",
-            checkFieldsBeforeRegistration,
+            [rules.email, rules.password, rules.nickname, rules.conditionRequestRules],
             auth.register
         );
     }
@@ -37,22 +31,19 @@ export class AuthRoutesComponent {
     private login(): void {
         this.router.post(
             "/auth/login",
-            checkFieldsBeforeLogin,
+            [rules.email, rules.password, rules.conditionRequestRules],
             auth.login
         );
     }
 
     private verificationEmail(): void {
-        this.router.get(
-            "/auth/confirm_email/:token",
-            auth.verificationEmail
-        );
+        this.router.get("/auth/confirm_email/:token", auth.verificationEmail);
     }
 
     private forgotPassword(): void {
         this.router.post(
             "/auth/password/forgot",
-            checkFieldsSendPwdPasswordReset,
+            [rules.email, rules.conditionRequestRules],
             auth.forgotPassword
         );
     }
@@ -67,7 +58,7 @@ export class AuthRoutesComponent {
     private resetPassword(): void {
         this.router.post(
             "/auth/password/reset",
-            checkFieldsBeforePasswordReset,
+            rules.checkFieldsResetPassword,
             auth.resetPassword
         );
     }
