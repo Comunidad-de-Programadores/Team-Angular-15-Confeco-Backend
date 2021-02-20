@@ -3,7 +3,7 @@ import { models } from "../index";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IUserDatabase } from "../../interfaces/user.interfaces";
+import { IUserDatabase } from "../../interfaces/entities.interfaces";
 
 export class UserRepositoryMongo implements IDatabaseUserRepository {
     async create(user: IUserDatabase): Promise<void> {

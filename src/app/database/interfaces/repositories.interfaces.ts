@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IUserDatabase } from "./user.interfaces";
+import { IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
 
 export interface IDatabaseRepository<Tval> {
     create(entity: Tval): Promise<void>;
@@ -17,4 +17,4 @@ export interface IDatabaseUserRepository extends IDatabaseRepository<IUserDataba
 
 export interface IDatabaseKnowledgeAreaRepository extends IDatabaseRepository<{}> {}
 
-export interface IDatabaseWorkshoRepository extends IDatabaseRepository<{}> {}
+export interface IDatabaseWorkshoRepository extends IDatabaseRepository<IWorkshopDatabase> {}
