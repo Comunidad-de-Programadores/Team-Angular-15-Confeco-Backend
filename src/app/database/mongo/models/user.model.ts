@@ -13,4 +13,4 @@ const userSchema: Schema = new Schema({
     updated_at: { type: Number, default: Date.now() }
 });
 
-export const userModel = model("users", userSchema);
+export const UserModel = model("users", userSchema);

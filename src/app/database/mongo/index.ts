@@ -5,8 +5,9 @@ import { connect } from "mongoose";
 import { environments } from "../../config/environments";
 
 // Imports models.
-import { userModel } from "./models/user.model";
-import { workshopModel } from "./models/workshop.model";
+import { UserModel } from "./models/user.model";
+import { WorkshopModel } from "./models/workshop.model";
+import { knowledgeAreaModel } from "./models/knowledgeAreas.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -17,6 +18,7 @@ connect(environments.MONGODB_URI as string, {
 .catch(console.error);
 
 export const models = {
-    User: userModel,
-    Workshop: workshopModel
+    User: UserModel,
+    Workshop: WorkshopModel,
+    Knowledge: knowledgeAreaModel
 };

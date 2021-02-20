@@ -3,4 +3,4 @@ import { Schema, model } from "mongoose";
 
 const workshopSchema = new Schema({});
 
-export const workshopModel = model("workshops", workshopSchema);
+export const WorkshopModel = model("workshops", workshopSchema);

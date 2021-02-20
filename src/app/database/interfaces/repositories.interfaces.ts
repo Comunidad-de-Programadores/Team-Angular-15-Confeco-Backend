@@ -14,3 +14,7 @@ export interface IDatabaseUserRepository extends IDatabaseRepository<IUserDataba
     updatePassword(email: string, password: string): Promise<void>;
     updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
 };
+
+export interface IDatabaseKnowledgeAreaRepository extends IDatabaseRepository<{}> {}
+
+export interface IDatabaseWorkshoRepository extends IDatabaseRepository<{}> {}
