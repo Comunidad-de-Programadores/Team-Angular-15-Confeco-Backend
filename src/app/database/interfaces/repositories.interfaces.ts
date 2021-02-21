@@ -23,4 +23,4 @@ export interface IDatabaseUserRepository extends IRepository<IUserDatabase> {
 
 export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaDatabase> {}
 
-export interface IDatabaseWorkshoRepository extends IRepository<IWorkshopDatabase> {}
+export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {}
