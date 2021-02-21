@@ -14,7 +14,7 @@ export class WorkshopsRoutesComponent {
     }
 
     private list(): void {
-        this.router.get("/", workshops.list);
+        this.router.get("/:id?", workshops.list);
     }
 };
 

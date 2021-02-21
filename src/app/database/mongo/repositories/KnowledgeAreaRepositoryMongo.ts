@@ -12,17 +12,16 @@ export class KnowledgeAreaRepositoryMongo implements IKnowledgeAreaRepository {
         await models.Knowledge.create(data);
     }
 
-    async get(id: string): Promise<KnowledgeArea | null> {
-        const data: any = await models.Knowledge.findById(id);
+    async get(_id: string): Promise<KnowledgeArea | null> {
+        const data: any = await models.Knowledge.findById(_id);
         return data ? new KnowledgeArea(data) : null;
     }
 
     async list(options: IOptionsList): Promise<KnowledgeArea[]> {
-        const { limit, skip } = options;
         const items: any[] = await models.Knowledge
         .find({})
-        .skip(skip || 0)
-        .limit(limit || 15)
+        .skip(options.skip || 0)
+        .limit(options.limit || 15)
         .sort({ created_at: -1 });
         return items;
     }

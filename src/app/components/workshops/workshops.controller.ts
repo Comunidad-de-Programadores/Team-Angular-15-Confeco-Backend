@@ -1,8 +1,18 @@
 // Imports modules.
 import { Request, Response } from "express";
 
+// Imports postman.
+import { WorkshopPostman } from "./workhops.postman";
+const postman = new WorkshopPostman;
+
 export class WorkshopsControllerComponent {
     async list(req: Request, res: Response): Promise<void> {
-        res.status(200).json({ message: "Hello Im workshops" });
+        try {
+            const items = await postman.list(req);
+            res.status(200).json({ items });
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
     }
 };
