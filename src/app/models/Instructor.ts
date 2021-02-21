@@ -2,7 +2,7 @@ export class Instructor {
     _id: string;
     name: string;
     profession?: string;
-    social_media?: string;
+    social_media: string;
     picture?: string;
     created_at?: string;
     updated_at?: string;

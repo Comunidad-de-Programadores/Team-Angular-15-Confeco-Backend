@@ -10,7 +10,12 @@ const controller = new InstructorController;
 
 export class InstructorRoutes {
     constructor(public router: Router) {
+        this.create();
         this.list();
+    }
+
+    private create(): void {
+        this.router.post("/", controller.create);
     }
 
     private list(): void {
