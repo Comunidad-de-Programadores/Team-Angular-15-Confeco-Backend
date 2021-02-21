@@ -20,7 +20,7 @@ export class KnowledgeArea {
         this.workshops = data.workshops || [];
         this.banner = data.banner;
         this.profile_picture = data.profile_picture;
-        this.created_at = data.created_at || new Date();
-        this.updated_at = data.updated_at || new Date();
+        this.created_at = data.created_at;
+        this.updated_at = data.updated_at;
     }
 };
