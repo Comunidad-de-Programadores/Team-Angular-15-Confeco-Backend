@@ -6,7 +6,7 @@ export class KnowledgeArea {
     title: string;
     subtitle?: string;
     description?: string;
-    workshops?: Workshop[];
+    workshops?: Array<Workshop | string>;
     banner?: string;
     profile_picture?: string;
     created_at?: Date;

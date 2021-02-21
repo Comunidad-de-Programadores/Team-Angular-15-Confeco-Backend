@@ -15,6 +15,10 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         return data;
     }
 
+    async list(): Promise<IUserDatabase[]> {
+        return [];
+    }
+
     async getByEmail(email: string): Promise<IUserDatabase | null> {
         const data: any = await models.User.findOne({ email });
         return data;
