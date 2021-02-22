@@ -1,5 +1,6 @@
 // Imports modules.
 import { Schema, model } from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 
 const workshopSchema = new Schema({
     _id: { type: String, required: true },
@@ -7,9 +8,11 @@ const workshopSchema = new Schema({
     subtitle: { type: String, required: true },
     workshop_time: { type: Date, required: true },
     workshop_duration: { type: Date, required: true },
-    instructor: { type: Object, required: true },
+    instructor: { type: String, ref: "instructors", required: true, autopopulate: true },
     created_at: { type: Date, default: () => new Date() },
     updated_at: { type: Date, default: () => new Date() }
 });
+
+workshopSchema.plugin(autopopulate);
 
 export const WorkshopModel = model("workshops", workshopSchema);

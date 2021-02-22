@@ -1,5 +1,7 @@
 // Imports modules.
 import { Router } from "express";
+
+// Imports interfaces.
 import { IRoute } from "../../routes/interfaces/routes.interfaces";
 
 // Imports controller.
@@ -8,7 +10,12 @@ const controller: KnowledgeAreaController = new KnowledgeAreaController();
 
 export class KnowledgeAreaRoutes {
     constructor(public router: Router) {
+        this.create();
         this.list();
+    }
+
+    private create(): void {
+        this.router.post("/", controller.create);
     }
 
     private list(): void {

@@ -13,7 +13,7 @@ export class WorkshopRepositoryMongo implements IWorkshopRepository {
     }
 
     async get(id: string): Promise<Workshop | null> {
-        const data: any = models.Workshop.findById(id);
+        const data: any = await models.Workshop.findById(id);
         return data ? new Workshop(data) : null;
     }
 

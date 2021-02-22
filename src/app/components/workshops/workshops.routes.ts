@@ -10,7 +10,12 @@ const workshops = new WorkshopsControllerComponent;
 
 export class WorkshopsRoutesComponent {
     constructor(public router: Router) {
+        this.create();
         this.list();
+    }
+
+    private create(): void {
+        this.router.post("/", workshops.create);
     }
 
     private list(): void {

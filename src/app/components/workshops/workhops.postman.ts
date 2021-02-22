@@ -1,5 +1,6 @@
 // Imports modules.
 import { Request } from "express";
+import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
 import { IWorkshopRepository } from "../../database/interfaces/repositories.interfaces";
@@ -12,6 +13,15 @@ export class WorkshopPostman {
 
     constructor() {
         this.repository = new WorkshopRepositoryMongo;
+    }
+
+    async create(req: Request) {
+        // Save in the database.
+        const _id = uuid();
+        await this.repository.create({ _id, ...req.body });
+
+        // Get data
+        return await this.repository.get(_id);
     }
 
     async list(req: Request) {
