@@ -12,7 +12,6 @@ export class InstructorRoutes {
     constructor(public router: Router) {
         this.create();
         this.list();
-        this.myWorkshops();
     }
 
     private create(): void {
@@ -21,10 +20,6 @@ export class InstructorRoutes {
 
     private list(): void {
         this.router.get("/:id?", controller.list);
-    }
-
-    private myWorkshops(): void {
-        this.router.get("/:user_id/workshops/:id?", controller.myWorkshops);
     }
 };
 

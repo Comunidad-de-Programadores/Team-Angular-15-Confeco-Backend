@@ -25,10 +25,4 @@ export class InstructorController {
             res.status(statusCode || 400).json({ name, message });
         }
     }
-
-    async myWorkshops(req: Request, res: Response) {
-        res.status(200).json({
-            message: req.params
-        });
-    }
 };
