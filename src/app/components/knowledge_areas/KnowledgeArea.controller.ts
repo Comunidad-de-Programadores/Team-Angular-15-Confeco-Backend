@@ -7,7 +7,12 @@ const postman = new KnowledgeAreaPostman;
 
 export class KnowledgeAreaController {
     async list(req: Request, res: Response): Promise<void> {
-        const items = await postman.list(req);
-        res.status(200).json({items });
+        try {
+            const items = await postman.list(req);
+            res.status(200).json({ items });
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
     }
 };

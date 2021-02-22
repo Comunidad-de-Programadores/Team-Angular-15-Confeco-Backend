@@ -27,7 +27,6 @@ export class InstructorPostman {
     async get(req: Request) {
         const { id } = req.params;
         if (id) return await this.repository.get(id);
-        console.log("Ya pase")
 
         const { limit, skip } = req.query;
         return await this.repository.list({

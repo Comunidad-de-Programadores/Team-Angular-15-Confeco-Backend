@@ -1,6 +1,10 @@
-// Imports interfaces.
-import { models } from "..";
+// Imports database models.
+import { models } from "../index";
+
+// Imports models.
 import { Instructor } from "../../../models/Instructor";
+
+// Imports interfaces.
 import { IInstructorRepository, IOptionsList } from "../../interfaces/repositories.interfaces";
 
 export class InstructorRepositoryMongo implements IInstructorRepository {

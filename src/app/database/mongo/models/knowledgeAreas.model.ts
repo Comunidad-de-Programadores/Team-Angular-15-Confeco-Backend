@@ -9,8 +9,8 @@ const knowledgeAreaSchema = new Schema({
     workshops: [{ type: String, ref: "workshops", autopopulate: true }],
     banner: { type: String },
     profile_picture: { type: String },
-    created_at: { type: Date, default: new Date() },
-    updated_at: { type: Date, default: new Date() }
+    created_at: { type: Date, default: () => new Date() },
+    updated_at: { type: Date, default: () => new Date() }
 });
 
 export const knowledgeAreaModel = model("knowledge_areas", knowledgeAreaSchema);

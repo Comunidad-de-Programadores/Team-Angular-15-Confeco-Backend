@@ -9,8 +9,8 @@ const userSchema: Schema = new Schema({
     password: { type: String, default: undefined },
     verified_email: { type: Boolean, default: false },
     passwordResetToken: { type: String, defaul: undefined },
-    created_at: { type: Number, default: Date.now() },
-    updated_at: { type: Number, default: Date.now() }
+    created_at: { type: Number, default: () => new Date() },
+    updated_at: { type: Number, default: () => new Date() }
 });
 
 export const UserModel = model("users", userSchema);
