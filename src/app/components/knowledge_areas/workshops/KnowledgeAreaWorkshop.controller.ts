@@ -12,8 +12,8 @@ export class KnowledgeAreaWorkshopController {
             await insertWorkshop(req.params.id, req.body.workshop_id);
 
             // Get knowledge
-            const workshop = await get(req.params.id);
-            res.status(200).json({ workshop });
+            const knowledge_area = await get(req.params.id);
+            res.status(200).json({ knowledge_area });
         } catch (error) {
             const { statusCode, name, message } = error;
             res.status(statusCode || 400).json({ name, message });

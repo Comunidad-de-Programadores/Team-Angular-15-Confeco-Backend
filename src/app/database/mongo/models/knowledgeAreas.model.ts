@@ -7,7 +7,11 @@ const knowledgeAreaSchema = new Schema({
     title: { type: String, required: true },
     subtitle: { type: String },
     description: { type: String },
-    workshops: [{ type: String, ref: "workshops", autopopulate: true }],
+    workshops: [{
+        type: String,
+        ref: "workshops",
+        autopopulate: true
+    }],
     banner: { type: String },
     profile_picture: { type: String },
     created_at: { type: Date, default: () => new Date() },

@@ -1,6 +1,6 @@
 // Imports modules.
-import { Request } from "express";
 import createHttpError from "http-errors";
+import { Request } from "express";
 import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
