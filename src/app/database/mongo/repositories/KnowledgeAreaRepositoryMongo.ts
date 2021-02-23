@@ -12,6 +12,13 @@ export class KnowledgeAreaRepositoryMongo implements IKnowledgeAreaRepository {
         await models.Knowledge.create(data);
     }
 
+    async insertWorkshop(_id: string, workshop_id: string) {
+        await models.Knowledge.updateOne(
+            { _id },
+            { $push: { workshops: workshop_id } }
+        );
+    }
+
     async get(_id: string): Promise<KnowledgeArea | null> {
         const data: any = await models.Knowledge.findById(_id);
         return data ? new KnowledgeArea(data) : null;

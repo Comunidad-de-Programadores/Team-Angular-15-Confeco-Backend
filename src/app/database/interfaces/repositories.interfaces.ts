@@ -23,7 +23,9 @@ export interface IDatabaseUserRepository extends IRepository<IUserDatabase> {
 
 export interface IInstructorRepository extends IRepository<IInstructorDB> {}
 
-export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaDatabase> {}
+export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaDatabase> {
+    insertWorkshop(id: string, workshop_id: string): Promise<void>;
+}
 
 export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {
     getByInstructor(user_id: string): Promise<IWorkshopDatabase | null>;

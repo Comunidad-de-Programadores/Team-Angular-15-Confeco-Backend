@@ -1,5 +1,6 @@
 // Imports modules.
 import { Schema, model } from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 
 const knowledgeAreaSchema = new Schema({
     _id: { type: String, required: true },
@@ -12,5 +13,7 @@ const knowledgeAreaSchema = new Schema({
     created_at: { type: Date, default: () => new Date() },
     updated_at: { type: Date, default: () => new Date() }
 });
+
+knowledgeAreaSchema.plugin(autopopulate);
 
 export const knowledgeAreaModel = model("knowledge_areas", knowledgeAreaSchema);
