@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IInstructorDB, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
+import { IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
 
 export interface IOptionsList {
     skip?: number;
@@ -20,8 +20,6 @@ export interface IDatabaseUserRepository extends IRepository<IUserDatabase> {
     updatePassword(email: string, password: string): Promise<void>;
     updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
 };
-
-export interface IInstructorRepository extends IRepository<IInstructorDB> {}
 
 export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaDatabase> {
     insertWorkshop(id: string, workshop_id: string): Promise<void>;
