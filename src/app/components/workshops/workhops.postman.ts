@@ -1,5 +1,6 @@
 // Imports modules.
 import { Request } from "express";
+import createHttpError from "http-errors";
 import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
@@ -27,7 +28,15 @@ export class WorkshopPostman {
     async list(req: Request) {
         // Get one.
         const { id } = req.params;
-        if (id) return await this.repository.get(id);
+        if (id) {
+            const workshop = await this.repository.get(id)
+            
+            if (!workshop) throw createHttpError(404, "El recurso solicitado no existe.", {
+                name: "NotFount"
+            });
+
+            return workshop;
+        };
 
         // Get list
         const { limit, skip } = req.query;

@@ -2,7 +2,7 @@
 import { Router } from "express";
 
 // Imports interfaces.
-import { IRoute } from "../../routes/interfaces/routes.interfaces";
+import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
 // Imports controllers
 import { WorkshopsControllerComponent } from "./workshops.controller";
@@ -23,7 +23,7 @@ export class WorkshopsRoutesComponent {
     }
 };
 
-export const workshopsRoutes: IRoute = {
+export const workshopsRoutes: IRouter = {
     path: "/api/v1/workshops",
     component: new WorkshopsRoutesComponent(Router()).router
 };

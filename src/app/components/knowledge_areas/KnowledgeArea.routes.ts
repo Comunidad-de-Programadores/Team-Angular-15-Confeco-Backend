@@ -2,7 +2,7 @@
 import { Router } from "express";
 
 // Imports interfaces.
-import { IRoute } from "../../routes/interfaces/routes.interfaces";
+import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
 // Imports controller.
 import { KnowledgeAreaController } from "./KnowledgeArea.controller";
@@ -23,7 +23,7 @@ export class KnowledgeAreaRoutes {
     }
 };
 
-export const knowledgeRoutes: IRoute = {
+export const knowledgeRoutes: IRouter = {
     path: "/api/v1/knowledge_areas",
     component: new KnowledgeAreaRoutes(Router()).router
 };

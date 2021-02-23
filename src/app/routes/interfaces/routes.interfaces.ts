@@ -1,7 +1,8 @@
 // Imports modules.
 import { Router } from "express";
 
-export interface IRoute {
+export interface IRouter {
     path: string;
     component: Router;
+    children?: IRouter[];
 };

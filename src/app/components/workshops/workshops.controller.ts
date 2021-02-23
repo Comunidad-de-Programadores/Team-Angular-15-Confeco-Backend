@@ -18,8 +18,8 @@ export class WorkshopsControllerComponent {
 
     async list(req: Request, res: Response): Promise<void> {
         try {
-            const items = await postman.list(req);
-            res.status(200).json({ items });
+            const workshops = await postman.list(req);
+            res.status(200).json({ workshops });
         } catch (error) {
             const { name, message, statusCode } = error;
             res.status(statusCode || 400).json({ name, message });

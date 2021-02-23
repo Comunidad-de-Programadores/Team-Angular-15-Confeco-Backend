@@ -1,5 +1,6 @@
 // Imports modules.
 import { Express } from "express";
+import { IRouter } from "./interfaces/routes.interfaces";
 
 // Server routes.
 import { routes } from "./routes";
@@ -11,7 +12,20 @@ export class IndexRoutes {
     }
 
     private executeRoutes(): void {
-        routes.forEach(route => this.main.use(route.path, route.component));
+        routes.forEach(route => this.loadRoutesRecursive(route));
+    }
+
+    private loadRoutesRecursive(route: IRouter): void {
+        if (route.children) {
+            route.children.forEach(item => {
+                const path: string = route.path + item.path;
+                if (item.children) {
+                    return this.loadRoutesRecursive({ ...item, path });
+                }
+                this.main.use(path, item.component);
+            });
+        }
+        this.main.use(route.path, route.component);
     }
 
     private notFound(): void {
