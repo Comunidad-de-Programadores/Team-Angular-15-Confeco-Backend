@@ -1,10 +1,12 @@
+import { User } from "./User";
+
 export class Workshop {
     _id: string;
     title: string;
     subtitle: string;
     workshop_time: Date;
     workshop_duration: Date;
-    instructor: object;
+    instructor: User | string;
 
     constructor(workshop: Workshop) {
         this._id = workshop._id;

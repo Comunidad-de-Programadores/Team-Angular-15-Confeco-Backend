@@ -8,7 +8,17 @@ const workshopSchema = new Schema({
     subtitle: { type: String, required: true },
     workshop_time: { type: Date, required: true },
     workshop_duration: { type: Date, required: true },
-    instructor: { type: String, ref: "instructors", required: true, autopopulate: true },
+    instructor: {
+        type: String,
+        ref: "users",
+        required: true,
+        autopopulate: {
+            select: {
+                password: 0,
+                passwordResetToken: 0
+            }
+        }
+    },
     created_at: { type: Date, default: () => new Date() },
     updated_at: { type: Date, default: () => new Date() }
 });
