@@ -14,12 +14,12 @@ export class WorkshopRepositoryMongo implements IWorkshopRepository {
 
     async get(id: string): Promise<Workshop | null> {
         const data: any = await models.Workshop.findById(id);
-        return data ? new Workshop(data) : null;
+        return data;
     }
 
     async getByInstructor(user_id: string): Promise<Workshop | null> {
         const data: any = models.Workshop.find({ instructor: user_id });
-        return data ? new Workshop(data) : null;
+        return data;
     }
 
     async list(options: IOptionsList): Promise<Workshop[]> {

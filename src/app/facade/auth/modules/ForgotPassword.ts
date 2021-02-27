@@ -12,7 +12,8 @@ import { IDatabaseUserRepository } from "../../../database/interfaces/repositori
 
 // Imports mails.
 import { Mail } from "../../../mails/Mail";
-import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
+// import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
+import { MailtrapForgotPassword } from "../../../mails/strategies/MailtrapForgotPassword";
 
 // Imports facades.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -54,6 +55,6 @@ export class ForgotPassword implements IAuth<void> {
         // Send email.
         const { nickname, email } = user;
         const url = `${ environments.URL }/v1/auth/password/reset/${ token }`;
-        this.mail.send(new SendgridForgotPassword({ email, nickname, url }));
+        this.mail.send(new MailtrapForgotPassword({ email, nickname, url }));
     }
 };
