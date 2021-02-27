@@ -8,10 +8,6 @@ import { IRouter } from "../../routes/interfaces/routes.interfaces";
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
 
-// Imports roles middleware.
-import { RolesMiddleware } from "../../middlewares/roles.middleware";
-const roles: RolesMiddleware = new RolesMiddleware;
-
 // Imports controllers
 import { WorkshopsControllerComponent } from "./workshops.controller";
 const workshop: WorkshopsControllerComponent = new WorkshopsControllerComponent;
@@ -20,6 +16,7 @@ export class WorkshopsRoutesComponent {
     constructor(public router: Router) {
         this.create();
         this.list();
+        this.update();
         this.remove();
     }
 
@@ -29,6 +26,10 @@ export class WorkshopsRoutesComponent {
 
     private list(): void {
         this.router.get("/:id?", workshop.list);
+    }
+
+    private update(): void {
+        this.router.put("/:id", [auth.isAuth], workshop.update);
     }
 
     private remove(): void {

@@ -63,7 +63,42 @@ export class WorkshopPostman {
         });
     }
 
-    async remove(req: Request) {
+    async update(req: Request) {
+        const { id } = req.params;
+        const authorization = req.headers.authorization as string;
+        const token: string = authorization.replace("Bearer ", "");
+        const payload: User = this.jwt.verify(token, new JwtAccessToken);
+
+        // Get workshop.
+        const workshop: Workshop | null = await this.repository.get(id);
+        if (!workshop) throw createHttpError(404, "No puedes editar este recurso por que no existe.", {
+            name: "NotFound"
+        });
+
+        const instructor = workshop.instructor as User;
+        if (instructor._id !== payload._id) throw createHttpError(401, "No tienes los permisos necesarios para realizar esta accion.", {
+            name: "Unauthorized"
+        });
+
+        // Update workshop.
+        const newWorkshop = new Workshop({
+            _id: workshop._id,
+            title: req.body.title || workshop.title,
+            subtitle: req.body.subtitle || workshop.subtitle,
+            description: req.body.description || workshop.description,
+            instructor: payload._id,
+            knowledgeAreas: workshop.knowledgeAreas,
+            workshop_time: req.body.workshop_time || workshop.workshop_time,
+            workshop_duration: req.body.workshop_duration || workshop.workshop_duration,
+            created_at: workshop.created_at,
+            updated_at: new Date
+        });
+        await this.repository.update(id, newWorkshop);
+
+        return { title: workshop.title };
+    }
+
+    async remove(req: Request): Promise<{ title: string }> {
         const { id } = req.params;
         const authorization = req.headers.authorization as string;
         const token: string = authorization.replace("Bearer ", "");
@@ -76,7 +111,7 @@ export class WorkshopPostman {
         });
 
         const instructor = workshop.instructor as User;
-        if (instructor._id !== payload._id) throw createHttpError(401, "No tienes los permisos suficientes para realizar esta accion", {
+        if (instructor._id !== payload._id) throw createHttpError(401, "No tienes los permisos necesarios para realizar esta accion", {
             name: "Unauthorized"
         });
 

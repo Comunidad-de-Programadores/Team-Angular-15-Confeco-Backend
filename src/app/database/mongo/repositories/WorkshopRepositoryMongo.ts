@@ -31,8 +31,8 @@ export class WorkshopRepositoryMongo implements IWorkshopRepository {
         return items;
     }
 
-    async update(id: string, data: Workshop): Promise<void> {
-        // ...
+    async update(_id: string, data: Workshop): Promise<void> {
+        await models.Workshop.updateOne({ _id }, data);
     }
 
     async delete(_id: string): Promise<void> {

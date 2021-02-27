@@ -26,6 +26,19 @@ export class WorkshopsControllerComponent {
         }
     }
 
+    async update(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await postman.update(req);
+            res.json({
+                name: "ResourceSuccessfullyModified",
+                message: `El taller ${ data.title } fue modificado con exito.`
+            });
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
+
     async remove(req: Request, res: Response): Promise<void> {
         try {
             const data = await postman.remove(req);
