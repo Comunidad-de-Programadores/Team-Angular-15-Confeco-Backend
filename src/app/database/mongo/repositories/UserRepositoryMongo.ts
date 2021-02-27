@@ -25,7 +25,7 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
     }
 
     async update(id: string, data: IUserDatabase) {
-        data.updated_at = Date.now();
+        data.updated_at = new Date;
         await models.User.updateOne({ _id: id }, data);
     }
 
