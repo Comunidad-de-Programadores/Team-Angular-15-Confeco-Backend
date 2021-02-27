@@ -7,7 +7,7 @@ import { environments } from "../../config/environments";
 // Imports models.
 import { UserModel } from "./models/user.model";
 import { WorkshopModel } from "./models/workshop.model";
-import { knowledgeAreaModel } from "./models/knowledgeAreas.model";
+import { knowledgeAreaModel } from "./models/knowledgeArea.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
