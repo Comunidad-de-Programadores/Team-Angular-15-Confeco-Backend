@@ -26,5 +26,6 @@ export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaData
 }
 
 export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {
-    getByInstructor(user_id: string): Promise<IWorkshopDatabase | null>;
+    getByInstructor(user_id: string): Promise<IWorkshopDatabase[]>;
+    getByInstructorAndId(userId: string, workshopId: string): Promise<IWorkshopDatabase | null>
 }

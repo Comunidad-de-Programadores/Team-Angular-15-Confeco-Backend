@@ -17,8 +17,16 @@ export class WorkshopRepositoryMongo implements IWorkshopRepository {
         return data;
     }
 
-    async getByInstructor(user_id: string): Promise<Workshop | null> {
-        const data: any = models.Workshop.find({ instructor: user_id });
+    async getByInstructor(user_id: string): Promise<Workshop[]> {
+        const data: any[] = await models.Workshop.find({ instructor: user_id });
+        return data;
+    }
+
+    async getByInstructorAndId(userId: string, workshopId: string): Promise<Workshop | null> {
+        const data: any = await models.Workshop.findOne({
+            _id: workshopId,
+            instructor: userId
+        });
         return data;
     }
 
