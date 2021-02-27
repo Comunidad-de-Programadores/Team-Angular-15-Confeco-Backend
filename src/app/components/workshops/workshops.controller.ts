@@ -25,4 +25,17 @@ export class WorkshopsControllerComponent {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async remove(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await postman.remove(req);
+            res.status(200).json({
+                code: "ResourceSuccessfullyRemoved",
+                message: `El taller ${ data.title } fue eliminado con exito.`
+            });
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 };

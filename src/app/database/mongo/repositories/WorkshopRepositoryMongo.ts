@@ -35,7 +35,7 @@ export class WorkshopRepositoryMongo implements IWorkshopRepository {
         // ...
     }
 
-    async delete(id: string): Promise<void> {
-        // ...
+    async delete(_id: string): Promise<void> {
+        await models.Workshop.deleteOne({ _id });
     }
 };

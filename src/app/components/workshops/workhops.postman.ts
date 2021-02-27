@@ -13,6 +13,7 @@ import { WorkshopRepositoryMongo } from "../../database/mongo/repositories/Works
 import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtAccessToken } from "../../helpers/jsonwebtokens/strategies/AccessToken";
 import { User } from "../../models/User";
+import { Workshop } from "../../models/Workshop";
 
 export class WorkshopPostman {
     private repository: IWorkshopRepository;
@@ -60,5 +61,27 @@ export class WorkshopPostman {
             limit: Number(limit),
             skip: Number(skip)
         });
+    }
+
+    async remove(req: Request) {
+        const { id } = req.params;
+        const authorization = req.headers.authorization as string;
+        const token: string = authorization.replace("Bearer ", "");
+        const payload: User = this.jwt.verify(token, new JwtAccessToken);
+
+        // Get workshop
+        const workshop: Workshop | null = await this.repository.get(id);
+        if (!workshop) throw createHttpError(404, "El recurso no puede ser eliminado por que no existe.", {
+            name: "NotFound"
+        });
+
+        const instructor = workshop.instructor as User;
+        if (instructor._id !== payload._id) throw createHttpError(401, "No tienes los permisos suficientes para realizar esta accion", {
+            name: "Unauthorized"
+        });
+
+        // Delete workshop.
+        await this.repository.delete(id);
+        return { title: workshop.title };
     }
 };
