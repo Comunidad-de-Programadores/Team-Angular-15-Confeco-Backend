@@ -1,20 +1,20 @@
 // Imports models.
 import { KnowledgeArea } from "./KnowledgeArea";
+import { Timestamp } from "./Timestamp";
 import { User } from "./User";
 
-export class Workshop {
+export class Workshop extends Timestamp {
     _id: string;
     title: string;
-    subtitle: string;
+    subtitle?: string;
     description?: string;
     workshop_time: Date;
     knowledgeAreas?: string[] | KnowledgeArea[];
     workshop_duration: Date;
     instructor: User | string;
-    created_at?: Date;
-    updated_at?: Date;
 
     constructor(workshop: Workshop) {
+        super();
         this._id = workshop._id;
         this.title = workshop.title;
         this.subtitle = workshop.subtitle;

@@ -6,7 +6,7 @@ const comunitySchema: Schema = new Schema({
     title: { type: String, required: true },
     subtitle: { type: String },
     description: { type: String },
-    members: [{
+    users: [{
         type: String,
         ref: "users",
         autopopulate: {

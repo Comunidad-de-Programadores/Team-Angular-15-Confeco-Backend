@@ -8,7 +8,7 @@ const eventSchema: Schema = new Schema({
     description: { type: String },
     logo: { type: String },
     banner: { type: String },
-    members: [{
+    users: [{
         type: String,
         ref: "users",
         autopopulate: {

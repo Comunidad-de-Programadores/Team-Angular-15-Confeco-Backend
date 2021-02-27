@@ -7,7 +7,7 @@ const knowledgeAreaSchema = new Schema({
     subtitle: { type: String },
     description: { type: String },
     banner: { type: String },
-    profile_picture: { type: String },
+    logo: { type: String },
     created_at: { type: Date, default: () => new Date() },
     updated_at: { type: Date, default: () => new Date() }
 });

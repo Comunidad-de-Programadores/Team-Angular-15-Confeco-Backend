@@ -4,7 +4,7 @@ export class KnowledgeArea {
     subtitle?: string;
     description?: string;
     banner?: string;
-    profile_picture?: string;
+    logo?: string;
     created_at?: Date;
     updated_at?: Date;
 
@@ -14,7 +14,7 @@ export class KnowledgeArea {
         this.subtitle = data.subtitle;
         this.description = data.description;
         this.banner = data.banner;
-        this.profile_picture = data.profile_picture;
+        this.logo = data.logo;
         this.created_at = data.created_at;
         this.updated_at = data.updated_at;
     }
