@@ -4,6 +4,10 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Imports middlewares.
+import { AuthMiddleware } from "../../middlewares/auth.middleware";
+const auth = new AuthMiddleware;
+
 // Imports controllers
 import { WorkshopsControllerComponent } from "./workshops.controller";
 const workshops = new WorkshopsControllerComponent;
@@ -15,7 +19,7 @@ export class WorkshopsRoutesComponent {
     }
 
     private create(): void {
-        this.router.post("/", workshops.create);
+        this.router.post("/", [auth.isAuth], workshops.create);
     }
 
     private list(): void {
