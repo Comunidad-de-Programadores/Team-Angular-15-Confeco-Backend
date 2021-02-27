@@ -1,6 +1,3 @@
-// Imports models.
-import { Workshop } from "./Workshop";
-
 export class KnowledgeArea {
     _id: string;
     title: string;

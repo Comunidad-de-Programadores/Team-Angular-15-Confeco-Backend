@@ -10,8 +10,8 @@ export class User {
         this._id = user._id;
         this.nickname = user.nickname;
         this.email = user.email;
+        this.verified_email = user.verified_email;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
-        this.verified_email = user.verified_email;
     }
 };

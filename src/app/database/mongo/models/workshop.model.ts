@@ -6,6 +6,7 @@ const workshopSchema = new Schema({
     _id: { type: String, required: true },
     title: { type: String, required: true },
     subtitle: { type: String, required: true },
+    description: { type: String },
     workshop_time: { type: Date, required: true },
     workshop_duration: { type: Date, required: true },
     knowledgeAreas: [{ type: String, autopopulate: true }],
