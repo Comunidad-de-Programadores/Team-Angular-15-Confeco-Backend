@@ -4,6 +4,10 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Imports auth middlewares.
+import { AuthMiddleware } from "../../middlewares/auth.middleware";
+const auth: AuthMiddleware = new AuthMiddleware;
+
 // Imports controllers.
 import { ComunitiesController } from "./comunities.controller";
 const comunities: ComunitiesController = new ComunitiesController;
@@ -14,7 +18,7 @@ export class ComunitiesRoutes {
     }
 
     private create(): void {
-        this.router.post("/", comunities.create);
+        this.router.post("/", [auth.isAuth], comunities.create);
     }
 }
 
