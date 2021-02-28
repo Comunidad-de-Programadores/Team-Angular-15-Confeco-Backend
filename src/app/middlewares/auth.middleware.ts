@@ -1,6 +1,9 @@
 // Imports modules.
 import { Request, Response, NextFunction } from "express";
 
+// Imports models.
+import { User } from "../models/User";
+
 // Imports jsonwebtokens.
 import { JsonWebToken } from "../helpers/jsonwebtokens/JsonWebToken";
 import { JwtAccessToken } from "../helpers/jsonwebtokens/strategies/AccessToken";
@@ -23,7 +26,8 @@ export class AuthMiddleware {
 
         try {
             const token: string = authorization.replace("Bearer ", "");
-            jwt.verify(token, new JwtAccessToken);
+            const payload: User = jwt.verify(token, new JwtAccessToken);
+            req.app.locals.user = payload;
             next();
         } catch (error) {
             const { statusCode, name, message } = error;

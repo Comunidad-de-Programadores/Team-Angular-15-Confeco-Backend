@@ -6,40 +6,32 @@ import { v4 as uuid } from "uuid";
 // Imports interfaces.
 import { IWorkshopRepository } from "../../database/interfaces/repositories.interfaces";
 
-// Imports repositories.
-import { WorkshopRepositoryMongo } from "../../database/mongo/repositories/WorkshopRepositoryMongo";
-
-// Imports jsonwebtoken.
-import { JsonWebToken } from "../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtAccessToken } from "../../helpers/jsonwebtokens/strategies/AccessToken";
+// Imports models.
 import { User } from "../../models/User";
 import { Workshop } from "../../models/Workshop";
 
+// Imports repositories.
+import { WorkshopRepositoryMongo } from "../../database/mongo/repositories/WorkshopRepositoryMongo";
+
 export class WorkshopPostman {
     private repository: IWorkshopRepository;
-    private jwt: JsonWebToken;
 
     constructor() {
         this.repository = new WorkshopRepositoryMongo;
-        this.jwt = new JwtAccessToken;
     }
 
     async create(req: Request) {
         // Save in the database.
         const _id = uuid();
 
-        // We get the token.
-        const authorization = req.headers.authorization as string;
-        const token: string = authorization.replace("Bearer ", "");
-
         // We obtain the user's information.
-        const payload: User = this.jwt.verify(token, new JwtAccessToken);
+        const payload: User = req.app.locals.user;
         const instructor: string = payload._id;
 
         // Save user in the database.
         await this.repository.create({ _id, instructor, ...req.body });
 
-        // Get data
+        // Get data.
         return await this.repository.get(_id);
     }
 
@@ -64,13 +56,10 @@ export class WorkshopPostman {
     }
 
     async update(req: Request) {
-        const { id } = req.params;
-        const authorization = req.headers.authorization as string;
-        const token: string = authorization.replace("Bearer ", "");
-        const payload: User = this.jwt.verify(token, new JwtAccessToken);
+        const payload: User = req.app.locals.user;
 
         // Get workshop.
-        const workshop: Workshop | null = await this.repository.get(id);
+        const workshop: Workshop | null = await this.repository.get(req.params.id);
         if (!workshop) throw createHttpError(404, "No puedes editar este recurso por que no existe.", {
             name: "NotFound"
         });
@@ -93,19 +82,17 @@ export class WorkshopPostman {
             created_at: workshop.created_at,
             updated_at: new Date
         });
-        await this.repository.update(id, newWorkshop);
 
+        // Update workshop.
+        await this.repository.update(req.params.id, newWorkshop);
         return { title: workshop.title };
     }
 
     async remove(req: Request): Promise<{ title: string }> {
-        const { id } = req.params;
-        const authorization = req.headers.authorization as string;
-        const token: string = authorization.replace("Bearer ", "");
-        const payload: User = this.jwt.verify(token, new JwtAccessToken);
+        const payload: User = req.app.locals.user;
 
         // Get workshop
-        const workshop: Workshop | null = await this.repository.get(id);
+        const workshop: Workshop | null = await this.repository.get(req.params.id);
         if (!workshop) throw createHttpError(404, "El recurso no puede ser eliminado por que no existe.", {
             name: "NotFound"
         });
@@ -116,7 +103,7 @@ export class WorkshopPostman {
         });
 
         // Delete workshop.
-        await this.repository.delete(id);
+        await this.repository.delete(req.params.id);
         return { title: workshop.title };
     }
 };
