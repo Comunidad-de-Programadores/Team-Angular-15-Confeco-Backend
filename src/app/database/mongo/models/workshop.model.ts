@@ -9,7 +9,7 @@ const workshopSchema = new Schema({
     description: { type: String },
     workshop_time: { type: Date, required: true },
     workshop_duration: { type: Date, required: true },
-    knowledgeAreas: [{ type: String, autopopulate: true }],
+    knowledgeAreas: [{ type: String, ref: "knowledge_areas", autopopulate: true }],
     instructor: {
         type: String,
         ref: "users",

@@ -18,8 +18,8 @@ export class KnowledgeAreaController {
 
     async list(req: Request, res: Response): Promise<void> {
         try {
-            const items = await postman.list(req);
-            res.status(200).json({ items });
+            const KnowledgeAreas = await postman.list(req);
+            res.status(200).json({ KnowledgeAreas });
         } catch (error) {
             const { statusCode, name, message } = error;
             res.status(statusCode || 400).json({ name, message });

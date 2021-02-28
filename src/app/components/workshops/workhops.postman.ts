@@ -76,7 +76,7 @@ export class WorkshopPostman {
             subtitle: req.body.subtitle || workshop.subtitle,
             description: req.body.description || workshop.description,
             instructor: payload._id,
-            knowledgeAreas: workshop.knowledgeAreas,
+            knowledgeAreas: req.body.knowledgeAreas || workshop.knowledgeAreas,
             workshop_time: req.body.workshop_time || workshop.workshop_time,
             workshop_duration: req.body.workshop_duration || workshop.workshop_duration,
             created_at: workshop.created_at,
