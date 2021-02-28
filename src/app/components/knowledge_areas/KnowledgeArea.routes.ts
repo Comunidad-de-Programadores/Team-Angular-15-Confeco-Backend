@@ -6,6 +6,7 @@ import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
 // Imports controller.
 import { KnowledgeAreaController } from "./KnowledgeArea.controller";
+import { KnowledgeAreaWorkshopRoutes } from "./workshops/workshop.routes";
 const controller: KnowledgeAreaController = new KnowledgeAreaController();
 
 export class KnowledgeAreaRoutes {
@@ -25,5 +26,11 @@ export class KnowledgeAreaRoutes {
 
 export const knowledgeRoutes: IRouter = {
     path: "/api/v1/knowledge_areas",
-    component: new KnowledgeAreaRoutes(Router()).router
+    component: new KnowledgeAreaRoutes(Router()).router,
+    children: [
+        {
+            path: "/:knowledgeAreaId/workshops",
+            component: new KnowledgeAreaWorkshopRoutes(Router({ mergeParams: true })).router
+        }
+    ]
 };
