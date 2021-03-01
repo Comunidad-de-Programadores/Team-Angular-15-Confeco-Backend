@@ -6,6 +6,16 @@ const comunitySchema: Schema = new Schema({
     title: { type: String, required: true },
     subtitle: { type: String },
     description: { type: String },
+    administrators: [{
+        type: String,
+        ref: "users",
+        autopopulate: {
+            select: {
+                password: 0,
+                passwordResetToken: 0
+            }
+        }
+    }],
     users: [{
         type: String,
         ref: "users",
