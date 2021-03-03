@@ -9,7 +9,8 @@ export class EventsController {
     async create(req: Request, res: Response): Promise<void> {
         const event = await postman.create(req);
         res.status(200).json({
-            message: "Creamos un evento."
+            message: `El evento ${ event?.title } se ha creado con exito.`,
+            event
         });
     }
 }
