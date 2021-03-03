@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
+import { IEventDatabase, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
 
 export interface IOptionsList {
     skip?: number;
@@ -29,3 +29,5 @@ export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {
     getByInstructor(user_id: string): Promise<IWorkshopDatabase[]>;
     getByInstructorAndId(userId: string, workshopId: string): Promise<IWorkshopDatabase | null>
 }
+
+export interface IEventRepository extends IRepository<IEventDatabase> {}
