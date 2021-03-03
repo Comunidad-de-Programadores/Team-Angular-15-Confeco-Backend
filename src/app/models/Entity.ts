@@ -9,10 +9,12 @@ export class Entity extends Timestamp {
     description?: string;
     logo?: string;
     users?: string[] | User[];
+    ownerId: string;
 
     constructor(entity: Entity) {
         super();
         this._id = entity._id;
+        this.ownerId = entity.ownerId;
         this.title = entity.title;
         this.subtitle = entity.subtitle;
         this.description = entity.description;

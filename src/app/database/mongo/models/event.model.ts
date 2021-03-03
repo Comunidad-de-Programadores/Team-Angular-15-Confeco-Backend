@@ -8,6 +8,27 @@ const eventSchema: Schema = new Schema({
     description: { type: String },
     logo: { type: String },
     banner: { type: String },
+    ownerId: {
+        type: String,
+        required: true,
+        ref: "users",
+        autopopulate: {
+            select: {
+                password: 0,
+                passwordResetToken: 0
+            }
+        }
+    },
+    administrators: [{
+        type: String,
+        ref: "users",
+        autopopulate: {
+            select: {
+                password: 0,
+                passwordResetToken: 0
+            }
+        }        
+    }],
     users: [{
         type: String,
         ref: "users",
