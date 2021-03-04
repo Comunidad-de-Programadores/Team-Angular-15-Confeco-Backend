@@ -20,26 +20,6 @@ const eventSchema: Schema = new Schema({
             }
         }
     },
-    administrators: [{
-        type: String,
-        ref: "users",
-        autopopulate: {
-            select: {
-                password: 0,
-                passwordResetToken: 0
-            }
-        }        
-    }],
-    users: [{
-        type: String,
-        ref: "users",
-        autopopulate: {
-            select: {
-                password: 0,
-                passwordResetToken: 0
-            }
-        }
-    }],
     expedition_date: { type: Date, required: true },
     expiration_date: { type: Date, required: true },
     created_at: { type: String, default: () => new Date },

@@ -8,7 +8,7 @@ import { environments } from "../../config/environments";
 import { UserModel } from "./models/user.model";
 import { WorkshopModel } from "./models/workshop.model";
 import { knowledgeAreaModel } from "./models/knowledgeArea.model";
-import { eventModel } from "./models/event.model";
+import { eventModel } from "./models/events/event.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
