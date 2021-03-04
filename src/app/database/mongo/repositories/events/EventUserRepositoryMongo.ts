@@ -2,7 +2,7 @@
 import { models } from "../../index";
 
 // Imports interfaces.
-import { IEventUserDatabase } from "../../../interfaces/entities.interfaces";
+import { IEventUserDatabase, IUserDatabase } from "../../../interfaces/entities.interfaces";
 import { IEventUserRepository, IOptionsList } from "../../../interfaces/repositories.interfaces";
 
 export class EventUserRepositoryMongo implements IEventUserRepository {
@@ -13,6 +13,22 @@ export class EventUserRepositoryMongo implements IEventUserRepository {
     async get(id: string): Promise<IEventUserDatabase | null> {
         const entity: any = await models.EventUser.findById(id);
         return entity;
+    }
+
+    async getUsersByEvent(eventId: string, option: IOptionsList): Promise<IUserDatabase[]> {
+        const users: any[] = await models.EventUser
+        .find({ eventId: eventId }, { users: 1, _id: 0 })
+        .skip(option.skip || 0)
+        .limit(option.limit || 15);
+        return users;
+    }
+
+    async getUserByEvent(userId: string, eventId: string): Promise<IUserDatabase | null> {
+        const user: any = await models.EventUser.findOne(
+            { $and: [{ eventId }, { user: userId }] },
+            { user: 1, _id: 0 }
+        );
+        return user;
     }
 
     update(id: string, data: IEventUserDatabase): Promise<void> {

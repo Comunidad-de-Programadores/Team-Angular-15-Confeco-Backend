@@ -12,9 +12,14 @@ const auth: AuthMiddleware = new AuthMiddleware;
 export class EventUserRoutes {
     constructor(public router: Router) {
         this.create();
+        this.get();
     }
 
     private create(): void {
         this.router.post("/", [auth.isAuth], controller.create);
+    }
+
+    private get(): void {
+        this.router.get("/:userId?", [auth.isAuth], controller.get);
     }
 }

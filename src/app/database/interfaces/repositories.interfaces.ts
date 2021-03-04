@@ -32,4 +32,7 @@ export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {
 
 export interface IEventRepository extends IRepository<IEventDatabase> {}
 
-export interface IEventUserRepository extends IRepository<IEventUserDatabase> {}
+export interface IEventUserRepository extends IRepository<IEventUserDatabase> {
+    getUsersByEvent(eventId: string, options: IOptionsList): Promise<IUserDatabase[]>;
+    getUserByEvent(userId: string, eventId: string): Promise<IUserDatabase | null>;
+}

@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
 import { IEventRepository, IEventUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IEventDatabase } from "../../../database/interfaces/entities.interfaces";
+import { IEventDatabase, IUserDatabase } from "../../../database/interfaces/entities.interfaces";
 
 // Imports repositories.
 import { EventRepositoryMongo } from "../../../database/mongo/repositories/EventRepositoryMongo";
@@ -49,5 +49,23 @@ export class EventUserPostman {
         });
 
         return data;
+    }
+
+    async get(req: Request) {
+        const { userId, eventId } = req.params;
+        const { limit, skip } = req.query;
+
+        if (userId) {
+            const user: IUserDatabase | null = await this.eventUserRepository.getUserByEvent(userId, eventId);
+            if (!user) throw createHttpError(404, "El usuario no existe en este evento.", {
+                name: "NonExistentUser"
+            });
+            return user;
+        }
+
+        return this.eventUserRepository.getUsersByEvent(eventId, {
+            limit: Number(limit),
+            skip: Number(skip)
+        });
     }
 }

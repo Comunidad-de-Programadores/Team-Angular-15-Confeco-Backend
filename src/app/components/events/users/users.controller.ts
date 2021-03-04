@@ -20,4 +20,14 @@ export class EventUserController {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async get(req: Request, res: Response): Promise<void> {
+        try {
+            const users = await postman.get(req);
+            res.status(200).json(users);
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 }
