@@ -1,5 +1,5 @@
 // Imports interfaces.
-import { IEventDatabase, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
+import { IEventDatabase, IEventUserDatabase, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
 
 export interface IOptionsList {
     skip?: number;
@@ -31,3 +31,5 @@ export interface IWorkshopRepository extends IRepository<IWorkshopDatabase> {
 }
 
 export interface IEventRepository extends IRepository<IEventDatabase> {}
+
+export interface IEventUserRepository extends IRepository<IEventUserDatabase> {}

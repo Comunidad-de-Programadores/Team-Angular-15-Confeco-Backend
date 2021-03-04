@@ -3,9 +3,11 @@ import { Schema, model } from "mongoose";
 import autopopulate from "mongoose-autopopulate";
 
 const schema: Schema = new Schema({
+    _id: { type: String, required: true },
     user: {
         type: String,
         ref: "users",
+        required: true,
         autopopulate: {
             select: {
                 password: 0,
