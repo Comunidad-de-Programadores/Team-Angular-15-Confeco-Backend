@@ -4,21 +4,26 @@ import { Request } from "express";
 import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
-import { IEventRepository, IEventUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IEventDatabase, IUserDatabase } from "../../../database/interfaces/entities.interfaces";
+import { IDatabaseUserRepository, IEventRepository, IEventUserRepository } from "../../../database/interfaces/repositories.interfaces";
+import { IEventDatabase, IEventUserDatabase, IUserDatabase } from "../../../database/interfaces/entities.interfaces";
+
+// Imports models.
+import { User } from "../../../models/User";
 
 // Imports repositories.
 import { EventRepositoryMongo } from "../../../database/mongo/repositories/EventRepositoryMongo";
 import { EventUserRepositoryMongo } from "../../../database/mongo/repositories/events/EventUserRepositoryMongo";
-import { User } from "../../../models/User";
+import { UserRepositoryMongo } from "../../../database/mongo/repositories/UserRepositoryMongo";
 
 export class EventUserPostman {
     private eventRepository: IEventRepository;
     private eventUserRepository: IEventUserRepository;
+    private userRepository: IDatabaseUserRepository;
 
     constructor() {
         this.eventRepository = new EventRepositoryMongo;
         this.eventUserRepository = new EventUserRepositoryMongo;
+        this.userRepository = new UserRepositoryMongo;
     }
 
     async create(req: Request) {
@@ -34,6 +39,11 @@ export class EventUserPostman {
         const event: IEventDatabase | null = await this.eventRepository.get(eventId);
         if (!event) throw createHttpError(404, "La operacion fallo porque el evento al que desea registrarse no existe.", {
             name: "ResourceNotFoundFailed"
+        });
+
+        const member: User | null = await this.userRepository.get(userId);
+        if (!member) throw createHttpError(403, "No puedes agregar a este usuario porque no existe,", {
+            name: "NotExistenceUser"
         });
 
         // Save new user in the events.
@@ -57,7 +67,7 @@ export class EventUserPostman {
         const { limit, skip } = req.query;
 
         if (userId) {
-            const user: IUserDatabase | null = await this.eventUserRepository.getUserByEvent(userId, eventId);
+            const user: IEventUserDatabase | null = await this.eventUserRepository.getUserByEvent(userId, eventId);
             if (!user) throw createHttpError(404, "El usuario no existe en este evento.", {
                 name: "NonExistentUser"
             });
