@@ -11,6 +11,7 @@ import { Event } from "../../models/Event";
 
 // Imports repositories.
 import { EventRepositoryMongo } from "../../database/mongo/repositories/EventRepositoryMongo";
+import { User } from "../../models/User";
 
 export class EventPostman {
     private repository: IEventRepository;
@@ -62,5 +63,25 @@ export class EventPostman {
             limit: Number(limit),
             skip: Number(skip)
         });
+    }
+
+    async remove(req: Request) {
+        const { id } = req.params;
+        const { user } = req.app.locals;
+
+        const event: Event | null = await this.repository.get(id);
+
+        if (!event) throw createHttpError(404, "El recurso no puede eliminarse porque no existe.", {
+            name: "ResourcesDeletionFailed"
+        });
+
+        const owner: User = event.owner as User;
+        if (owner._id !== user._id) throw createHttpError(401, "No tienes los permisos necesarios para realizar esta accion.", {
+            name: "Unauthorized"
+        });
+
+        await this.repository.delete(id);
+
+        return { title: event.title };
     }
 };

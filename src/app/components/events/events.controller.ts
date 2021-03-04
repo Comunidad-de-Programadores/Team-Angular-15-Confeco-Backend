@@ -28,4 +28,14 @@ export class EventsController {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async remove(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await postman.remove(req);
+            res.status(200).json({ message: `El evento ${ data.title } se ha eliminado con exito.` });
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 }
