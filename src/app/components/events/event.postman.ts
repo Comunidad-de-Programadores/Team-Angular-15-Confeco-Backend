@@ -1,6 +1,9 @@
 // Imports modules.
 import { Request } from "express";
 import { v4 as uuid } from "uuid";
+import createHttpError from "http-errors";
+
+// Imports interfaces.
 import { IEventRepository } from "../../database/interfaces/repositories.interfaces";
 
 // Imports models.
@@ -8,7 +11,6 @@ import { Event } from "../../models/Event";
 
 // Imports repositories.
 import { EventRepositoryMongo } from "../../database/mongo/repositories/EventRepositoryMongo";
-import createHttpError from "http-errors";
 
 export class EventPostman {
     private repository: IEventRepository;
@@ -24,7 +26,7 @@ export class EventPostman {
         const id: string = uuid();
         const event: Event = new Event({
             _id: id,
-            ownerId: user._id,
+            owner: user._id,
             title: req.body.title,
             expedition_date: new Date,
             expiration_date: new Date
@@ -40,5 +42,25 @@ export class EventPostman {
         });
 
         return data;
+    }
+
+    async get(req: Request) {
+        const { id } = req.params;
+        const { limit, skip } = req.query;
+
+        if (id) {
+            const event: Event | null = await this.repository.get(id);
+            
+            if (!event) throw createHttpError(404, "El recurso solicitado no existe.", {
+                name: "ResourcesNotFound"
+            });
+            
+            return event;
+        }
+
+        return await this.repository.list({
+            limit: Number(limit),
+            skip: Number(skip)
+        });
     }
 };

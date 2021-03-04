@@ -10,15 +10,20 @@ const auth: AuthMiddleware = new AuthMiddleware;
 
 // Imports controllers.
 import { EventsController } from "./events.controller";
-const controller: EventsController = new EventsController;
+const event: EventsController = new EventsController;
 
 export class EventsRoutes {
     constructor(public router: Router) {
         this.create();
+        this.get();
     }
 
     private create(): void {
-        this.router.post("/", [auth.isAuth], controller.create);
+        this.router.post("/", [auth.isAuth], event.create);
+    }
+
+    private get(): void {
+        this.router.get("/:id?", [auth.isAuth], event.get);
     }
 }
 

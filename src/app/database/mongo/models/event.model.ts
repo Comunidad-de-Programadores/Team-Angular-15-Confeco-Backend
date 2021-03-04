@@ -1,5 +1,6 @@
 // Imports modules.
 import { Schema, model } from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 
 const eventSchema: Schema = new Schema({
     _id: { type: String, required: true },
@@ -8,10 +9,10 @@ const eventSchema: Schema = new Schema({
     description: { type: String },
     logo: { type: String },
     banner: { type: String },
-    ownerId: {
+    owner: {
         type: String,
-        required: true,
         ref: "users",
+        required: true,
         autopopulate: {
             select: {
                 password: 0,
@@ -44,5 +45,7 @@ const eventSchema: Schema = new Schema({
     created_at: { type: String, default: () => new Date },
     updated_at: { type: String, default: () => new Date }
 });
+
+eventSchema.plugin(autopopulate);
 
 export const eventModel = model("events", eventSchema);
