@@ -23,6 +23,11 @@ export class EventUserPostman {
     async create(req: Request) {
         const { eventId } = req.params;
         const { userId } = req.body;
+        const { user } = req.app.locals;
+
+        if (user._id === userId) throw createHttpError(400, "Esta accion no esta permitida.", {
+            name: "NotAllowed"
+        });
 
         // Verify existence event.
         const event: IEventDatabase | null = await this.eventRepository.get(eventId);
@@ -42,7 +47,7 @@ export class EventUserPostman {
         if (!data) throw createHttpError(400, "Sucedio un error durante el registro del usuario al evento.", {
             name: "Error"
         });
-        
+
         return data;
     }
 }
