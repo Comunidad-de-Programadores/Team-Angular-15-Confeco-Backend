@@ -1,9 +1,9 @@
-//Imports modules.
+// Imports mongoose.
 import { Schema, model } from "mongoose";
 import autopopulate from "mongoose-autopopulate";
 
 const schema: Schema = new Schema({
-    users: [{
+    administrators: [{
         type: String,
         ref: "users",
         autopopulate: {
@@ -13,9 +13,13 @@ const schema: Schema = new Schema({
             }
         }
     }],
-    event: { type: String, ref: "events", autopopulate: true }
+    event: {
+        type: String,
+        ref: "events",
+        autopopulate: true
+    }
 });
 
 schema.plugin(autopopulate);
 
-export const EventUser = model("events_users", schema);
+export const EventAdministrator = model("events_administrators", schema);
