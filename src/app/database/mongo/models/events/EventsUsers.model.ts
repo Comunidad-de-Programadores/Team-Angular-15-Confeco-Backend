@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import autopopulate from "mongoose-autopopulate";
 
 const schema: Schema = new Schema({
-    users: [{
+    user: {
         type: String,
         ref: "users",
         autopopulate: {
@@ -12,8 +12,8 @@ const schema: Schema = new Schema({
                 passwordResetToken: 0
             }
         }
-    }],
-    event: { type: String, ref: "events", autopopulate: true }
+    },
+    eventId: { type: String, required: true }
 });
 
 schema.plugin(autopopulate);
