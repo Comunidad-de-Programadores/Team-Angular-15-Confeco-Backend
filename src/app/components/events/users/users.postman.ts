@@ -10,6 +10,7 @@ import { IEventDatabase, IUserDatabase } from "../../../database/interfaces/enti
 // Imports repositories.
 import { EventRepositoryMongo } from "../../../database/mongo/repositories/EventRepositoryMongo";
 import { EventUserRepositoryMongo } from "../../../database/mongo/repositories/events/EventUserRepositoryMongo";
+import { User } from "../../../models/User";
 
 export class EventUserPostman {
     private eventRepository: IEventRepository;
@@ -67,5 +68,19 @@ export class EventUserPostman {
             limit: Number(limit),
             skip: Number(skip)
         });
+    }
+
+    async remove(req: Request) {
+        const { userId, eventId } = req.params;
+        const event = await this.eventUserRepository.getUserByEvent(userId, eventId);
+        if (!event) throw createHttpError(404, "No puedes eliminar al usuario del evento porque no existe.", {
+            name: "ResourcesDeletionFailed"
+        });
+        
+        // Remove user of event.
+        await this.eventUserRepository.delete(event._id);
+
+        const user: User = event.user as User;
+        return { nickname: user.nickname };
     }
 }

@@ -13,6 +13,7 @@ export class EventUserRoutes {
     constructor(public router: Router) {
         this.create();
         this.get();
+        this.remove();
     }
 
     private create(): void {
@@ -21,5 +22,9 @@ export class EventUserRoutes {
 
     private get(): void {
         this.router.get("/:userId?", [auth.isAuth], controller.get);
+    }
+
+    private remove(): void {
+        this.router.delete("/:userId", [auth.isAuth], controller.remove);
     }
 }

@@ -23,10 +23,10 @@ export class EventUserRepositoryMongo implements IEventUserRepository {
         return users;
     }
 
-    async getUserByEvent(userId: string, eventId: string): Promise<IUserDatabase | null> {
+    async getUserByEvent(userId: string, eventId: string): Promise<IEventUserDatabase | null> {
         const user: any = await models.EventUser.findOne(
             { $and: [{ eventId }, { user: userId }] },
-            { user: 1, _id: 0 }
+            { _v: 0 }
         );
         return user;
     }
@@ -39,7 +39,7 @@ export class EventUserRepositoryMongo implements IEventUserRepository {
         throw new Error("Method not implemented.");
     }
 
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(_id: string): Promise<void> {
+        await models.EventUser.deleteOne({ _id });
     }
 }
