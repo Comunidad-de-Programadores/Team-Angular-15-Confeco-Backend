@@ -1,5 +1,6 @@
 // Imports models.
 import { models } from "../index";
+import { User } from "../../../models/User";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
@@ -24,7 +25,7 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         return data;
     }
 
-    async update(id: string, data: IUserDatabase) {
+    async update(id: string, data: User) {
         data.updated_at = new Date;
         await models.User.updateOne({ _id: id }, data);
     }
