@@ -11,13 +11,13 @@ export class EventUserRepositoryMongo implements IEventUserRepository {
     }
 
     async get(id: string): Promise<IEventUserDatabase | null> {
-        const entity: any = await models.EventUser.findById(id);
+        const entity: any = await models.EventUser.findById(id).populate({ path: "user" });
         return entity;
     }
 
     async getUsersByEvent(eventId: string, option: IOptionsList): Promise<IUserDatabase[]> {
         const users: any[] = await models.EventUser
-        .find({ eventId: eventId }, { users: 1, _id: 0 })
+        .find({ event: eventId }, { users: 1, _id: 0 })
         .skip(option.skip || 0)
         .limit(option.limit || 15);
         return users;
@@ -25,7 +25,7 @@ export class EventUserRepositoryMongo implements IEventUserRepository {
 
     async getUserByEvent(userId: string, eventId: string): Promise<IEventUserDatabase | null> {
         const user: any = await models.EventUser.findOne(
-            { $and: [{ eventId }, { user: userId }] },
+            { $and: [{ event: eventId }, { user: userId }] },
             { _v: 0 }
         );
         return user;

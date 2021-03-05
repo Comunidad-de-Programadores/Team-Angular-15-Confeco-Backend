@@ -51,7 +51,7 @@ export class EventUserPostman {
         await this.eventUserRepository.create({
             _id: id,
             user: userId,
-            eventId: event._id
+            event: event._id
         });
 
         const data = await this.eventUserRepository.get(id);
