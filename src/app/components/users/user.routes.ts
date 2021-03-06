@@ -11,6 +11,9 @@ import { UserWorkshopRoutes } from "./workshops/workshop.routes";
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
 
+// Imports rules.
+import { uploadImage, conditionRequestRules } from "../../rules/rules";
+
 // Imports controllers.
 import { UserController } from "./user.controller";
 const controller = new UserController;
@@ -31,7 +34,11 @@ export class UserRoutes {
     }
 
     private changeAvatar(): void {
-        this.router.patch("/:userId/avatar", [auth.isAuth], controller.changeAvatar);
+        this.router.patch(
+            "/:userId/avatar",
+            [auth.isAuth, uploadImage, conditionRequestRules],
+            controller.changeAvatar
+        );
     }
 };
 

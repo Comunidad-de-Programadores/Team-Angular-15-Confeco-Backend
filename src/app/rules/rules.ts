@@ -22,6 +22,18 @@ export const password = body("password").custom(value => {
     return result;
 });
 
+export const uploadImage = body("avatar").custom((value, data) => {
+    const files = data.req.files;
+    
+    if (!files) throw new Error("Necesitas enviar una imagen.");
+
+    if (Array.isArray(files.avatar)) throw new Error("Solo puedes enviar una imagen, no una lista.");
+
+    const result: string | boolean = rules.image(files.avatar.mimetype);
+    if (typeof result === "string") throw new Error(result);
+    return result;
+});
+
 export function checkFieldsResetPassword(
     req: Request,
     res: Response,

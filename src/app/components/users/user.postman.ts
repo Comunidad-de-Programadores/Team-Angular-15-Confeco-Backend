@@ -50,4 +50,8 @@ export class UserPostman {
 
         return new User(values);
     }
+
+    async changeAvatar(req: Request) {
+        
+    }
 }
