@@ -19,6 +19,7 @@ export class UserRoutes {
     constructor(public router: Router) {
         this.profile();
         this.update();
+        this.changeAvatar();
     }
 
     private profile(): void {
@@ -27,6 +28,10 @@ export class UserRoutes {
 
     private update(): void {
         this.router.put("/:userId", [auth.isAuth], controller.update);
+    }
+
+    private changeAvatar(): void {
+        this.router.patch("/:userId/avatar", [auth.isAuth], controller.changeAvatar);
     }
 };
 
