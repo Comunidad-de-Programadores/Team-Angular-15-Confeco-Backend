@@ -1,19 +1,21 @@
 // Imports modules.
-import { Request } from "express";
 import createHttpError from "http-errors";
+import { Request } from "express";
 
-// Imports cloudservice
+// Imports services
 import { CloudService } from "../../services/CloudService";
 import { CloudinaryService } from "../../services/modules/CloudinaryService";
+
+// Imports models.
+import { User } from "../../models/User";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../database/interfaces/repositories.interfaces";
 import { IUserDatabase } from "../../database/interfaces/entities.interfaces";
+import { ResUpload } from "../../services/interfaces/cloudservice.interfaces";
 
 // Imports repositories.
 import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
-import { User } from "../../models/User";
-import { ResUpload } from "../../services/interfaces/cloudservice.interfaces";
 
 export class UserPostman {
     private repository: IDatabaseUserRepository;
@@ -37,18 +39,13 @@ export class UserPostman {
         });
 
         await this.repository.update(data._id, {
-            _id: data._id,
             nickname: req.body.nickname || data.nickname,
-            verified_email: data.verified_email,
-            email: data.email,
-            avatar: data.avatar,
             country: req.body.country || data.country,
             gender: req.body.gender || data.gender,
             facebookLink: req.body.facebookLink || data.facebookLink,
             twitterLink: req.body.twitterLink || data.twitterLink,
             githubLink: req.body.githubLink || data.githubLink,
-            linkedinLink: req.body.linkedinLink || data.linkedinLink,
-            password: data.password
+            linkedinLink: req.body.linkedinLink || data.linkedinLink
         });
 
         const values: IUserDatabase | null = await this.repository.get(data._id);

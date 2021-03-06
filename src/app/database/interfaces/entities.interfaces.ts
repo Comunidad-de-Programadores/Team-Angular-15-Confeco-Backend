@@ -10,6 +10,16 @@ export interface IUserDatabase extends User {
     passwordResetToken?: string;
 };
 
+export interface userFieldsUpdate {
+    nickname?: string;
+    gender?: string;
+    country?: string;
+    facebookLink?: string;
+    twitterLink?: string;
+    githubLink?: string;
+    linkedinLink?: string;
+}
+
 export interface IWorkshopDatabase extends Workshop {};
 
 export interface IKnowledgeAreaDatabase extends KnowledgeArea {}

@@ -1,10 +1,32 @@
 // Imports interfaces.
-import { IEventDatabase, IEventUserDatabase, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase } from "./entities.interfaces";
+import { IEventDatabase, IEventUserDatabase, IKnowledgeAreaDatabase, IUserDatabase, IWorkshopDatabase, userFieldsUpdate } from "./entities.interfaces";
 
 export interface IOptionsList {
     skip?: number;
     limit?: number;
 };
+
+interface Update<Tval> {
+    update(id: string, value: Tval): Promise<void>;
+}
+
+interface Get<Tval> {
+    get(id: string): Promise<Tval | null>;
+}
+
+interface Create<Tval> {
+    create(data: Tval): Promise<void>;
+}
+
+interface Delete {
+    delete(id: string): Promise<void>;
+}
+
+interface UserRepository 
+extends Create<IUserDatabase>,
+Update<userFieldsUpdate>,
+Get<IUserDatabase>,
+Delete {}
 
 export interface IRepository<Tval> {
     create(entity: Tval): Promise<void>;
@@ -14,7 +36,7 @@ export interface IRepository<Tval> {
     delete(id: string): Promise<void>;
 };
 
-export interface IDatabaseUserRepository extends IRepository<IUserDatabase> {
+export interface IDatabaseUserRepository extends UserRepository {
     getByEmail(email: string): Promise<IUserDatabase | null>;
     updateStatusEmail(id: string, status: boolean): Promise<void>;
     updatePassword(email: string, password: string): Promise<void>;

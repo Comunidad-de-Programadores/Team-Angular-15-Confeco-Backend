@@ -1,10 +1,9 @@
 // Imports models.
 import { models } from "../index";
-import { User } from "../../../models/User";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../interfaces/repositories.interfaces";
-import { IUserDatabase } from "../../interfaces/entities.interfaces";
+import { IUserDatabase, userFieldsUpdate } from "../../interfaces/entities.interfaces";
 
 export class UserRepositoryMongo implements IDatabaseUserRepository {
     async create(user: IUserDatabase): Promise<void> {
@@ -25,9 +24,11 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         return data;
     }
 
-    async update(id: string, data: User) {
-        data.updated_at = new Date;
-        await models.User.updateOne({ _id: id }, data);
+    async update(id: string, data: userFieldsUpdate) {
+        await models.User.updateOne(
+            { _id: id },
+            { $set: { ...data, updated_at: new Date } }
+        );
     }
 
     async updateAvatar(id: string, avatar: string): Promise<void> {
