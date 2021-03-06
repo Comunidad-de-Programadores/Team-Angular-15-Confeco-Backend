@@ -1,4 +1,5 @@
 // Imports modules.
+import upload from "express-fileupload";
 import session from "express-session";
 import flash from "connect-flash";
 import { resolve } from "path";
@@ -40,6 +41,7 @@ export class MainApp {
             resave: false,
             saveUninitialized: true
         }));
+        this.app.use(upload());
         this.app.use(flash());
     }
 
