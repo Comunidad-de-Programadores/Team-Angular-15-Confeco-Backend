@@ -41,6 +41,7 @@ export class UserPostman {
             nickname: req.body.nickname || data.nickname,
             verified_email: data.verified_email,
             email: data.email,
+            avatar: data.avatar,
             country: req.body.country || data.country,
             gender: req.body.gender || data.gender,
             facebookLink: req.body.facebookLink || data.facebookLink,
@@ -60,6 +61,14 @@ export class UserPostman {
 
     async changeAvatar(req: Request) {
         const { avatar }: any = req.files;
+        const { user } = req.app.locals;
+
+        // Upload file to cloud.
         const data: ResUpload = await this.cloud.upload(avatar, "picture_profiles");
+
+        // Update user.
+        await this.repository.updateAvatar(user._id, data.url);
+
+        return data;
     }
 }

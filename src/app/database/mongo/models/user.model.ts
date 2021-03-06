@@ -12,6 +12,7 @@ const userSchema: Schema = new Schema({
     twitterLink: { type: String },
     githubLink: { type: String },
     linkedinLink: { type: String },
+    avatar: { type: String },
     verified_email: { type: Boolean, default: false },
     password: { type: String, default: undefined },
     passwordResetToken: { type: String, defaul: undefined },

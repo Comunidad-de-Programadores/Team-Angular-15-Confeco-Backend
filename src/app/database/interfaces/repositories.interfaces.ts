@@ -19,6 +19,7 @@ export interface IDatabaseUserRepository extends IRepository<IUserDatabase> {
     updateStatusEmail(id: string, status: boolean): Promise<void>;
     updatePassword(email: string, password: string): Promise<void>;
     updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
+    updateAvatar(id: string, avatar: string): Promise<void>;
 };
 
 export interface IKnowledgeAreaRepository extends IRepository<IKnowledgeAreaDatabase> {

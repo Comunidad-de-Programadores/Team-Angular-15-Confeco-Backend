@@ -1,6 +1,9 @@
 // Imports modules.
 import { Request, Response } from "express";
 
+// Imports interfaces.
+import { ResUpload } from "../../services/interfaces/cloudservice.interfaces";
+
 // Imports postman
 import { UserPostman } from "./user.postman";
 const postman: UserPostman = new UserPostman;
@@ -27,9 +30,10 @@ export class UserController {
 
     async changeAvatar(req: Request, res: Response): Promise<void> {
         try {
-            await postman.changeAvatar(req);
+            const avatar: ResUpload = await postman.changeAvatar(req);
             res.status(200).json({
-                message: "Actualizar el avatar."
+                message: "Su foto de perfil ha sido actualizada con exito.",
+                avatar
             });
         } catch (error) {
             const { statusCode, name, message } = error;
