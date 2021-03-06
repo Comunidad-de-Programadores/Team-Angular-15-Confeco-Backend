@@ -23,6 +23,7 @@ export class UserRoutes {
         this.profile();
         this.update();
         this.changeAvatar();
+        this.convertInstructor();
     }
 
     private profile(): void {
@@ -38,6 +39,14 @@ export class UserRoutes {
             "/:userId/avatar",
             [auth.isAuth, uploadImage, conditionRequestRules],
             controller.changeAvatar
+        );
+    }
+
+    private convertInstructor(): void {
+        this.router.patch(
+            "/convertInstructor",
+            [auth.isAuth],
+            controller.convertInstructor
         );
     }
 };

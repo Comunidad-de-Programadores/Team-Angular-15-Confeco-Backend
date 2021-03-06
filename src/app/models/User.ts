@@ -8,6 +8,7 @@ export class User extends Timestamp {
     avatar?: string;
     gender?: string;
     country?: string;
+    instructor?: object;
     facebookLink?: string;
     twitterLink?: string;
     githubLink?: string;
@@ -26,6 +27,7 @@ export class User extends Timestamp {
         this.githubLink = user.githubLink;
         this.linkedinLink = user.linkedinLink;
         this.verified_email = user.verified_email;
+        this.instructor = user.instructor;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
     }

@@ -50,6 +50,10 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         await models.User.updateOne({ _id: id }, { $set: { verified_email } });
     }
 
+    async convertInstructor(id: string, instructor: object) {
+        await models.User.updateOne({ _id: id }, { $set: { instructor } });
+    }
+
     async delete(id: string): Promise<void> {
         await models.User.deleteOne({ _id: id });
     }

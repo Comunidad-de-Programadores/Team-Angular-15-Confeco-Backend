@@ -28,6 +28,21 @@ export class UserController {
         }
     }
 
+    async convertInstructor(req: Request, res: Response): Promise<void> {
+        try {
+            const data = await postman.convertInstructor(req);
+            const { nickname } = req.app.locals.user;
+            
+            res.status(200).json({
+                message: `¡Felicitaciones ${ nickname }! ya eres un creador de contenido.`,
+                data
+            });
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
+
     async changeAvatar(req: Request, res: Response): Promise<void> {
         try {
             const avatar: ResUpload = await postman.changeAvatar(req);
