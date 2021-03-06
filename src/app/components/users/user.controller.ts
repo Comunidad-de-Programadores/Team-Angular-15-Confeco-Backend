@@ -27,6 +27,7 @@ export class UserController {
 
     async changeAvatar(req: Request, res: Response): Promise<void> {
         try {
+            await postman.changeAvatar(req);
             res.status(200).json({
                 message: "Actualizar el avatar."
             });

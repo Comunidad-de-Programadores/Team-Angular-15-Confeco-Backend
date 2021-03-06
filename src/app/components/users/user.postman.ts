@@ -2,6 +2,10 @@
 import { Request } from "express";
 import createHttpError from "http-errors";
 
+// Imports cloudservice
+import { CloudService } from "../../services/CloudService";
+import { CloudinaryService } from "../../services/modules/CloudinaryService";
+
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../database/interfaces/repositories.interfaces";
 import { IUserDatabase } from "../../database/interfaces/entities.interfaces";
@@ -9,12 +13,15 @@ import { IUserDatabase } from "../../database/interfaces/entities.interfaces";
 // Imports repositories.
 import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
 import { User } from "../../models/User";
+import { ResUpload } from "../../services/interfaces/cloudservice.interfaces";
 
 export class UserPostman {
     private repository: IDatabaseUserRepository;
+    private cloud: CloudService;
 
     constructor() {
         this.repository = new UserRepositoryMongo;
+        this.cloud = new CloudService(new CloudinaryService);
     }
 
     async update(req: Request) {
@@ -52,6 +59,7 @@ export class UserPostman {
     }
 
     async changeAvatar(req: Request) {
-        
+        const { avatar }: any = req.files;
+        const data: ResUpload = await this.cloud.upload(avatar, "picture_profiles");
     }
 }

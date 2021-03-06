@@ -1,3 +1,10 @@
+export interface ResUpload {
+    url: string;
+    size: number;
+    created_at: Date;
+    mimeType: string;
+}
+
 export interface CloudServiceAdapter {
-    upload(): Promise<void>;
-};
+    upload(data: Buffer, folder: string): Promise<ResUpload>;
+}
