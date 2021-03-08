@@ -26,7 +26,7 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
         const { email, password } = this.credentials;
         const user = await this.repository.getByEmail(email);
 
-        const credentialsIncorrect = createHttpError(403, "Las credenciales son incorrectas.", {
+        const credentialsIncorrect = createHttpError(401, "Las credenciales son incorrectas.", {
             name: "CredentialsIncorrect"
         });
         
