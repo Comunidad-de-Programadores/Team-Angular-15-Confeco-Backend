@@ -9,6 +9,16 @@ import { UserPostman } from "./user.postman";
 const postman: UserPostman = new UserPostman;
 
 export class UserController {
+    async me(req: Request, res: Response): Promise<void> {
+        try {
+            const user = await postman.me(req);
+            res.status(200).json(user);
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
+
     async profile(req: Request, res: Response): Promise<void> {
         res.status(200).json({
             message: `Im ${ req.params.id } profile from controller.`

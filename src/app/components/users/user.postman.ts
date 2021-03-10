@@ -26,6 +26,18 @@ export class UserPostman {
         this.cloud = new CloudService(new CloudinaryService);
     }
 
+    async me(req: Request): Promise<User> {
+        const { _id } = req.app.locals.user;
+
+        const user: User | null = await this.repository.get(_id);
+
+        if (!user) throw createHttpError(401, "El usuario no existe", {
+            name: "UserNotFound"
+        });
+
+        return new User(user);
+    }
+
     async update(req: Request) {
         const { user } = req.app.locals;
 

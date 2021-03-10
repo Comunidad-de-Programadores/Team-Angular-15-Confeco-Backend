@@ -20,10 +20,15 @@ const controller = new UserController;
 
 export class UserRoutes {
     constructor(public router: Router) {
+        this.me();
         this.profile();
         this.update();
         this.changeAvatar();
         this.convertInstructor();
+    }
+
+    private me(): void {
+        this.router.get("/me", [auth.isAuth], controller.me);
     }
 
     private profile(): void {
