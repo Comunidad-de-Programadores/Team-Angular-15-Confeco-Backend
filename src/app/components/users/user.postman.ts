@@ -52,12 +52,12 @@ export class UserPostman {
 
         await this.repository.update(data._id, {
             nickname: req.body.nickname || data.nickname,
-            country: req.body.country || data.country,
-            gender: req.body.gender || data.gender,
-            facebookLink: req.body.facebookLink || data.facebookLink,
-            twitterLink: req.body.twitterLink || data.twitterLink,
-            githubLink: req.body.githubLink || data.githubLink,
-            linkedinLink: req.body.linkedinLink || data.linkedinLink
+            country: req.body.country,
+            gender: req.body.gender,
+            facebookLink: req.body.facebookLink,
+            twitterLink: req.body.twitterLink,
+            githubLink: req.body.githubLink,
+            linkedinLink: req.body.linkedinLink
         });
 
         const values: IUserDatabase | null = await this.repository.get(data._id);
