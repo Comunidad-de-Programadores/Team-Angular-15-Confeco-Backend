@@ -11,7 +11,7 @@ import { IGenerateToken, IVerifyToken } from "../interfaces/jwt.interfaces";
 export class JwtChangeEmail implements IGenerateToken<User>, IVerifyToken<User> {
     generate(payload: User): string {
         const { JWT_CHANGE_EMAIL_KEY } = environments;
-        return sign(payload, JWT_CHANGE_EMAIL_KEY as string, { expiresIn: "30m" });
+        return sign(payload, JWT_CHANGE_EMAIL_KEY as string, { expiresIn: "15m" });
     }
 
     verify(token: string): User {

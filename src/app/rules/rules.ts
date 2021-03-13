@@ -5,8 +5,16 @@ import { body, validationResult } from "express-validator";
 // Imports environments.
 import { environments } from "../config/environments";
 
+// Imports interfaces.
+import { IDatabaseUserRepository } from "../database/interfaces/repositories.interfaces";
+
 // Imports my rules.
 import { rules } from "../config/rules";
+
+// Imports repositories.
+import { UserRepositoryMongo } from "../database/mongo/repositories/UserRepositoryMongo";
+import { IUserDatabase } from "../database/interfaces/entities.interfaces";
+const repository: IDatabaseUserRepository = new UserRepositoryMongo;
 
 export const email = body("email").isEmail().withMessage("El email es invalido");
 
@@ -34,16 +42,13 @@ export const uploadImage = body("picture").custom((value, data) => {
     return result;
 });
 
-export function checkFieldsResetPassword(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+export function checkFieldsResetPassword(req: Request, res: Response, next: NextFunction) {
     const { token, password } = req.body;
 
     const verifyToken: boolean | string = rules.required(token);
     if (typeof verifyToken === "string") {
         return res.status(400).json({
+            name: "BadRequest",
             message: "Necesitas proveer un token, para realizar esta accion."
         });
     }
@@ -55,6 +60,32 @@ export function checkFieldsResetPassword(
     }
 
     return next();
+}
+
+export async function checkFieldsResetEmail(req: Request, res: Response, next: NextFunction) {
+    const { email, token } = req.body;
+
+    const verifyToken: string | boolean = rules.required(token);
+    if (typeof verifyToken !== "boolean") {
+        res.status(400).json({
+            name: "BadRequest",
+            message: "Necesitas proveer un token para realizar esta accion."
+        });
+    }
+
+    const verifyEmail: string | boolean = rules.email(email);
+    if (typeof verifyEmail !== "boolean") {
+        req.flash("message", verifyEmail);
+        res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
+    }
+
+    const user: IUserDatabase | null = await repository.getByEmail(email);
+    if (user) {
+        req.flash("message", "El email que ingresaste ya se encuentra en uso");
+        res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
+    }
+    
+    next();
 }
 
 export function conditionRequestRules (

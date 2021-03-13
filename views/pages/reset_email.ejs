@@ -21,7 +21,7 @@
                             <input type="hidden" name="token" value="<%= token %>">
                             <div class="form-group">
                                 <label for="email">Correo electronico</label>
-                                <input type="email" name="email" class="form-control my-2 <%= message.length ? 'is-invalid' : null %>" autofocus>
+                                <input type="email" name="email" class="form-control my-2 <%= message.length ? 'is-invalid' : null %>" autocomplete="off" autofocus>
                                 <small class="form-text <%= message.length ? 'invalid-feedback' : 'text-muted' %>"><%= message.length ? message : "Escriba su nuevo correo electronico" %></small>
                             </div>
                             <button class="btn btn-primary px-3 py-2 mt-4 w-100">Cambiar email</button>

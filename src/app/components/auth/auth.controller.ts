@@ -119,4 +119,8 @@ export class AuthControllerComponents {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async resetEmail(req: Request, res: Response): Promise<void> {
+        res.json({ message: "Email modificado" });
+    }
 }

@@ -20,9 +20,12 @@ export class AuthRoutesComponent {
         // Auth local.
         this.register();
         this.login();
+        
+        // Email
         this.verificationEmail();
         this.changeEmail();
         this.showChangeEmail();
+        this.resetEmail();
 
         // Password
         this.forgotPassword();
@@ -97,6 +100,14 @@ export class AuthRoutesComponent {
         this.router.get(
             "/email/reset/:token",
             controller.showChangeEmail
+        );
+    }
+
+    private resetEmail(): void {
+        this.router.post(
+            "/email/reset",
+            rules.checkFieldsResetEmail,
+            controller.resetEmail
         );
     }
 };
