@@ -11,6 +11,9 @@ import * as rules from "../../rules/rules";
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
 
+import { ValidatorsMiddleware } from "../../middlewares/validators.middleware";
+const validators: ValidatorsMiddleware = new ValidatorsMiddleware;
+
 // Imports controllers
 import { AuthControllerComponents } from "./auth.controller";
 const controller = new AuthControllerComponents();
@@ -48,7 +51,7 @@ export class AuthRoutesComponent {
     private login(): void {
         this.router.post(
             "/login",
-            [rules.email, rules.password, rules.conditionRequestRules],
+            [rules.email, rules.password, rules.conditionRequestRules, validators.verifyCredentials],
             controller.login
         );
     }
@@ -91,7 +94,7 @@ export class AuthRoutesComponent {
     private changeEmail(): void {
         this.router.post(
             "/email/change",
-            [auth.isAuth, rules.email, rules.password, rules.conditionRequestRules, auth.verifyCredentials],
+            [auth.isAuth, rules.email, rules.password, rules.conditionRequestRules, validators.verifyCredentials],
             controller.requestEmailChange
         );
     }

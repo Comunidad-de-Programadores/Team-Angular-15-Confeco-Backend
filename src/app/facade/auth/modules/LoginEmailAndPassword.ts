@@ -1,21 +1,19 @@
-// Imports modules.
-import createHttpError from "http-errors";
-
 // Imports interfaces.
-import { User } from "../../../models/User";
 import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
+
+// Imports models.
+import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
+import { IUserDatabase } from "../../../database/interfaces/entities.interfaces";
 
 export class LoginEmailAndPassword implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
 
     constructor(
         private repository: IDatabaseUserRepository,
-        private encrypt: IEncrypt,
         private credentials: ICredentials
     ) {
         this.jwt = new JwtFacade();
@@ -23,22 +21,8 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Verify user existence.
-        const { email, password } = this.credentials;
-        const user = await this.repository.getByEmail(email);
-
-        const credentialsIncorrect = createHttpError(401, "Las credenciales son incorrectas.", {
-            name: "CredentialsIncorrect"
-        });
-        
-        if (!user) throw credentialsIncorrect;
-
-        if (!user.verified_email) throw createHttpError(401, "Necesitas verificar tu email, para iniciar sesion.", {
-            name: "UnverifiedEmail"
-        });
-
-        // Compare password
-        const result = await this.encrypt.compare(password, user.password || "");
-        if (!result) throw credentialsIncorrect;
+        const { email } = this.credentials;
+        const user = await this.repository.getByEmail(email) as IUserDatabase;
 
         // Generate tokens.
         const newUser = Object.assign({}, new User(user));
