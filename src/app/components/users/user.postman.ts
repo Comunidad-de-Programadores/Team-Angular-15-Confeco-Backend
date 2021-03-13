@@ -54,6 +54,8 @@ export class UserPostman {
             nickname: req.body.nickname || data.nickname,
             country: req.body.country,
             gender: req.body.gender,
+            biography: req.body.biography,
+            knowledgeAreas: req.body.knowledgeAreas,
             facebookLink: req.body.facebookLink,
             twitterLink: req.body.twitterLink,
             githubLink: req.body.githubLink,
@@ -101,22 +103,5 @@ export class UserPostman {
         await this.repository.updateBanner(userId, file.url);
 
         return file;
-    }
-
-    async convertInstructor(req: Request) {
-        const { user } = req.app.locals;
-        const { biography, knowledgeArea } = req.body;
-
-        // Verify existence user.
-        const data: User | null = await this.repository.get(user._id);
-        if (!data) throw createHttpError(401, "El usuario no existe.", {
-            name: "UserNotFound"
-        });
-
-        // Update user.
-        const instructor: object = { biography, knowledgeArea };
-        await this.repository.convertInstructor(user._id, instructor);
-        
-        return instructor;
     }
 }

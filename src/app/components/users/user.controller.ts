@@ -38,27 +38,12 @@ export class UserController {
         }
     }
 
-    async convertInstructor(req: Request, res: Response): Promise<void> {
-        try {
-            const data = await postman.convertInstructor(req);
-            const { nickname } = req.app.locals.user;
-            
-            res.status(200).json({
-                message: `¡Felicitaciones ${ nickname }! ya eres un creador de contenido.`,
-                data
-            });
-        } catch (error) {
-            const { statusCode, name, message } = error;
-            res.status(statusCode || 400).json({ name, message });
-        }
-    }
-
     async changeAvatar(req: Request, res: Response): Promise<void> {
         try {
-            const avatar: ResUpload = await postman.changeAvatar(req);
+            const picture: ResUpload = await postman.changeAvatar(req);
             res.status(200).json({
                 message: "Su foto de perfil ha sido actualizada con exito.",
-                avatar
+                picture
             });
         } catch (error) {
             const { statusCode, name, message } = error;
@@ -68,10 +53,10 @@ export class UserController {
 
     async changeBanner(req: Request, res: Response): Promise<void> {
         try {
-            const banner: ResUpload = await postman.changeBanner(req);
+            const picture: ResUpload = await postman.changeBanner(req);
             res.status(200).json({
                 message: "La foto de portada ha sido actualizada con exito.",
-                banner
+                picture
             });
         } catch (error) {
             const { statusCode, name, message } = error;

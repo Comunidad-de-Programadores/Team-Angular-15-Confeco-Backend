@@ -16,7 +16,8 @@ const userSchema: Schema = new Schema({
     banner: { type: String },
     verified_email: { type: Boolean, default: false },
     password: { type: String, default: undefined },
-    instructor: { type: Object },
+    biography: { type: String },
+    knowledgeAreas: { type: Array },
     passwordResetToken: { type: String, defaul: undefined },
     created_at: { type: Number, default: () => new Date() },
     updated_at: { type: Number, default: () => new Date() }

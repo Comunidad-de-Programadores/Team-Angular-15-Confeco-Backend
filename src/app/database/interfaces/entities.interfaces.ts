@@ -17,6 +17,8 @@ export interface userFieldsUpdate {
     facebookLink?: string;
     twitterLink?: string;
     githubLink?: string;
+    biography?: string;
+    knowledgeAreas?: string[];
     linkedinLink?: string;
 }
 

@@ -1,3 +1,4 @@
+// Imports models.
 import { Timestamp } from "./Timestamp";
 
 export class User extends Timestamp {
@@ -9,7 +10,8 @@ export class User extends Timestamp {
     banner?: string;
     gender?: string;
     country?: string;
-    instructor?: object;
+    biography?: string;
+    knowledgeAreas?: string[];
     facebookLink?: string;
     twitterLink?: string;
     githubLink?: string;
@@ -29,7 +31,8 @@ export class User extends Timestamp {
         this.githubLink = user.githubLink;
         this.linkedinLink = user.linkedinLink;
         this.verified_email = user.verified_email;
-        this.instructor = user.instructor;
+        this.biography = user.biography;
+        this.knowledgeAreas = user.knowledgeAreas;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
     }
