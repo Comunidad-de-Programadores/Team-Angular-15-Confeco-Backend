@@ -94,4 +94,10 @@ export class AuthControllerComponents {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async requestEmailChange(req: Request, res: Response): Promise<void> {
+        res.status(200).json({
+            message: "Modidica tu email."
+        });
+    }
 }
