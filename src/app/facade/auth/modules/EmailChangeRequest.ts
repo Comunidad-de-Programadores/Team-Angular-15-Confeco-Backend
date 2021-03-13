@@ -1,15 +1,18 @@
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
+import { IAuth } from "../interfaces/auth.interfaces";
+
+// Imports models.
 import { User } from "../../../models/User";
-import { IAuth, ICredentials } from "../interfaces/auth.interfaces";
+
+// Imports facades.
+import { JwtFacade } from "../../Jwt/JwtFacade";
 
 export class EmailChangeRequest implements IAuth<any> {
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private user: User
-    ) {}
+    private jwt: JwtFacade;
 
-    async auth() {
-        console.log(this.user);
+    constructor(private user: User) {
+        this.jwt = new JwtFacade;
     }
+
+    async auth() {}
 }

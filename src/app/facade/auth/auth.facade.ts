@@ -71,7 +71,7 @@ export class AuthFacade {
     }
 
     async emailChangeRequest(user: User) {
-        return await this.execute(new EmailChangeRequest(this.repository, user));
+        return await this.execute(new EmailChangeRequest(user));
     }
 
     private async execute<Tval>(strategy: IAuth<Tval>) {

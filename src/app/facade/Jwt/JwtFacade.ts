@@ -7,6 +7,7 @@ import { JwtAccessToken } from "../../helpers/jsonwebtokens/strategies/AccessTok
 import { JwtRefreshToken } from "../../helpers/jsonwebtokens/strategies/RefreshToken";
 import { JwtEmailToken } from "../../helpers/jsonwebtokens/strategies/JwtEmailToken";
 import { JwtPasswordToken } from "../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
+import { JwtChangeEmail } from "../../helpers/jsonwebtokens/strategies/JwtChangeEmail";
 
 export class JwtFacade {
     private jwt: JsonWebToken;
@@ -35,5 +36,9 @@ export class JwtFacade {
 
     checkPasswordResetToken(token: string): User {
         return this.jwt.verify(token, new JwtPasswordToken);
+    }
+
+    generateEmailChangeToken(payload: User): string {
+        return this.jwt.generate(payload, new JwtChangeEmail);
     }
 };
