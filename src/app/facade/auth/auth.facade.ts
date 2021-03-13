@@ -20,6 +20,7 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 import { EmailChangeRequest } from "./modules/EmailChangeRequest";
 import { User } from "../../models/User";
+import { VerifyEmailChangeToken } from "./modules/VerifyEmailChangeToken";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -57,7 +58,7 @@ export class AuthFacade {
 
     async resetPassword(data: IPasswordReset): Promise<void> {
         const action = new PasswordReset(this.repository, this.encrypt, data);
-        return await this.execute(action);
+        await this.execute(action);
     }
 
     async google(token: string): Promise<IAuthRes> {
@@ -72,6 +73,11 @@ export class AuthFacade {
 
     async emailChangeRequest(user: User) {
         return await this.execute(new EmailChangeRequest(user));
+    }
+
+    async checkEmailResetToken(token: string): Promise<void> {
+        const action = new VerifyEmailChangeToken(this.repository, token);
+        await this.execute(action);
     }
 
     private async execute<Tval>(strategy: IAuth<Tval>) {

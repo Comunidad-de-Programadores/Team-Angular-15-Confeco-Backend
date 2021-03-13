@@ -41,4 +41,8 @@ export class JwtFacade {
     generateEmailChangeToken(payload: User): string {
         return this.jwt.generate(payload, new JwtChangeEmail);
     }
+
+    checkEmailResetToken(token: string): User {
+        return this.jwt.verify(token, new JwtChangeEmail);
+    }
 };

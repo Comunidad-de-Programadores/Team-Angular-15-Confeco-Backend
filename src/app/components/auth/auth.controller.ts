@@ -108,6 +108,14 @@ export class AuthControllerComponents {
     }
 
     async showChangeEmail(req: Request, res: Response): Promise<void> {
-        res.status(200).json({ message: "Formulario de cambio de email." });
+        try {
+            await auth.checkEmailResetToken(req.params.token);
+            res.status(200).json({
+                message: "Tienes acceso"
+            })
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
     }
 }
