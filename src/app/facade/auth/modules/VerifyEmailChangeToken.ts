@@ -23,8 +23,7 @@ export class VerifyEmailChangeToken implements IAuth<void> {
     async auth(): Promise<void> {
         const payload: User = this.jwt.checkEmailResetToken(this.token);
 
-        const user: IUserDatabase | null = await this.repository.getByEmail(payload.email);
-
+        const user: IUserDatabase | null = await this.repository.get(payload._id);
         if (!user) throw createHttpError(404, "El usuario no existe", {
             name: "UserNotFound"
         });

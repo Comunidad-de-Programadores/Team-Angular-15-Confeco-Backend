@@ -31,6 +31,13 @@ export class UserRepositoryMongo implements IDatabaseUserRepository {
         );
     }
 
+    async updateEmail(userId: string, data: {email: string, emailStatus: boolean}) {
+        await models.User.updateOne(
+            { _id: userId },
+            { $set: { email: data.email, verified_email: data.emailStatus } }
+        );
+    }
+
     async updateAvatar(id: string, avatar: string): Promise<void> {
         await models.User.updateOne({ _id: id }, { $set: { avatar } });
     }

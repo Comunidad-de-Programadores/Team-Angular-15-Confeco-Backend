@@ -21,6 +21,7 @@ import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 import { EmailChangeRequest } from "./modules/EmailChangeRequest";
 import { User } from "../../models/User";
 import { VerifyEmailChangeToken } from "./modules/VerifyEmailChangeToken";
+import { EmailReset } from "./modules/EmailReset";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -77,6 +78,11 @@ export class AuthFacade {
 
     async checkEmailResetToken(token: string): Promise<void> {
         const action = new VerifyEmailChangeToken(this.repository, token);
+        await this.execute(action);
+    }
+
+    async resetEmail(data: { email: string; token: string }): Promise<void> {
+        const action = new EmailReset(this.repository, data);
         await this.execute(action);
     }
 

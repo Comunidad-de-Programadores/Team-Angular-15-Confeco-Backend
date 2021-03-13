@@ -43,6 +43,7 @@ export interface IDatabaseUserRepository extends UserRepository {
     updatePasswordResetToken(id: string, token: string | undefined): Promise<void>;
     updateAvatar(id: string, avatar: string): Promise<void>;
     updateBanner(id: string, banner: string): Promise<void>;
+    updateEmail(id: string, data: { email: string, emailStatus: boolean }): Promise<void>;
     convertInstructor(id: string, instructor: object): Promise<void>;
 };
 
