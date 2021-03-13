@@ -5,6 +5,9 @@ import createTransport from "../../config/nodemailer";
 // Imports interfaces.
 import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
 
+// Imports templates
+import { changeEmail } from "../template/changeEmail";
+
 export class MailtrapChangeEmail implements ISendMail {
     private transport: Mail;
 
@@ -13,12 +16,12 @@ export class MailtrapChangeEmail implements ISendMail {
     }
 
     async send(): Promise<void> {
-        this.transport.sendMail({
+        await this.transport.sendMail({
             from: "support@teamangular15",
             to: this.data.email,
             subject: "Cambio de correo electronico.",
             text: "Has realizado una peticion para cambiar tu correo electronico.",
-            html: ""
+            html: changeEmail(this.data)
         });
     }
 }
