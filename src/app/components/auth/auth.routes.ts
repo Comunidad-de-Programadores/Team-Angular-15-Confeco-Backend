@@ -22,6 +22,7 @@ export class AuthRoutesComponent {
         this.login();
         this.verificationEmail();
         this.changeEmail();
+        this.showChangeEmail();
 
         // Password
         this.forgotPassword();
@@ -86,9 +87,16 @@ export class AuthRoutesComponent {
 
     private changeEmail(): void {
         this.router.post(
-            "/requestEmailChange",
+            "/email/change",
             [auth.isAuth, rules.email, rules.password, rules.conditionRequestRules, auth.verifyCredentials],
             controller.requestEmailChange
+        );
+    }
+
+    private showChangeEmail(): void {
+        this.router.get(
+            "/email/reset/:token",
+            controller.showChangeEmail
         );
     }
 };

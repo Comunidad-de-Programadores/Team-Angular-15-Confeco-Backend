@@ -31,7 +31,7 @@ export class EmailChangeRequest implements IAuth<any> {
         const token: string = this.jwt.generateEmailChangeToken(user);
 
         // Generate url.
-        const url: string = `${ environments.URL }/v1/auth/changeEmail/${ token }`;
+        const url: string = `${ environments.URL }/v1/auth/email/reset/${ token }`;
         
         // Send email.
         const payload: IConfirmEmail = { nickname, email, url };
