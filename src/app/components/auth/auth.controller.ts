@@ -99,7 +99,7 @@ export class AuthControllerComponents {
         try {
             const data = await auth.emailChangeRequest(req.app.locals.user);
             res.status(200).json({
-                message: "Modidica tu email."
+                message: `${ data.nickname } se te ha enviado un link a tu correo electronico para que puedas modificar tu cuenta.`
             });
         } catch (error) {
             const { name, message, statusCode } = error;
