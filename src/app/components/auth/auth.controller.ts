@@ -96,8 +96,14 @@ export class AuthControllerComponents {
     }
 
     async requestEmailChange(req: Request, res: Response): Promise<void> {
-        res.status(200).json({
-            message: "Modidica tu email."
-        });
+        try {
+            const data = await auth.emailChangeRequest(req.app.locals.user);
+            res.status(200).json({
+                message: "Modidica tu email."
+            });
+        } catch (error) {
+            const { name, message, statusCode } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
     }
 }

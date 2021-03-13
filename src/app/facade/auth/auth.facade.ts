@@ -19,6 +19,7 @@ import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepos
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 import { EmailChangeRequest } from "./modules/EmailChangeRequest";
+import { User } from "../../models/User";
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -69,8 +70,8 @@ export class AuthFacade {
         return await this.execute(facebook);
     }
 
-    async emailChangeRequest(credentials: ICredentials) {
-        return await this.execute(new EmailChangeRequest(this.repository, credentials));
+    async emailChangeRequest(user: User) {
+        return await this.execute(new EmailChangeRequest(this.repository, user));
     }
 
     private async execute<Tval>(strategy: IAuth<Tval>) {
