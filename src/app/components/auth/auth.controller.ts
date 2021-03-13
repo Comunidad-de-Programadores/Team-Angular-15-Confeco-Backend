@@ -110,9 +110,10 @@ export class AuthControllerComponents {
     async showChangeEmail(req: Request, res: Response): Promise<void> {
         try {
             await auth.checkEmailResetToken(req.params.token);
-            res.status(200).json({
-                message: "Tienes acceso"
-            })
+            res.render("pages/reset_email", {
+                token: req.params.token,
+                message: req.flash("message")
+            });
         } catch (error) {
             const { name, message, statusCode } = error;
             res.status(statusCode || 400).json({ name, message });
