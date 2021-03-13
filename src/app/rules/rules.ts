@@ -22,14 +22,14 @@ export const password = body("password").custom(value => {
     return result;
 });
 
-export const uploadImage = body("avatar").custom((value, data) => {
+export const uploadImage = body("picture").custom((value, data) => {
     const files = data.req.files;
     
     if (!files) throw new Error("Necesitas enviar una imagen.");
 
-    if (Array.isArray(files.avatar)) throw new Error("Solo puedes enviar una imagen, no una lista.");
+    if (Array.isArray(files.picture)) throw new Error("Solo puedes enviar una imagen, no una lista.");
 
-    const result: string | boolean = rules.image(files.avatar.mimetype);
+    const result: string | boolean = rules.image(files.picture.mimetype);
     if (typeof result === "string") throw new Error(result);
     return result;
 });
@@ -63,5 +63,10 @@ export function conditionRequestRules (
     next: NextFunction
 ): void {
     const errors = validationResult(req);
-    errors.isEmpty() ? next() : res.status(400).json(errors);
+    const error = errors.array({ onlyFirstError: true })[0];
+    
+    errors.isEmpty() ? next() : res.status(400).json({
+        name: "InvalidData",
+        message: error.msg
+    });
 };

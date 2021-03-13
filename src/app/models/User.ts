@@ -6,6 +6,7 @@ export class User extends Timestamp {
     email: string;
     verified_email?: boolean;
     avatar?: string;
+    banner?: string;
     gender?: string;
     country?: string;
     instructor?: object;
@@ -21,6 +22,7 @@ export class User extends Timestamp {
         this.email = user.email;
         this.gender = user.gender;
         this.avatar = user.avatar;
+        this.banner = user.banner;
         this.country = user.country;
         this.facebookLink = user.facebookLink;
         this.twitterLink = user.twitterLink;

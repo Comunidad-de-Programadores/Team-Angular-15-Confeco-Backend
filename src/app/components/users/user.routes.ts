@@ -24,6 +24,7 @@ export class UserRoutes {
         this.profile();
         this.update();
         this.changeAvatar();
+        this.changeBanner();
         this.convertInstructor();
     }
 
@@ -44,6 +45,14 @@ export class UserRoutes {
             "/:userId/avatar",
             [auth.isAuth, uploadImage, conditionRequestRules],
             controller.changeAvatar
+        );
+    }
+
+    private changeBanner(): void {
+        this.router.patch(
+            "/:userId/banner",
+            [auth.isAuth, uploadImage, conditionRequestRules],
+            controller.changeBanner
         );
     }
 

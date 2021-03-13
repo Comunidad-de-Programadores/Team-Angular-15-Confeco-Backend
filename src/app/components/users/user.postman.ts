@@ -69,16 +69,38 @@ export class UserPostman {
     }
 
     async changeAvatar(req: Request) {
-        const { avatar }: any = req.files;
+        const { picture }: any = req.files;
         const { user } = req.app.locals;
 
         // Upload file to cloud.
-        const data: ResUpload = await this.cloud.upload(avatar, "picture_profiles");
+        const data: ResUpload = await this.cloud.upload(picture, "picture_profiles");
 
         // Update user.
         await this.repository.updateAvatar(user._id, data.url);
 
         return data;
+    }
+
+    async changeBanner(req: Request) {
+        const { picture }: any = req.files;
+        const { userId } = req.params;
+
+        const values = await this.repository.get(userId);
+        if (!values) throw createHttpError(404, "No puedes modificar el banner por que el usuario no existe.", {
+            name: "UserNotFound"
+        });
+
+        if (values._id !== userId) throw createHttpError(401, "No tienes los permisos necesarios para realizar esta accion.", {
+            name: "Unauthorized"
+        });
+
+        // Upload banner.
+        const file: ResUpload = await this.cloud.upload(picture, "cover_pictures");
+
+        // Update user.
+        await this.repository.updateBanner(userId, file.url);
+
+        return file;
     }
 
     async convertInstructor(req: Request) {

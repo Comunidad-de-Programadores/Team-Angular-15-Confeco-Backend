@@ -13,6 +13,7 @@ const userSchema: Schema = new Schema({
     githubLink: { type: String },
     linkedinLink: { type: String },
     avatar: { type: String },
+    banner: { type: String },
     verified_email: { type: Boolean, default: false },
     password: { type: String, default: undefined },
     instructor: { type: Object },

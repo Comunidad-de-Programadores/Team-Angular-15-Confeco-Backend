@@ -65,4 +65,17 @@ export class UserController {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async changeBanner(req: Request, res: Response): Promise<void> {
+        try {
+            const banner: ResUpload = await postman.changeBanner(req);
+            res.status(200).json({
+                message: "La foto de portada ha sido actualizada con exito.",
+                banner
+            });
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 };
