@@ -123,7 +123,6 @@ export class AuthControllerComponents {
     async resetEmail(req: Request, res: Response): Promise<void> {
         try {
             const { email, token } = req.body;
-            console.log(req.body);
             await auth.resetEmail({ email, token });
             res.render("success/changeEmail");
         } catch (error) {
