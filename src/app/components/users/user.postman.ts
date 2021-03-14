@@ -55,6 +55,7 @@ export class UserPostman {
             country: req.body.country,
             gender: req.body.gender,
             biography: req.body.biography,
+            birthday: req.body.birthday,
             knowledgeAreas: req.body.knowledgeAreas,
             facebookLink: req.body.facebookLink,
             twitterLink: req.body.twitterLink,

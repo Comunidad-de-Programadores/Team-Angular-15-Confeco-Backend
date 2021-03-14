@@ -33,7 +33,7 @@ export class EmailReset implements IAuth<void> {
         // Update email user.
         await this.repository.updateEmail(
             payload._id,
-            { email: payload.email, emailStatus: false }
+            { email: this.data.email, emailStatus: false }
         );
 
         // Generate token.

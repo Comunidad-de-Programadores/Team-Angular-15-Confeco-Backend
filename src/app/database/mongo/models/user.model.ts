@@ -8,6 +8,7 @@ const userSchema: Schema = new Schema({
     email: { type: String, required: true },
     gender: { type: String },
     country: { type: String },
+    birthday: { type: Date },
     facebookLink: { type: String },
     twitterLink: { type: String },
     githubLink: { type: String },
@@ -19,8 +20,8 @@ const userSchema: Schema = new Schema({
     biography: { type: String },
     knowledgeAreas: { type: Array },
     passwordResetToken: { type: String, defaul: undefined },
-    created_at: { type: Number, default: () => new Date() },
-    updated_at: { type: Number, default: () => new Date() }
+    created_at: { type: Date, default: () => new Date },
+    updated_at: { type: Date, default: () => new Date }
 });
 
 export const UserModel = model("users", userSchema);

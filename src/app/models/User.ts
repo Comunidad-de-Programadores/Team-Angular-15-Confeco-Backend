@@ -9,6 +9,7 @@ export class User extends Timestamp {
     avatar?: string;
     banner?: string;
     gender?: string;
+    birthday?: Date;
     country?: string;
     biography?: string;
     knowledgeAreas?: string[];
@@ -23,6 +24,7 @@ export class User extends Timestamp {
         this.nickname = user.nickname;
         this.email = user.email;
         this.gender = user.gender;
+        this.birthday = user.birthday;
         this.avatar = user.avatar;
         this.banner = user.banner;
         this.country = user.country;

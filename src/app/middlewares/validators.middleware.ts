@@ -25,14 +25,19 @@ export class ValidatorsMiddleware {
 
         // Verify email.
         if (!user) return res.status(401).json({
-            name: "Unauthorized",
+            name: "EmailDoesNotExist",
             message: "El usuario no existe."
+        });
+
+        if (!user.verified_email) return res.status(401).json({
+            name: "UnconfirmedEmail",
+            message: "Necesitas verificar tu email para que puedas acceder."
         });
 
         // Verify password.
         const result: boolean = await encryptor.compare(req.body.password, user.password);
         result ? next() : res.status(401).json({
-            name: "Unauthorized",
+            name: "IncorrectPassword",
             message: "La contraseña es incorrecta."
         });
     }

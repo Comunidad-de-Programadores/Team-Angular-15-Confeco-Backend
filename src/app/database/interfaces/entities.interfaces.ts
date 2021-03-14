@@ -15,6 +15,7 @@ export interface userFieldsUpdate {
     gender?: string;
     country?: string;
     facebookLink?: string;
+    birthday?: Date;
     twitterLink?: string;
     githubLink?: string;
     biography?: string;
