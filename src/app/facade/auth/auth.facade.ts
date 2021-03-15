@@ -48,7 +48,7 @@ export class AuthFacade {
     }
 
     async forgotPassword(email: string): Promise<void> {
-        const action = new ForgotPassword(this.repository, this.encrypt, email);
+        const action = new ForgotPassword(this.encrypt, email);
         return await this.execute(action);
     }
 
