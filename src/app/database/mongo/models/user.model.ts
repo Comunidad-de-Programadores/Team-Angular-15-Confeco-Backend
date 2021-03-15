@@ -1,9 +1,8 @@
 // Imports modules.
 import { Schema, model } from "mongoose";
-import { v4 as uuid } from "uuid";
 
 const userSchema: Schema = new Schema({
-    _id: { type: String, default: uuid() },
+    _id: { type: String, required: true },
     nickname: { type: String, required: true },
     email: { type: String, required: true },
     gender: { type: String },

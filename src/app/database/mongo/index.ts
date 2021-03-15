@@ -6,6 +6,7 @@ import { environments } from "../../config/environments";
 
 // Imports models.
 import { UserModel } from "./models/user.model";
+import { KnowledgeAreaModel } from "./models/knowledgeArea.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -16,5 +17,6 @@ connect(environments.MONGODB_URI as string, {
 .catch(console.error);
 
 export const models = {
-    User: UserModel
+    User: UserModel,
+    KnowledgeArea: KnowledgeAreaModel
 };

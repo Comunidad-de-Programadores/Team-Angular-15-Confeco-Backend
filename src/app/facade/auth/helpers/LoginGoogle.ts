@@ -1,6 +1,5 @@
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
-import { IUserDatabase } from "../../../database/interfaces/entities.interfaces";
 import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
 
 // Imports models.
@@ -17,7 +16,7 @@ export class LoginGoogle implements IAuth<IAuthRes> {
     private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
 
-    constructor(private user: IUserDatabase) {
+    constructor(private user: UserDatabase) {
         this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
     }
