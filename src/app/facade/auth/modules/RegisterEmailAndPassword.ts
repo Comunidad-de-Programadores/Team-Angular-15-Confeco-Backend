@@ -18,8 +18,12 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 import { Mail } from "../../../mails/Mail";
 // import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
 import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
+import { CreateUser } from "../../../repositories/user/write.user";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
     private mail: Mail;
 
@@ -28,6 +32,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         private encrypt: IEncrypt,
         private data: IRegisterParams
     ) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
         this.mail = new Mail();
     }
@@ -45,7 +50,8 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         params.password = await this.encrypt.encrypt(params.password);
 
         // Save user to the database.
-        await this.repository.create({ _id: uuid(), ...params });
+        // await this.repository.create({ _id: uuid(), ...params });
+        await this.database.create({ _id: uuid(), ...params }, new CreateUser);
 
         // Get fields user.
         const data = await this.repository.getByEmail(params.email);
