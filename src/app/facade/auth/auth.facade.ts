@@ -1,10 +1,13 @@
 // Imports authentications methods.
 import { AuthGoogle } from "./modules/AuthGoogle";
+import { EmailReset } from "./modules/EmailReset";
 import { VerifyEmail } from "./modules/VerifyEmail";
 import { AuthFacebook } from "./modules/AuthFacebook";
 import { PasswordReset } from "./modules/PasswordReset";
 import { ForgotPassword } from "./modules/ForgotPassword";
+import { EmailChangeRequest } from "./modules/EmailChangeRequest";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
+import { VerifyEmailChangeToken } from "./modules/VerifyEmailChangeToken";
 import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
 import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
@@ -13,15 +16,16 @@ import { IDatabaseUserRepository } from "../../database/interfaces/repositories.
 import { IAuth, IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "./interfaces/auth.interfaces";
 import { IEncrypt } from "../../helpers/encryptors/interfaces/encrypt.interface";
 
+// Imports models.
+import { User } from "../../models/User";
+
 // Imports repositories.
 import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
 
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
-import { EmailChangeRequest } from "./modules/EmailChangeRequest";
-import { User } from "../../models/User";
-import { VerifyEmailChangeToken } from "./modules/VerifyEmailChangeToken";
-import { EmailReset } from "./modules/EmailReset";
+
+// Imports 
 
 export class AuthFacade {
     private repository: IDatabaseUserRepository;
@@ -53,7 +57,7 @@ export class AuthFacade {
     }
 
     async checkValidityToken(token: string): Promise<void> {
-        const action = new VerifyPasswordResetToken(this.repository, token);
+        const action = new VerifyPasswordResetToken(token);
         return await this.execute(action);
     }
 
