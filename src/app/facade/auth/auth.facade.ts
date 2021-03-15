@@ -63,7 +63,7 @@ export class AuthFacade {
     }
 
     async google(token: string): Promise<IAuthRes> {
-        const google = new AuthGoogle(this.repository, token);
+        const google = new AuthGoogle(token);
         return await this.execute(google);
     }
 
