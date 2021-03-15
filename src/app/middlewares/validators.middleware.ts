@@ -2,17 +2,18 @@
 import { Request, Response, NextFunction } from "express";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../database/interfaces/repositories.interfaces";
 import { IEncrypt } from "../helpers/encryptors/interfaces/encrypt.interface";
-import { IUserDatabase } from "../database/interfaces/entities.interfaces";
+import { UserDatabase } from "../repositories/interfaces/entities.interfaces";
 
 // Imports encryptors
 import { BcryptPassword } from "../helpers/encryptors/BcryptPassword";
 const encryptor: IEncrypt = new BcryptPassword;
 
 // Imports repositories.
-import { UserRepositoryMongo } from "../database/mongo/repositories/UserRepositoryMongo";
-const userRepo: IDatabaseUserRepository = new UserRepositoryMongo;
+import { DatabaseRepository } from "../repositories/DatabaseRepository";
+import { GetUserByEmail } from "../repositories/user/read.user";
+
+const database = new DatabaseRepository<string, UserDatabase>();
 
 export class ValidatorsMiddleware {
     async verifyCredentials(
@@ -21,7 +22,7 @@ export class ValidatorsMiddleware {
         next: NextFunction
     ): Promise<Response<any> | undefined> {
         // Consult database.
-        const user: IUserDatabase | null = await userRepo.getByEmail(req.body.email);
+        const user: UserDatabase | null = await database.get(req.body.email, new GetUserByEmail);
 
         // Verify email.
         if (!user) return res.status(401).json({

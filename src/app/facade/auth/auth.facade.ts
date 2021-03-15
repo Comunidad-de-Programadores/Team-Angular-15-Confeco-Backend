@@ -38,7 +38,7 @@ export class AuthFacade {
     }
 
     async login(credentials: ICredentials): Promise<IAuthRes> {
-        const login = new LoginEmailAndPassword(this.repository, credentials);
+        const login = new LoginEmailAndPassword(credentials);
         return await this.execute(login);
     }
 

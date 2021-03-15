@@ -1,28 +1,30 @@
 // Imports interfaces.
 import { IAuth, IAuthRes, ICredentials } from "../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
+import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
 
 // Imports models.
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
-import { IUserDatabase } from "../../../database/interfaces/entities.interfaces";
+
+// Imports interfaces.
+import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+import { GetUserByEmail } from "../../../repositories/user/read.user";
 
 export class LoginEmailAndPassword implements IAuth<IAuthRes> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private credentials: ICredentials
-    ) {
+    constructor(private credentials: ICredentials) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<IAuthRes> {
         // Verify user existence.
         const { email } = this.credentials;
-        const user = await this.repository.getByEmail(email) as IUserDatabase;
+        const user: any = await this.database.get(email, new GetUserByEmail);
 
         // Generate tokens.
         const newUser = Object.assign({}, new User(user));
