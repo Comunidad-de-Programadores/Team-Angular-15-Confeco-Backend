@@ -3,12 +3,12 @@ import { AuthGoogle } from "./modules/AuthGoogle";
 import { EmailReset } from "./modules/emails/EmailReset";
 import { VerifyEmail } from "./modules/emails/VerifyEmail";
 import { AuthFacebook } from "./modules/AuthFacebook";
-import { PasswordReset } from "./modules/PasswordReset";
-import { ForgotPassword } from "./modules/ForgotPassword";
+import { PasswordReset } from "./modules/password/PasswordReset";
+import { ForgotPassword } from "./modules/password/ForgotPassword";
 import { EmailChangeRequest } from "./modules/emails/EmailChangeRequest";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
 import { VerifyEmailChangeToken } from "./modules/emails/VerifyEmailChangeToken";
-import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
+import { VerifyPasswordResetToken } from "./modules/password/VerifyPasswordResetToken";
 import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
 // Imports interfaces

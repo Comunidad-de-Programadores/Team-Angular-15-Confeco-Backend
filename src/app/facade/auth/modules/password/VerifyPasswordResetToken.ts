@@ -2,16 +2,16 @@
 import createHttpError from "http-errors";
 
 // Implements interfaces.
-import { IAuth } from "../interfaces/auth.interfaces";
-import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
+import { IAuth } from "../../interfaces/auth.interfaces";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 
 // Imports jsonwebtoken.
-import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
-import { JwtPasswordToken } from "../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtPasswordToken } from "../../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
 
 // Imports repositories.
-import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { GetUserByEmail } from "../../../repositories/user/read.user";
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { GetUserByEmail } from "../../../../repositories/user/read.user";
 
 export class VerifyPasswordResetToken implements IAuth<void> {
     private database: DatabaseRepository<string, UserDatabase>;

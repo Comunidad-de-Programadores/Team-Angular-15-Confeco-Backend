@@ -2,26 +2,26 @@
 import createHttpError from "http-errors";
 
 // Imports environments.
-import { environments } from "../../../config/environments";
+import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
-import { User } from "../../../models/User";
-import { IAuth } from "../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
-import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
+import { User } from "../../../../models/User";
+import { IAuth } from "../../interfaces/auth.interfaces";
+import { IEncrypt } from "../../../../helpers/encryptors/interfaces/encrypt.interface";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 
 // Imports mails.
-import { Mail } from "../../../mails/Mail";
+import { Mail } from "../../../../mails/Mail";
 // import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
-import { MailtrapForgotPassword } from "../../../mails/strategies/MailtrapForgotPassword";
+import { MailtrapForgotPassword } from "../../../../mails/strategies/MailtrapForgotPassword";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 
 // Imports repositories.
-import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { GetUserByEmail } from "../../../repositories/user/read.user";
-import { UpdateUser } from "../../../repositories/user/write.user";
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { GetUserByEmail } from "../../../../repositories/user/read.user";
+import { UpdateUser } from "../../../../repositories/user/write.user";
 
 export class ForgotPassword implements IAuth<void> {
     private database: DatabaseRepository<string, UserDatabase>;

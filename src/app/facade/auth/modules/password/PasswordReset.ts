@@ -2,21 +2,21 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
-import { IAuth, IPasswordReset } from "../interfaces/auth.interfaces";
-import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
-import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
-import { IPayloadJwt } from "../../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
+import { IAuth, IPasswordReset } from "../../interfaces/auth.interfaces";
+import { IEncrypt } from "../../../../helpers/encryptors/interfaces/encrypt.interface";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
+import { IPayloadJwt } from "../../../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 
 // Imports models.
-import { User } from "../../../models/User";
+import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 
 // Imports repositories.
-import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { GetUser } from "../../../repositories/user/read.user";
-import { UpdateUser } from "../../../repositories/user/write.user";
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { GetUser } from "../../../../repositories/user/read.user";
+import { UpdateUser } from "../../../../repositories/user/write.user";
 
 export class PasswordReset implements IAuth<void> {
     private database: DatabaseRepository<string, UserDatabase>;
