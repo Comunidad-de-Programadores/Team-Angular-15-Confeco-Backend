@@ -8,8 +8,8 @@ import { environments } from "../../../config/environments";
 // Imports interfaces.
 import { User } from "../../../models/User";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
+import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
 
 // Imports jsonwebtokens.
 import { JwtFacade } from "../../Jwt/JwtFacade";
@@ -18,20 +18,18 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 import { Mail } from "../../../mails/Mail";
 // import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
 import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+
+// Imports databases.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
 import { CreateUser } from "../../../repositories/user/write.user";
+import { GetUserByEmail } from "../../../repositories/user/read.user";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
     private mail: Mail;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private encrypt: IEncrypt,
-        private data: IRegisterParams
-    ) {
+    constructor(private encrypt: IEncrypt, private data: IRegisterParams) {
         this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
         this.mail = new Mail();
@@ -40,8 +38,8 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
     async auth(): Promise<IEmailVerificacionToken> {
         // Check if the user exists.
         let params: IRegisterParams = Object.assign({}, this.data);
-        const result = await this.repository.getByEmail(params.email);
-        
+        const result = await this.database.get(params.email, new GetUserByEmail);
+
         if (result) throw createError(403, "Este email ya se encuentra en uso.", {
             name: "EmailAlreadyExist"
         });
@@ -50,11 +48,10 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         params.password = await this.encrypt.encrypt(params.password);
 
         // Save user to the database.
-        // await this.repository.create({ _id: uuid(), ...params });
         await this.database.create({ _id: uuid(), ...params }, new CreateUser);
 
         // Get fields user.
-        const data = await this.repository.getByEmail(params.email);
+        const data: any = await this.database.get(params.email, new GetUserByEmail);
         if (!data) throw createError(400, "Sucedio un error durante autenticacion.", {
             name: "AuthenticationError"
         });

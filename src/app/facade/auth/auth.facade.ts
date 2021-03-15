@@ -33,7 +33,7 @@ export class AuthFacade {
     }
 
     async register(data: IRegisterParams): Promise<IEmailVerificacionToken> {
-        const register = new RegisterEmailAndPassword(this.repository, this.encrypt, data);
+        const register = new RegisterEmailAndPassword(this.encrypt, data);
         return await this.execute(register);
     }
 
