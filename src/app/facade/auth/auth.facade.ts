@@ -62,7 +62,7 @@ export class AuthFacade {
     }
 
     async resetPassword(data: IPasswordReset): Promise<void> {
-        const action = new PasswordReset(this.repository, this.encrypt, data);
+        const action = new PasswordReset(this.encrypt, data);
         await this.execute(action);
     }
 
