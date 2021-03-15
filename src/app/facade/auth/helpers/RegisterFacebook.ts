@@ -4,19 +4,25 @@ import { v4 as uuid } from "uuid";
 
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
+import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
+
+// Imports models.
+import { User } from "../../../models/User";
 
 // Imports facades.
 import { JwtFacade } from "../../Jwt/JwtFacade";
-import { User } from "../../../models/User";
+
+// Imports repositories.
+import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+import { CreateUser } from "../../../repositories/user/write.user";
+import { GetUser } from "../../../repositories/user/read.user";
 
 export class RegisterFacebook implements IAuth<IAuthRes> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
     
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private data: { last_name: string, email: string | undefined }
-    ) {
+    constructor(private data: { last_name: string, email: string | undefined }) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
     }
 
@@ -26,16 +32,16 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
         const nickname: string = `${ this.data.last_name }${ Math.round(Math.random() * (1000 - 100)) }`;
 
         // Save user.
-        await this.repository.create({
+        await this.database.create({
             _id,
             nickname,
             password: "",
             email: this.data.email || "",
             verified_email: !!this.data.email
-        });
+        }, new CreateUser);
 
         // Get fields user.
-        const user = await this.repository.get(_id);
+        const user: UserDatabase | null = await this.database.get(_id, new GetUser);
 
         if (!user) throw createHttpError(401, "Ha sucedido un error durante la operacion.", {
             name: "AuthenticationError"

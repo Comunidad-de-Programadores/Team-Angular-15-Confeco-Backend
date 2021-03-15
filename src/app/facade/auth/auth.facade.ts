@@ -68,7 +68,7 @@ export class AuthFacade {
     }
 
     async facebook(token: string): Promise<IAuthRes> {
-        const facebook = new AuthFacebook(this.repository, token);
+        const facebook = new AuthFacebook(token);
         return await this.execute(facebook);
     }
 
