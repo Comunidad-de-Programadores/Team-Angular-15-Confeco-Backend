@@ -6,10 +6,6 @@ import { environments } from "../../config/environments";
 
 // Imports models.
 import { UserModel } from "./models/user.model";
-import { WorkshopModel } from "./models/workshop.model";
-import { knowledgeAreaModel } from "./models/knowledgeArea.model";
-import { eventModel } from "./models/events/event.model";
-import { EventUser } from "./models/events/EventsUsers.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -20,9 +16,5 @@ connect(environments.MONGODB_URI as string, {
 .catch(console.error);
 
 export const models = {
-    User: UserModel,
-    Workshop: WorkshopModel,
-    Knowledge: knowledgeAreaModel,
-    Event: eventModel,
-    EventUser: EventUser
+    User: UserModel
 };

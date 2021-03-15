@@ -1,9 +1,6 @@
 // Imports modules.
 import { Request, Response, NextFunction } from "express";
 
-// Imports interfaces.
-import { IDatabaseUserRepository } from "../database/interfaces/repositories.interfaces";
-
 // Imports models.
 import { User } from "../models/User";
 
@@ -11,10 +8,6 @@ import { User } from "../models/User";
 import { JsonWebToken } from "../helpers/jsonwebtokens/JsonWebToken";
 import { JwtAccessToken } from "../helpers/jsonwebtokens/strategies/AccessToken";
 const jwt: JsonWebToken = new JsonWebToken;
-
-// Imports repositories
-import { UserRepositoryMongo } from "../database/mongo/repositories/UserRepositoryMongo";
-const repository: IDatabaseUserRepository = new UserRepositoryMongo;
 
 export class AuthMiddleware {
     isAuth(req: Request, res: Response, next: NextFunction) {

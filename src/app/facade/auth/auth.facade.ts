@@ -1,26 +1,22 @@
 // Imports authentications methods.
 import { AuthGoogle } from "./modules/AuthGoogle";
+import { AuthFacebook } from "./modules/AuthFacebook";
 import { EmailReset } from "./modules/emails/EmailReset";
 import { VerifyEmail } from "./modules/emails/VerifyEmail";
-import { AuthFacebook } from "./modules/AuthFacebook";
 import { PasswordReset } from "./modules/password/PasswordReset";
 import { ForgotPassword } from "./modules/password/ForgotPassword";
-import { EmailChangeRequest } from "./modules/emails/EmailChangeRequest";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
+import { EmailChangeRequest } from "./modules/emails/EmailChangeRequest";
+import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 import { VerifyEmailChangeToken } from "./modules/emails/VerifyEmailChangeToken";
 import { VerifyPasswordResetToken } from "./modules/password/VerifyPasswordResetToken";
-import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 
-// Imports interfaces
-import { IDatabaseUserRepository } from "../../database/interfaces/repositories.interfaces";
+// Imports interfaces.
 import { IAuth, IAuthRes, ICredentials, IEmailVerificacionToken, IPasswordReset, IRegisterParams } from "./interfaces/auth.interfaces";
 import { IEncrypt } from "../../helpers/encryptors/interfaces/encrypt.interface";
 
 // Imports models.
 import { User } from "../../models/User";
-
-// Imports repositories.
-import { UserRepositoryMongo } from "../../database/mongo/repositories/UserRepositoryMongo";
 
 // Imports encrypt password.
 import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
@@ -28,11 +24,9 @@ import { BcryptPassword } from "../../helpers/encryptors/BcryptPassword";
 // Imports 
 
 export class AuthFacade {
-    private repository: IDatabaseUserRepository;
     private encrypt: IEncrypt;
 
     constructor() {
-        this.repository = new UserRepositoryMongo();
         this.encrypt = new BcryptPassword();
     }
 
@@ -47,7 +41,7 @@ export class AuthFacade {
     }
 
     async verifyEmail(token: string): Promise<IAuthRes> {
-        const verify = new VerifyEmail(this.repository, token);
+        const verify = new VerifyEmail(token);
         return await this.execute(verify);
     }
 
@@ -81,12 +75,12 @@ export class AuthFacade {
     }
 
     async checkEmailResetToken(token: string): Promise<void> {
-        const action = new VerifyEmailChangeToken(this.repository, token);
+        const action = new VerifyEmailChangeToken(token);
         await this.execute(action);
     }
 
     async resetEmail(data: { email: string; token: string }): Promise<void> {
-        const action = new EmailReset(this.repository, data);
+        const action = new EmailReset(data);
         await this.execute(action);
     }
 

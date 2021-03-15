@@ -1,29 +1,33 @@
+// Imports modules.
+import createHttpError from "http-errors";
+
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
-import { IUserDatabase } from "../../../../database/interfaces/entities.interfaces";
 import { IAuth } from "../../interfaces/auth.interfaces";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 
 // Imports models.
 import { User } from "../../../../models/User";
 
 // Imports facades.
 import { JwtFacade } from "../../../Jwt/JwtFacade";
-import createHttpError from "http-errors";
+
+// Imports repositories.
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { GetUser } from "../../../../repositories/user/read.user";
 
 export class VerifyEmailChangeToken implements IAuth<void> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private token: string
-    ) {
+    constructor(private token: string) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade;
     }
 
     async auth(): Promise<void> {
         const payload: User = this.jwt.checkEmailResetToken(this.token);
 
-        const user: IUserDatabase | null = await this.repository.get(payload._id);
+        const user: UserDatabase | null = await this.database.get(payload._id, new GetUser);
         if (!user) throw createHttpError(404, "El usuario no existe", {
             name: "UserNotFound"
         });

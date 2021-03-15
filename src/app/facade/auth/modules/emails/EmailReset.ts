@@ -2,7 +2,6 @@
 import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
 import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 import { IAuth } from "../../interfaces/auth.interfaces";
 
@@ -18,17 +17,14 @@ import { MailtrapVerificacionEmail } from "../../../../mails/strategies/Mailtrap
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
-import { UpdateUser } from "../../../../repositories/user/write.user";
+import { UpdateEmail } from "../../../../repositories/user/write.user";
 
 export class EmailReset implements IAuth<void> {
     private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
     private mail: Mail;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private data: { email: string; token: string }
-    ) {
+    constructor(private data: { email: string; token: string }) {
         this.database = new DatabaseRepository;
         this.jwt = new JwtFacade;
         this.mail = new Mail;
@@ -38,10 +34,10 @@ export class EmailReset implements IAuth<void> {
         const payload: User = this.jwt.checkEmailResetToken(this.data.token);
 
         // Update email user.
-        await this.repository.updateEmail(
-            payload._id,
-            { email: this.data.email, emailStatus: false }
-        );
+        await this.database.update(new UpdateEmail({
+            key: payload._id,
+            value: { email: this.data.email, status: false }
+        }));
 
         // Generate token.
         const token = this.jwt.generateEmailConfirmationLink(payload);

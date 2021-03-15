@@ -2,20 +2,26 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
-import { User } from "../../../../models/User";
 import { IAuth, IAuthRes } from "../../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
+
+// Imports models.
+import { User } from "../../../../models/User";
 
 // Imports facades.
 import { JwtFacade } from "../../../Jwt/JwtFacade";
 
+// Imports repositories.
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { UpdateStatusEmail } from "../../../../repositories/user/write.user";
+import { GetUser } from "../../../../repositories/user/read.user";
+
 export class VerifyEmail implements IAuth<IAuthRes> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
 
-    constructor(
-        private repository: IDatabaseUserRepository,
-        private token: string
-    ) {
+    constructor(private token: string) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade();
     }
 
@@ -24,14 +30,14 @@ export class VerifyEmail implements IAuth<IAuthRes> {
         const res = this.jwt.checkEmailVerificationLink(this.token);
 
         // Check status account.
-        const result = await this.repository.get(res._id);
+        const result: UserDatabase | null = await this.database.get(res._id, new GetUser);
         if (result?.verified_email) throw createHttpError(403, "Tu correo electronico ya ha sido verificado.");
 
         // Update status user.
-        await this.repository.updateStatusEmail(res._id, true);
+        await this.database.update(new UpdateStatusEmail({ key: res._id, value: true }));
 
         // Get fields user.
-        const data = await this.repository.get(res._id);
+        const data: UserDatabase | null = await this.database.get(res._id, new GetUser);
 
         if (!data || !data.verified_email) throw createHttpError(403, "Ha ocurrido un error durante la operacion", {
             name: "ErrorExecution"

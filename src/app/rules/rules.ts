@@ -6,15 +6,16 @@ import { body, validationResult } from "express-validator";
 import { environments } from "../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../database/interfaces/repositories.interfaces";
+import { UserDatabase } from "../repositories/interfaces/entities.interfaces";
 
 // Imports my rules.
 import { rules } from "../config/rules";
 
 // Imports repositories.
-import { UserRepositoryMongo } from "../database/mongo/repositories/UserRepositoryMongo";
-import { IUserDatabase } from "../database/interfaces/entities.interfaces";
-const repository: IDatabaseUserRepository = new UserRepositoryMongo;
+import { DatabaseRepository } from "../repositories/DatabaseRepository";
+import { GetUserByEmail } from "../repositories/user/read.user";
+
+const database = new DatabaseRepository<string, UserDatabase>();
 
 export const email = body("email").isEmail().withMessage("El email es invalido");
 
@@ -79,7 +80,7 @@ export async function checkFieldsResetEmail(req: Request, res: Response, next: N
         res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
     }
 
-    const user: IUserDatabase | null = await repository.getByEmail(email);
+    const user: UserDatabase | null = await database.get(email, new GetUserByEmail);
     if (user) {
         req.flash("message", "El email que ingresaste ya se encuentra en uso");
         res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
