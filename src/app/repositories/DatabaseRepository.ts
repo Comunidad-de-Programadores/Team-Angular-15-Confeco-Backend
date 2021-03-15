@@ -1,3 +1,4 @@
+// Imports interfaces.
 import { Create, Get, Update } from "./interfaces/repository.interfaces";
 
 export class DatabaseRepository<TKey, Tval> {
@@ -9,7 +10,7 @@ export class DatabaseRepository<TKey, Tval> {
         return await action.get(key);
     }
 
-    async update(key: TKey, data: Tval, action: Update<TKey, Tval>): Promise<void> {
-        return await action.update(key, data);
+    async update(action: Update): Promise<void> {
+        return await action.update();
     }
 }

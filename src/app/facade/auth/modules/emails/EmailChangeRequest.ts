@@ -36,7 +36,6 @@ export class EmailChangeRequest implements IAuth<any> {
         // Send email.
         const payload: IConfirmEmail = { nickname, email, url };
         await this.mail.send(new MailtrapChangeEmail(payload));
-
         return payload;
     }
 }

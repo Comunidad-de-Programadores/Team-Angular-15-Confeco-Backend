@@ -21,7 +21,7 @@ import { JwtFacade } from "../../../Jwt/JwtFacade";
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../../../../repositories/user/read.user";
-import { UpdateUser } from "../../../../repositories/user/write.user";
+import { UpdatePasswordResetToken } from "../../../../repositories/user/write.user";
 
 export class ForgotPassword implements IAuth<void> {
     private database: DatabaseRepository<string, UserDatabase>;
@@ -53,11 +53,10 @@ export class ForgotPassword implements IAuth<void> {
         const tokenEncrypted: string = await this.encryptor.encrypt(token);
 
         // Update password reset tokens.
-        await this.database.update(
-            data._id,
-            { ...user, password: data.password, passwordResetToken: tokenEncrypted },
-            new UpdateUser
-        );
+        await this.database.update(new UpdatePasswordResetToken({
+            key: data._id,
+            value: tokenEncrypted
+        }));
 
         // Send email.
         const { nickname, email } = user;

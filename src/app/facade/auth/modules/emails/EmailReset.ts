@@ -3,6 +3,7 @@ import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
 import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
+import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 import { IAuth } from "../../interfaces/auth.interfaces";
 
 // Imports modules.
@@ -15,7 +16,12 @@ import { JwtFacade } from "../../../Jwt/JwtFacade";
 import { Mail } from "../../../../mails/Mail";
 import { MailtrapVerificacionEmail } from "../../../../mails/strategies/MailtrapVerificacionEmail";
 
+// Imports repositories.
+import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+import { UpdateUser } from "../../../../repositories/user/write.user";
+
 export class EmailReset implements IAuth<void> {
+    private database: DatabaseRepository<string, UserDatabase>;
     private jwt: JwtFacade;
     private mail: Mail;
 
@@ -23,6 +29,7 @@ export class EmailReset implements IAuth<void> {
         private repository: IDatabaseUserRepository,
         private data: { email: string; token: string }
     ) {
+        this.database = new DatabaseRepository;
         this.jwt = new JwtFacade;
         this.mail = new Mail;
     }

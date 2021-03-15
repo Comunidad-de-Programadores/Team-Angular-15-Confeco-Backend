@@ -5,3 +5,8 @@ export interface UserDatabase extends User {
     password: string;
     passwordResetToken?: string;
 }
+
+export interface BasicUpdateParams<Tval> {
+    key: string;
+    value: Tval;
+}

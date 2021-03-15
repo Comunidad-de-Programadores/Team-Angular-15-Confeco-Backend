@@ -10,7 +10,7 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { GetUser } from "../../../repositories/user/read.user";
+import { UpdateStatusEmail } from "../../../repositories/user/write.user";
 
 export class LoginFacebook implements IAuth<IAuthRes> {
     private database: DatabaseRepository<string, UserDatabase>;
@@ -23,7 +23,12 @@ export class LoginFacebook implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Update status email.
-        if (!this.user.verified_email) await this.database.get(this.user._id, new GetUser);
+        if (!this.user.verified_email) {
+            await this.database.update(new UpdateStatusEmail({
+                key: this.user._id,
+                value: true
+            }));
+        }
 
         // Define properties.
         const data = Object.defineProperties(this.user, {

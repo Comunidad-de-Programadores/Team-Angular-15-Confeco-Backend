@@ -11,7 +11,7 @@ import { JwtFacade } from "../../Jwt/JwtFacade";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-import { UpdateUser } from "../../../repositories/user/write.user";
+import { UpdateStatusEmail } from "../../../repositories/user/write.user";
 
 export class LoginGoogle implements IAuth<IAuthRes> {
     private database: DatabaseRepository<string, UserDatabase>;
@@ -24,11 +24,12 @@ export class LoginGoogle implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Update status email.
-        if (!this.user.verified_email) await this.database.update(
-            this.user._id,
-            { ...this.user, verified_email: true },
-            new UpdateUser
-        );
+        if (!this.user.verified_email) {
+            await this.database.update(new UpdateStatusEmail({
+                key: this.user._id,
+                value: true
+            }));
+        }
 
         // Generate tokens.
         const data = Object.defineProperties(this.user, {

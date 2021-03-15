@@ -6,6 +6,6 @@ export interface Get<Tkey, Tval> {
     get(key: Tkey): Promise<Tval | null>;
 }
 
-export interface Update<Tkey, Tval> {
-    update(key: Tkey, data: Tval): Promise<void>;
+export interface Update {
+    update(): Promise<void>;
 }
