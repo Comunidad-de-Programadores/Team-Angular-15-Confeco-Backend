@@ -5,9 +5,11 @@ import { IRouter } from "./interfaces/routes.interfaces";
 import { authRoutes } from "../components/auth/auth.routes";
 import { userRoutes } from "../components/users/user.routes";
 import { knowlegAreaRoutes } from "../components/knowledgeAreas/knowledgeArea.routes";
+import { workshopsRoutes } from "../components/workshops/workshops.routes";
 
 export const routes: IRouter[] = [
     authRoutes,
     userRoutes,
-    knowlegAreaRoutes
+    knowlegAreaRoutes,
+    workshopsRoutes
 ];
