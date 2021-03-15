@@ -1,13 +1,13 @@
 // Imports authentications methods.
 import { AuthGoogle } from "./modules/AuthGoogle";
-import { EmailReset } from "./modules/EmailReset";
-import { VerifyEmail } from "./modules/VerifyEmail";
+import { EmailReset } from "./modules/emails/EmailReset";
+import { VerifyEmail } from "./modules/emails/VerifyEmail";
 import { AuthFacebook } from "./modules/AuthFacebook";
 import { PasswordReset } from "./modules/PasswordReset";
 import { ForgotPassword } from "./modules/ForgotPassword";
-import { EmailChangeRequest } from "./modules/EmailChangeRequest";
+import { EmailChangeRequest } from "./modules/emails/EmailChangeRequest";
 import { LoginEmailAndPassword } from "./modules/LoginEmailAndPassword";
-import { VerifyEmailChangeToken } from "./modules/VerifyEmailChangeToken";
+import { VerifyEmailChangeToken } from "./modules/emails/VerifyEmailChangeToken";
 import { VerifyPasswordResetToken } from "./modules/VerifyPasswordResetToken";
 import { RegisterEmailAndPassword } from "./modules/RegisterEmailAndPassword";
 

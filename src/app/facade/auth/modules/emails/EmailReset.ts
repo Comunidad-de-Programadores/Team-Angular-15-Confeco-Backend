@@ -1,19 +1,19 @@
 // Imports environments.
-import { environments } from "../../../config/environments";
+import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IAuth } from "../interfaces/auth.interfaces";
+import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
+import { IAuth } from "../../interfaces/auth.interfaces";
 
 // Imports modules.
-import { User } from "../../../models/User";
+import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 
 // Imports mails.
-import { Mail } from "../../../mails/Mail";
-import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+import { Mail } from "../../../../mails/Mail";
+import { MailtrapVerificacionEmail } from "../../../../mails/strategies/MailtrapVerificacionEmail";
 
 export class EmailReset implements IAuth<void> {
     private jwt: JwtFacade;

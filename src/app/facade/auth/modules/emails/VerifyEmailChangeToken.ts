@@ -1,13 +1,13 @@
 // Imports interfaces.
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
-import { IUserDatabase } from "../../../database/interfaces/entities.interfaces";
-import { IAuth } from "../interfaces/auth.interfaces";
+import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
+import { IUserDatabase } from "../../../../database/interfaces/entities.interfaces";
+import { IAuth } from "../../interfaces/auth.interfaces";
 
 // Imports models.
-import { User } from "../../../models/User";
+import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 import createHttpError from "http-errors";
 
 export class VerifyEmailChangeToken implements IAuth<void> {

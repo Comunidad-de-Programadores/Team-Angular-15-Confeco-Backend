@@ -1,19 +1,19 @@
 // Imports environments.
-import { environments } from "../../../config/environments";
+import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
-import { IConfirmEmail } from "../../../mails/interfaces/mail.interfaces";
-import { IAuth } from "../interfaces/auth.interfaces";
+import { IConfirmEmail } from "../../../../mails/interfaces/mail.interfaces";
+import { IAuth } from "../../interfaces/auth.interfaces";
 
 // Imports models.
-import { User } from "../../../models/User";
+import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 
 // Imports mails.
-import { Mail } from "../../../mails/Mail";
-import { MailtrapChangeEmail } from "../../../mails/strategies/MailtrapChangeEmail";
+import { Mail } from "../../../../mails/Mail";
+import { MailtrapChangeEmail } from "../../../../mails/strategies/MailtrapChangeEmail";
 
 export class EmailChangeRequest implements IAuth<any> {
     private jwt: JwtFacade;

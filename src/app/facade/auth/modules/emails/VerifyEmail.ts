@@ -2,12 +2,12 @@
 import createHttpError from "http-errors";
 
 // Imports interfaces.
-import { User } from "../../../models/User";
-import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
-import { IDatabaseUserRepository } from "../../../database/interfaces/repositories.interfaces";
+import { User } from "../../../../models/User";
+import { IAuth, IAuthRes } from "../../interfaces/auth.interfaces";
+import { IDatabaseUserRepository } from "../../../../database/interfaces/repositories.interfaces";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JwtFacade } from "../../../Jwt/JwtFacade";
 
 export class VerifyEmail implements IAuth<IAuthRes> {
     private jwt: JwtFacade;
