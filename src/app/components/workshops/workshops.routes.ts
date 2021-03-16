@@ -18,7 +18,7 @@ export class WorkshopRoutes {
     }
 
     private get(): void {
-        this.router.get("/:id?", [auth.isAuth], workshops.get);
+        this.router.get("/:workshopId?", [auth.isAuth], workshops.get);
     }
 }
 
