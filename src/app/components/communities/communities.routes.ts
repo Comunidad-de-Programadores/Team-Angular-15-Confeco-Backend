@@ -9,20 +9,20 @@ import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
 
 // Imports controllers.
-import { ComunitiesController } from "./comunities.controller";
-const comunities: ComunitiesController = new ComunitiesController;
+import { CommunitiesController } from "./communities.controller";
+const communities: CommunitiesController = new CommunitiesController;
 
-export class ComunitiesRoutes {
+export class CommunitiesRoutes {
     constructor(public router: Router) {
         this.get();
     }
 
     private get(): void {
-        this.router.get("/:comunityId?", [auth.isAuth], comunities.get);
+        this.router.get("/:communityId?", [auth.isAuth], communities.get);
     }
 }
 
-export const comunitiesRoutes: IRouter = {
-    path: "/api/v1/comunities",
-    component: new ComunitiesRoutes(Router()).router
+export const communitiesRoutes: IRouter = {
+    path: "/api/v1/communities",
+    component: new CommunitiesRoutes(Router()).router
 }
