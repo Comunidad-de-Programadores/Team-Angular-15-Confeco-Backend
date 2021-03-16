@@ -6,4 +6,4 @@ const knowledgeAreaSchema: Schema = new Schema({
     name: { type: String, required: true }
 });
 
-export const KnowledgeAreaModel = model("knowledgeAreas", knowledgeAreaSchema);
+export const KnowledgeAreaModel = model("knowledgeareas", knowledgeAreaSchema);
