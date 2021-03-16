@@ -7,11 +7,13 @@ import { userRoutes } from "../components/users/user.routes";
 import { knowlegAreaRoutes } from "../components/knowledgeAreas/knowledgeArea.routes";
 import { workshopsRoutes } from "../components/workshops/workshops.routes";
 import { contentCreators } from "../components/instructors/contentCreators.routes";
+import { comunitiesRoutes } from "../components/comunities/comunities.routes";
 
 export const routes: IRouter[] = [
     authRoutes,
     userRoutes,
     contentCreators,
     knowlegAreaRoutes,
-    workshopsRoutes
+    workshopsRoutes,
+    comunitiesRoutes
 ];
