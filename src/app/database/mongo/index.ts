@@ -9,6 +9,7 @@ import { UserModel } from "./models/user.model";
 import { WorkshopModel } from "./models/workshop.model";
 import { KnowledgeAreaModel } from "./models/knowledgeArea.model";
 import { ContentCreatorModel } from "./models/ContentCreator.model";
+import { ComunityModel } from "./models/Comunity.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -22,5 +23,6 @@ export const models = {
     User: UserModel,
     KnowledgeArea: KnowledgeAreaModel,
     Workshop: WorkshopModel,
-    ContentCreator: ContentCreatorModel
+    ContentCreator: ContentCreatorModel,
+    Comunity: ComunityModel
 };
