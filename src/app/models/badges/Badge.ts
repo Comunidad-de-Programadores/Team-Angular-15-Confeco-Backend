@@ -3,7 +3,7 @@ import { Timestamp } from "../Timestamp";
 export class Badge extends Timestamp {
     _id: string;
     title: string;
-    avatar: string;
+    logo: string;
     description: string;
     challenge: string;
 
@@ -12,7 +12,7 @@ export class Badge extends Timestamp {
         this._id = badge._id;
         this.title = badge.title;
         this.description = badge.description;
-        this.avatar = badge.avatar;
+        this.logo = badge.logo;
         this.challenge = badge.challenge;
     }
 }
