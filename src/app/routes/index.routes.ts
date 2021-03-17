@@ -1,5 +1,7 @@
 // Imports modules.
 import { Express } from "express";
+
+// Imports interfaces.
 import { IRouter } from "./interfaces/routes.interfaces";
 
 // Server routes.

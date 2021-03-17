@@ -9,6 +9,7 @@ import { workshopsRoutes } from "../components/workshops/workshops.routes";
 import { contentCreators } from "../components/instructors/contentCreators.routes";
 import { communitiesRoutes } from "../components/communities/communities.routes";
 import { badgesRoutes } from "../components/badges/badges.routes";
+import { groupsRoutes } from "../components/groups/groups.routes";
 
 export const routes: IRouter[] = [
     authRoutes,
@@ -17,5 +18,6 @@ export const routes: IRouter[] = [
     knowlegAreaRoutes,
     workshopsRoutes,
     communitiesRoutes,
-    badgesRoutes
+    badgesRoutes,
+    groupsRoutes
 ];
