@@ -10,6 +10,7 @@ import { WorkshopModel } from "./models/workshop.model";
 import { KnowledgeAreaModel } from "./models/knowledgeArea.model";
 import { ContentCreatorModel } from "./models/ContentCreator.model";
 import { ComunityModel } from "./models/Comunity.model";
+import { BadgeModel } from "./models/badges/Badge.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -24,5 +25,6 @@ export const models = {
     KnowledgeArea: KnowledgeAreaModel,
     Workshop: WorkshopModel,
     ContentCreator: ContentCreatorModel,
-    Comunity: ComunityModel
+    Comunity: ComunityModel,
+    Badge: BadgeModel
 };
