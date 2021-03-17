@@ -23,14 +23,18 @@ import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVer
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 import { CreateUser } from "../../../repositories/user/write.user";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
+import { BadgeUser } from "../../../models/badges/BadgeUser";
+import { WinBadge } from "../../../repositories/badges/write.badge";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private database: DatabaseRepository<string, UserDatabase>;
+    private databaseBadge: DatabaseRepository<string, BadgeUser>;
     private jwt: JwtFacade;
     private mail: Mail;
 
     constructor(private encrypt: IEncrypt, private data: IRegisterParams) {
         this.database = new DatabaseRepository;
+        this.databaseBadge = new DatabaseRepository;
         this.jwt = new JwtFacade();
         this.mail = new Mail();
     }
@@ -51,10 +55,17 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         await this.database.create({ _id: uuid(), ...params }, new CreateUser);
 
         // Get fields user.
-        const data: any = await this.database.get(params.email, new GetUserByEmail);
+        const data: UserDatabase | null = await this.database.get(params.email, new GetUserByEmail);
         if (!data) throw createError(400, "Sucedio un error durante autenticacion.", {
             name: "AuthenticationError"
         });
+
+        // Win a badge.
+        await this.databaseBadge.create(new BadgeUser({
+            _id: uuid(),
+            userId: data._id,
+            badgeId: environments.BADGE_SOCIAL_ID as string,
+        }), new WinBadge);
 
         // Generate confirmation link.
         const user = Object.assign({}, new User(data));
