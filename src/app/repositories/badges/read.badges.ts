@@ -27,3 +27,11 @@ export class GetBadgesByUserId implements List<BadgeUser> {
         return await models.BadgeUser.find({ userId: this.userId }) as any[];
     }
 }
+
+export class GetBadgeByIdAndUserId implements Get<string, BadgeUser> {
+    constructor(private userId: string) {}
+
+    async get(badgeId: string): Promise<BadgeUser | null> {
+        return await models.BadgeUser.findOne({ badgeId, userId: this.userId }) as any;
+    }
+}
