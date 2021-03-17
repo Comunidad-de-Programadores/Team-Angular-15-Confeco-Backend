@@ -19,11 +19,3 @@ export class WinBadge implements Create<BadgeUser> {
         await models.BadgeUser.create(entity);
     }
 }
-
-export class GetBadgesByUserId implements List<BadgeUser> {
-    constructor(private userId: string) {}
-
-    async list(): Promise<BadgeUser[]> {
-        return await models.BadgeUser.find({ userId: this.userId }) as any[];
-    }
-}
