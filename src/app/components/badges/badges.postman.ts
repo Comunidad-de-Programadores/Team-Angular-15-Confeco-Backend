@@ -18,6 +18,7 @@ export class BadgesPostman {
 
     async get(req: Request): Promise<Badge | Badge[]> {
         const { badgeId } = req.params;
+
         if (badgeId) {
             const badge: Badge | null = await this.database.get(badgeId, new GetBadge);
             if (!badge) throw createHttpError(404, "El recurso solicitado no existe.", {
