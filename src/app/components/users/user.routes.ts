@@ -4,6 +4,9 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Imports children routes.
+import { BadgesUsersRoutes } from "./badges/badges.routes";
+
 // Imports middlewares.
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
@@ -55,5 +58,11 @@ export class UserRoutes {
 
 export const userRoutes: IRouter = {
     path: "/api/v1/users",
-    component: new UserRoutes(Router()).router
+    component: new UserRoutes(Router()).router,
+    children: [
+        {
+            path: "/:userId/badges",
+            component: new BadgesUsersRoutes(Router({ mergeParams: true })).router
+        }
+    ]
 };
