@@ -64,7 +64,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         await this.databaseBadge.create(new BadgeUser({
             _id: uuid(),
             userId: data._id,
-            badgeId: environments.BADGE_SOCIAL_ID as string,
+            badgeId: environments.BADGE_GENESIS_ID as string,
         }), new WinBadge);
 
         // Generate confirmation link.
