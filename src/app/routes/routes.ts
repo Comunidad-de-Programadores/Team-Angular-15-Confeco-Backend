@@ -8,6 +8,7 @@ import { knowlegAreaRoutes } from "../components/knowledgeAreas/knowledgeArea.ro
 import { workshopsRoutes } from "../components/workshops/workshops.routes";
 import { contentCreators } from "../components/instructors/contentCreators.routes";
 import { communitiesRoutes } from "../components/communities/communities.routes";
+import { badgesRoutes } from "../components/badges/badges.routes";
 
 export const routes: IRouter[] = [
     authRoutes,
@@ -15,5 +16,6 @@ export const routes: IRouter[] = [
     contentCreators,
     knowlegAreaRoutes,
     workshopsRoutes,
-    communitiesRoutes
+    communitiesRoutes,
+    badgesRoutes
 ];
