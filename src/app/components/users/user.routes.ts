@@ -6,6 +6,7 @@ import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
 // Imports children routes.
 import { BadgesUsersRoutes } from "./badges/badges.routes";
+import { UsersGroupsRoutes } from "./groups/groups.routes";
 
 // Imports middlewares.
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
@@ -63,6 +64,10 @@ export const userRoutes: IRouter = {
         {
             path: "/:userId/badges",
             component: new BadgesUsersRoutes(Router({ mergeParams: true })).router
+        },
+        {
+            path: "/:userId/groups",
+            component: new UsersGroupsRoutes(Router({ mergeParams: true })).router
         }
     ]
 };

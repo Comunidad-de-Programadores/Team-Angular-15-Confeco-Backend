@@ -19,6 +19,17 @@ export class ListGroups implements List<Group> {
     }
 }
 
+export class ListGroupsByMemberId implements List<Group> {
+    constructor(private data: { userId: string }) {}
+
+    async list(): Promise<Group[]> {
+        return await models.Group.find(
+            { members: this.data.userId },
+            { members: 0 }
+        ) as any[];
+    }
+}
+
 export class GetGroupByIdAndMemberId implements Get<string, Group> {
     constructor(private data: { memberId: string }) {}
 
