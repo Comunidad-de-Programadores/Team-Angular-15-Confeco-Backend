@@ -4,6 +4,9 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Imports child routes
+import { GroupsUsersRoutes } from "./users/users.routes";
+
 // Imports middlewares.
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
@@ -24,5 +27,11 @@ export class GroupsRoutes {
 
 export const groupsRoutes: IRouter = {
     path: "/api/v1/groups",
-    component: new GroupsRoutes(Router()).router
+    component: new GroupsRoutes(Router()).router,
+    children: [
+        {
+            path: "/:groupId/users",
+            component: new GroupsUsersRoutes(Router({ mergeParams: true })).router
+        }
+    ]
 }
