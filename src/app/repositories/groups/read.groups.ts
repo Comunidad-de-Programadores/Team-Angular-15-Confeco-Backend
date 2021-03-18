@@ -37,7 +37,7 @@ export class GetGroupByIdAndMemberId implements Get<string, Group> {
         return await models.Group.findOne({
             $and: [
                 { _id: groupId },
-                { members: [this.data.memberId] }
+                { members: this.data.memberId }
             ]
         }) as any;
     }
