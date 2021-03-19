@@ -4,6 +4,9 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Import child route
+import { EventsUsersRoutes } from "./users/users.routes";
+
 // Imports middlewares.
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
@@ -24,5 +27,11 @@ export class EventsRoutes {
 
 export const eventsRoutes: IRouter = {
     path: "/api/v1/events",
-    component: new EventsRoutes(Router()).router
+    component: new EventsRoutes(Router()).router,
+    children: [
+        {
+            path: "/:eventId/users",
+            component: new EventsUsersRoutes(Router({ mergeParams: true })).router
+        }
+    ]
 }
