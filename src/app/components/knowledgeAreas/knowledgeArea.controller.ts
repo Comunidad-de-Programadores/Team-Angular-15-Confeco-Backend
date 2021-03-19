@@ -1,5 +1,7 @@
 // Imports modules.
 import { Request, Response } from "express";
+
+// Imports models.
 import { KnowledgeArea } from "../../models/KnowledgeArea";
 
 // Import postman.

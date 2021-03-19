@@ -18,3 +18,13 @@ export class ListWorkshop implements List<Workshop> {
         return await models.Workshop.find() as any[];
     }
 }
+
+export class ListWorkshopsByKnowledgeArea implements List<Workshop> {
+    constructor(private data: { knowledgeAreaId: string }) {}
+
+    async list(): Promise<Workshop[]> {
+        return await models.Workshop.find({
+            knowledgeArea: this.data.knowledgeAreaId
+        }) as any[];
+    }
+}

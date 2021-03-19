@@ -4,6 +4,9 @@ import { Router } from "express";
 // Imports interfaces.
 import { IRouter } from "../../routes/interfaces/routes.interfaces";
 
+// Import child routes.
+import { KnowledgeAreaWorkshopsRoutes } from "./workshops/workshops.routes";
+
 // Imports middlewares.
 import { AuthMiddleware } from "../../middlewares/auth.middleware";
 const auth: AuthMiddleware = new AuthMiddleware;
@@ -24,5 +27,11 @@ export class KnowledgeAreaRoutes {
 
 export const knowlegAreaRoutes: IRouter = {
     path: "/api/v1/knowledgeAreas",
-    component: new KnowledgeAreaRoutes(Router()).router
+    component: new KnowledgeAreaRoutes(Router()).router,
+    children: [
+        {
+            path: "/:knowledgeAreaId/workshops",
+            component: new KnowledgeAreaWorkshopsRoutes(Router({ mergeParams: true })).router
+        }
+    ]
 };
