@@ -13,6 +13,7 @@ import { ComunityModel } from "./models/Comunity.model";
 import { BadgeModel } from "./models/badges/Badge.model";
 import { BadgeUserModel } from "./models/badges/BadgeUser.model";
 import { GroupModel } from "./models/Group.model";
+import { EventModel } from "./models/Event.model";
 
 connect(environments.MONGODB_URI as string, {
     useFindAndModify: false,
@@ -30,5 +31,6 @@ export const models = {
     Comunity: ComunityModel,
     Badge: BadgeModel,
     BadgeUser: BadgeUserModel,
-    Group: GroupModel
+    Group: GroupModel,
+    Event: EventModel
 };

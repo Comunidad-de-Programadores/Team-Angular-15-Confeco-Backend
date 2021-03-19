@@ -1,12 +1,20 @@
 // Imports modules.
 import { Request, Response } from "express";
 
+// Imports models.
+import { Event } from "../../models/Event";
+
+// Imports repositories
+import { DatabaseRepository } from "../../repositories/DatabaseRepository";
+import { ListEvents } from "../../repositories/events/read.events";
+const database = new DatabaseRepository<string, Event>();
+
 export class EventsController {
     async list(req: Request, res: Response): Promise<void> {
         try {
-            res.status(200).json({
-                message: "Obtener eventos."
-            })
+            const { user } = req.app.locals;
+            const events: Event[] = await database.list(new ListEvents({ userId: user._id }));
+            res.status(200).json({ events });
         } catch (error) {
             const { statusCode, name, message } = error;
             res.status(statusCode || 400).json({ name, message });
