@@ -13,7 +13,18 @@ export class ListEvents implements List<Event> {
     async list(): Promise<Event[]> {
         return await models.Event.find(
             { banned: { $ne: this.data.userId } },
-            { banned: 0, members: 0 }
+            { banned: 0 }
+        ) as any[];
+    }
+}
+
+export class ListEventsByUser implements List<Event> {
+    constructor(private data: { userId: string }) {}
+
+    async list(): Promise<Event[]> {
+        return await models.Event.find(
+            { members: this.data.userId },
+            { members: 0, banned: 0 }
         ) as any[];
     }
 }
