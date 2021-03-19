@@ -13,7 +13,7 @@ const encryptor: IEncrypt = new BcryptPassword;
 import { DatabaseRepository } from "../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../repositories/user/read.user";
 
-const database = new DatabaseRepository<string, UserDatabase>();
+const database = new DatabaseRepository<UserDatabase>();
 
 export class ValidatorsMiddleware {
     async verifyCredentials(
@@ -22,7 +22,8 @@ export class ValidatorsMiddleware {
         next: NextFunction
     ): Promise<Response<any> | undefined> {
         // Consult database.
-        const user: UserDatabase | null = await database.get(req.body.email, new GetUserByEmail);
+        const { email } = req.body;
+        const user: UserDatabase | null = await database.get(new GetUserByEmail(email));
 
         // Verify email.
         if (!user) return res.status(401).json({

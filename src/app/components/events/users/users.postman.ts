@@ -15,8 +15,8 @@ import { AddUserToEvent, BanUser, RemoveUserFromEvent } from "../../../repositor
 import { GetUser } from "../../../repositories/user/read.user";
 
 export class EventsUsersPostman {
-    private databaseEvent: DatabaseRepository<string, Event>;
-    private databaseUser: DatabaseRepository<string, User>;
+    private databaseEvent: DatabaseRepository<Event>;
+    private databaseUser: DatabaseRepository<User>;
 
     constructor() {
         this.databaseEvent = new DatabaseRepository;
@@ -28,31 +28,31 @@ export class EventsUsersPostman {
         const { userId } = req.body;
 
         // Check if the user exists.
-        const user: User | null = await this.databaseUser.get(userId, new GetUser);
+        const user: User | null = await this.databaseUser.get(new GetUser(userId));
         if (!user) throw createHttpError(404, "No puedes suscribir al usuario al evento porque no existe.", {
             name: "UserNotFound"
         });
 
         // Check if the event exists
-        const eventResult: Event | null = await this.databaseEvent.get(eventId, new GetEvent);
+        const eventResult: Event | null = await this.databaseEvent.get(new GetEvent(eventId));
         if (!eventResult) throw createHttpError(404, "No puedes suscribir al usuario a un evento que no existe.", {
             name: "ResourceNotFound"
         });
 
         // Check if the user is already participating.
-        const event: Event | null = await this.databaseEvent.get(
-            eventId,
-            new GetEventByIdAndMemberId({ memberId: userId })
-        );
+        const event: Event | null = await this.databaseEvent.get(new GetEventByIdAndMemberId({
+            userId,
+            eventId
+        }));
         if (event) throw createHttpError(403, `El usuario ${ user.nickname } ya forma parte del evento.`, {
             name: "UserAlreadyEvent"
         });
 
         // Check if the user is banned.
-        const banned: Event | null = await this.databaseEvent.get(
+        const banned: Event | null = await this.databaseEvent.get(new GetEventByIdAndBannedUser({
             eventId,
-            new GetEventByIdAndBannedUser({ userId })
-        );
+            userId
+        }));
         if (banned) throw createHttpError(403, `Ya no puedes participar en el evento ${ banned.name }, has sido baneado.`, {
             name: "BannedEvent"
         });
@@ -72,10 +72,10 @@ export class EventsUsersPostman {
         });
 
         // Check if the user belongs to the event.
-        const event: Event | null = await this.databaseEvent.get(
-            eventId,
-            new GetEventByIdAndMemberId({ memberId: userId })
-        );
+        const event: Event | null = await this.databaseEvent.get(new GetEventByIdAndMemberId({
+            userId,
+            eventId
+        }));
         if (!event) throw createHttpError(403, "Es posible que el usuario no participe o haya sido baneado del evento.", {
             name: "Forbidden"
         });

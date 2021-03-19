@@ -13,7 +13,7 @@ import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
 
 export class LoginEmailAndPassword implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
 
     constructor(private credentials: ICredentials) {
@@ -23,8 +23,7 @@ export class LoginEmailAndPassword implements IAuth<IAuthRes> {
 
     async auth(): Promise<IAuthRes> {
         // Verify user existence.
-        const { email } = this.credentials;
-        const user: any = await this.database.get(email, new GetUserByEmail);
+        const user: any = await this.database.get(new GetUserByEmail(this.credentials.email));
 
         // Generate tokens.
         const newUser = Object.assign({}, new User(user));

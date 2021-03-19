@@ -13,7 +13,7 @@ import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 import { UpdateStatusEmail } from "../../../repositories/user/write.user";
 
 export class LoginFacebook implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
 
     constructor(private user: User) {

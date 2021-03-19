@@ -29,34 +29,35 @@ export class ListEventsByUser implements List<Event> {
     }
 }
 
-export class GetEvent implements Get<string, Event> {
-    constructor() {}
+export class GetEvent implements Get<Event> {
+    constructor(private eventId: string) {}
 
-    async get(eventId: string) {
+    async get() {
         return await models.Event.findOne(
-            { _id: eventId },
+            { _id: this.eventId },
             { banned: 0, members: 0 }
         ) as any;
     }
 }
 
-export class GetEventByIdAndBannedUser implements Get<string, Event> {
-    constructor(private data: { userId: string }) {}
+export class GetEventByIdAndBannedUser implements Get<Event> {
+    constructor(private data: { userId: string; eventId: string; }) {}
 
-    async get(eventId: string): Promise<Event | null> {
+    async get(): Promise<Event | null> {
+        const { eventId, userId } = this.data;
         return await models.Event.findOne(
-            { _id: eventId, banned: this.data.userId },
+            { _id: eventId, banned: userId },
             { banned: 0, members: 0 }
         ) as any;
     }
 }
 
-export class GetEventByIdAndMemberId implements Get<string, Event> {
-    constructor(private data: { memberId: string }) {}
+export class GetEventByIdAndMemberId implements Get<Event> {
+    constructor(private data: { userId: string; eventId: string }) {}
 
-    async get(eventId: string) {
+    async get(): Promise<Event | null> {
         return await models.Event.findOne(
-            { _id: eventId, members: this.data.memberId },
+            { _id: this.data.eventId, members: this.data.userId },
             { members: 0, banned: 0 }
         ) as any;
     }

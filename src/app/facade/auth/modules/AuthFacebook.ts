@@ -14,7 +14,7 @@ import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
 
 export class AuthFacebook implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
 
     constructor(private token: string) {
         this.database = new DatabaseRepository;
@@ -25,7 +25,7 @@ export class AuthFacebook implements IAuth<IAuthRes> {
         const res = await axios.get(`https://graph.facebook.com/2830663003869652?fields=email,last_name&access_token=${ this.token }`);
         
         // Consult database.
-        const user: UserDatabase | null = await this.database.get(res.data.email, new GetUserByEmail);
+        const user: UserDatabase | null = await this.database.get(new GetUserByEmail(res.data.email));
 
         if (!user) {
             const action = new RegisterFacebook(res.data);

@@ -3,14 +3,14 @@ import { Request, Response } from "express";
 
 // Imports models.
 import { Badge } from "../../../models/badges/Badge";
-import { BadgeUser } from "../../../models/badges/BadgeUser";
-
-// Imports modules.
-import { GetBadgesByUserId } from "../../../repositories/badges/read.badges";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-const database = new DatabaseRepository<string, BadgeUser>();
+const database = new DatabaseRepository<BadgeUser>();
+
+// Import repository actions.
+import { GetBadgesByUserId } from "../../../repositories/badges/read.badges";
+import { BadgeUser } from "../../../models/badges/BadgeUser";
 
 export class BadgesUsersController {
     async list(req: Request, res: Response) {

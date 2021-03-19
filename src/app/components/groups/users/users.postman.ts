@@ -10,13 +10,15 @@ import { Group } from "../../../models/Group";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+
+// Imports repository actions.
 import { GetGroup, GetGroupByIdAndMemberId } from "../../../repositories/groups/read.groups";
 import { AddMemberToGroup, RemoveUserFromGroup } from "../../../repositories/groups/write.groups";
 import { GetUser } from "../../../repositories/user/read.user";
 
 export class GroupsUsersPostman {
-    private databaseGroup: DatabaseRepository<string, Group>;
-    private databaseUser: DatabaseRepository<string, UserDatabase>;
+    private databaseGroup: DatabaseRepository<Group>;
+    private databaseUser: DatabaseRepository<UserDatabase>;
 
     constructor() {
         this.databaseGroup = new DatabaseRepository;
@@ -28,21 +30,21 @@ export class GroupsUsersPostman {
         const { userId } = req.body;
 
         // We check if the group exists
-        const group: Group | null = await this.databaseGroup.get(groupId, new GetGroup);
+        const group: Group | null = await this.databaseGroup.get(new GetGroup(groupId));
         if (!group) throw createHttpError(404, "El grupo no existe.", {
             name: "ResourceNotFound"
         });
 
         // we check if the user exists
-        const user: UserDatabase | null = await this.databaseUser.get(userId, new GetUser);
+        const user: UserDatabase | null = await this.databaseUser.get(new GetUser(userId));
         if (!user) throw createHttpError(404, "El usuario no existe.", {
             name: "ResourceNotFound"
         });
 
-        const result: Group | null = await this.databaseGroup.get(
+        const result: Group | null = await this.databaseGroup.get(new GetGroupByIdAndMemberId({
             groupId,
-            new GetGroupByIdAndMemberId({ memberId: userId })
-        );
+            memberId: userId
+        }));
         if (result) throw createHttpError(403, "El usuario ya pertenece al grupo", {
             name: "UserBelongGroup"
         });
@@ -60,10 +62,10 @@ export class GroupsUsersPostman {
             name: "FailedDeleteResource"
         });
 
-        const group: Group | null = await this.databaseGroup.get(
+        const group: Group | null = await this.databaseGroup.get(new GetGroupByIdAndMemberId({
             groupId,
-            new GetGroupByIdAndMemberId({ memberId: userId })
-        );
+            memberId: userId
+        }));
         if (!group) throw createHttpError(404, "El usuario no forma parte del grupo.", {
             name: "FailedDeleteResource"
         });

@@ -1,11 +1,18 @@
+// Imports modules.
 import { Request } from "express";
 import createHttpError from "http-errors";
+
+// Import model.
 import { ContentCreator } from "../../models/ContentCreator";
-import { GetContentCreator, ListContentCreator } from "../../repositories/contentCreators/read.contentCreators";
+
+// Import repository.
 import { DatabaseRepository } from "../../repositories/DatabaseRepository";
 
+// Import repository actions.
+import { GetContentCreator, ListContentCreator } from "../../repositories/contentCreators/read.contentCreators";
+
 export class ContentCreatorsPostman {
-    private database: DatabaseRepository<string, ContentCreator>;
+    private database: DatabaseRepository<ContentCreator>;
 
     constructor() {
         this.database = new DatabaseRepository;
@@ -15,7 +22,7 @@ export class ContentCreatorsPostman {
         const { creatorId } = req.params;
         
         if (creatorId) {
-            const entity: ContentCreator | null = await this.database.get(creatorId, new GetContentCreator);
+            const entity: ContentCreator | null = await this.database.get(new GetContentCreator(creatorId));
             if (!entity) throw createHttpError(404, "El recurso solicitado no fue encontrado", {
                 name: "ResourceNotFound"
             });

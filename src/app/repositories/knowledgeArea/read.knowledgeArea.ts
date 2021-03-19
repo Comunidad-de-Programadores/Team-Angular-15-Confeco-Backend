@@ -7,9 +7,11 @@ import { KnowledgeArea } from "../../models/KnowledgeArea";
 // Imports interfaces.
 import { Get, List } from "../interfaces/repository.interfaces";
 
-export class GetKnowledgeArea implements Get<string, KnowledgeArea> {
-    async get(id: string): Promise<KnowledgeArea | null> {
-        return await models.KnowledgeArea.findById(id) as any;
+export class GetKnowledgeArea implements Get<KnowledgeArea> {
+    constructor(private knowledgeAreaId: string) {}
+
+    async get(): Promise<KnowledgeArea | null> {
+        return await models.KnowledgeArea.findById(this.knowledgeAreaId) as any;
     }
 }
 

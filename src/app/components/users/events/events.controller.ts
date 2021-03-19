@@ -6,7 +6,7 @@ import { Event } from "../../../models/Event";
 
 // Import repository.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-const database = new DatabaseRepository<string, Event>();
+const database = new DatabaseRepository<Event>();
 
 // Imports repository actions
 import { ListEventsByUser } from "../../../repositories/events/read.events";

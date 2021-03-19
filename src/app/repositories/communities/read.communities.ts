@@ -7,9 +7,10 @@ import { Get, List } from "../interfaces/repository.interfaces";
 // Imports models.
 import { Community } from "../../models/Community";
 
-export class GetComunity implements Get<string, Community> {
-    async get(comunityId: string): Promise<Community | null> {
-        return await models.Comunity.findById(comunityId) as any;
+export class GetComunity implements Get<Community> {
+    constructor(private communityId: string) {}
+    async get(): Promise<Community | null> {
+        return await models.Comunity.findById(this.communityId) as any;
     }
 }
 

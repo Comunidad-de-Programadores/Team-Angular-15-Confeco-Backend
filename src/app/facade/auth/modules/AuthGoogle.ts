@@ -18,7 +18,7 @@ import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
 
 export class AuthGoogle implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
 
     constructor(private token: string) {
         this.database = new DatabaseRepository;
@@ -40,7 +40,7 @@ export class AuthGoogle implements IAuth<IAuthRes> {
         });
 
         // Get user.
-        const user = await this.database.get(fields.email || "", new GetUserByEmail);
+        const user = await this.database.get(new GetUserByEmail(fields.email || ""));
 
         // Register with google.
         if (!user) {

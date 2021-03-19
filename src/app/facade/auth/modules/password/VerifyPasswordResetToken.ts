@@ -14,7 +14,7 @@ import { DatabaseRepository } from "../../../../repositories/DatabaseRepository"
 import { GetUserByEmail } from "../../../../repositories/user/read.user";
 
 export class VerifyPasswordResetToken implements IAuth<void> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JsonWebToken;
 
     constructor(private token: string) {
@@ -27,7 +27,7 @@ export class VerifyPasswordResetToken implements IAuth<void> {
         const payload = this.jwt.verify(this.token, new JwtPasswordToken);
 
         // Get data
-        const data: UserDatabase | null = await this.database.get(payload.email, new GetUserByEmail);
+        const data: UserDatabase | null = await this.database.get(new GetUserByEmail(payload.email));
 
         if (!data?.passwordResetToken) throw createHttpError(403, "El token ya ha sido utilizado.", {
             name: "UsedTokenError"

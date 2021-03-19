@@ -7,9 +7,11 @@ import { Get, List } from "../interfaces/repository.interfaces";
 // Imports models.
 import { Group } from "../../models/Group";
 
-export class GetGroup implements Get<string, Group> {
-    async get(groupId: string): Promise<Group | null> {
-        return await models.Group.findById(groupId) as any;
+export class GetGroup implements Get<Group> {
+    constructor(private groupId: string) {}
+
+    async get(): Promise<Group | null> {
+        return await models.Group.findById(this.groupId) as any;
     }
 }
 
@@ -30,13 +32,13 @@ export class ListGroupsByMemberId implements List<Group> {
     }
 }
 
-export class GetGroupByIdAndMemberId implements Get<string, Group> {
-    constructor(private data: { memberId: string }) {}
+export class GetGroupByIdAndMemberId implements Get<Group> {
+    constructor(private data: { memberId: string; groupId: string; }) {}
 
-    async get(groupId: string): Promise<Group | null> {
+    async get(): Promise<Group | null> {
         return await models.Group.findOne({
             $and: [
-                { _id: groupId },
+                { _id: this.data.groupId },
                 { members: this.data.memberId }
             ]
         }) as any;

@@ -10,7 +10,7 @@ import { DatabaseRepository } from "../../repositories/DatabaseRepository";
 import { GetWorkshop, ListWorkshop } from "../../repositories/workshops/read.workshops";
 
 export class WorkshopsPostman {
-    private database: DatabaseRepository<string, Workshop>;
+    private database: DatabaseRepository<Workshop>;
 
     constructor() {
         this.database = new DatabaseRepository;
@@ -20,7 +20,7 @@ export class WorkshopsPostman {
         const { workshopId } = req.params;
 
         if (workshopId) {
-            const workshop: Workshop | null = await this.database.get(workshopId, new GetWorkshop);
+            const workshop: Workshop | null = await this.database.get(new GetWorkshop(workshopId));
 
             if (!workshop) throw createHttpError(404, "El recurso solicitado no existe", {
                 name: "ResourceNotFound"

@@ -29,8 +29,8 @@ import { GetBadgeByIdAndUserId } from "../../repositories/badges/read.badges";
 import { WinBadge } from "../../repositories/badges/write.badge";
 
 export class UserPostman {
-    private databaseBadge: DatabaseRepository<string, BadgeUser>;
-    private database: DatabaseRepository<string, UserDatabase>;
+    private databaseBadge: DatabaseRepository<BadgeUser>;
+    private database: DatabaseRepository<UserDatabase>;
     private cloud: CloudService;
 
     constructor() {
@@ -43,7 +43,7 @@ export class UserPostman {
         const { _id } = req.app.locals.user;
 
         // Consult database.
-        const user: UserDatabase | null = await this.database.get(_id, new GetUser);
+        const user: UserDatabase | null = await this.database.get(new GetUser(_id));
         if (!user) throw createHttpError(401, "El usuario no existe", {
             name: "UserNotFound"
         });
@@ -54,7 +54,7 @@ export class UserPostman {
     async update(req: Request) {
         const { user } = req.app.locals;
 
-        const data: UserDatabase | null = await this.database.get(user._id, new GetUser);
+        const data: UserDatabase | null = await this.database.get(new GetUser(user._id));
         if (!data) throw createHttpError(403, "El recurso no existe.", {
             name: "ResourceDoesNotExist"
         });
@@ -79,16 +79,16 @@ export class UserPostman {
         // Updated fields user.
         await this.database.update(new UpdateUser({ key: data._id, value }));
 
-        const values: UserDatabase | null = await this.database.get(data._id, new GetUser);
+        const values: UserDatabase | null = await this.database.get(new GetUser(data._id));
         if (!values) throw createHttpError(400, "Ha ocurrido un error durante la operacion.", {
             name: "BadRequest"
         });
 
         // Check if you have already earned the badge.
-        const badge: BadgeUser | null = await this.databaseBadge.get(
-            environments.BADGE_SOCIAL_ID as string,
-            new GetBadgeByIdAndUserId(user._id)
-        );
+        const badge: BadgeUser | null = await this.databaseBadge.get(new GetBadgeByIdAndUserId({
+            badgeId: environments.BADGE_SOCIAL_ID as string,
+            userId: user._id
+        }));
 
         // Check if your profile is complete.
         const comprobate = Object.entries(value).find(item => {
@@ -126,7 +126,7 @@ export class UserPostman {
         const { picture }: any = req.files;
         const { userId } = req.params;
 
-        const values: UserDatabase | null = await this.database.get(userId, new GetUser);
+        const values: UserDatabase | null = await this.database.get(new GetUser(userId));
         if (!values) throw createHttpError(404, "No puedes modificar el banner por que el usuario no existe.", {
             name: "UserNotFound"
         });

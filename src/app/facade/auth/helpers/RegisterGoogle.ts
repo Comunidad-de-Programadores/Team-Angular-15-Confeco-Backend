@@ -25,8 +25,8 @@ import { CreateUser } from "../../../repositories/user/write.user";
 import { WinBadge } from "../../../repositories/badges/write.badge";
 
 export class RegisterGoogle implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
-    private databaseBadge: DatabaseRepository<string, BadgeUser>;
+    private database: DatabaseRepository<UserDatabase>;
+    private databaseBadge: DatabaseRepository<BadgeUser>;
     private jwt: JwtFacade;
 
     constructor(private data: TokenPayload) {
@@ -49,7 +49,7 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
         }, new CreateUser);
 
         // Get fields user.
-        const user = await this.database.get(email, new GetUserByEmail);
+        const user = await this.database.get(new GetUserByEmail(email));
         if (!user) throw createHttpError(400, "Sucedio un error durante la operacion", {
             name: "ErrorRegister"
         });

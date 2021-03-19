@@ -17,7 +17,7 @@ import { UpdateStatusEmail } from "../../../../repositories/user/write.user";
 import { GetUser } from "../../../../repositories/user/read.user";
 
 export class VerifyEmail implements IAuth<IAuthRes> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
 
     constructor(private token: string) {
@@ -30,14 +30,14 @@ export class VerifyEmail implements IAuth<IAuthRes> {
         const res = this.jwt.checkEmailVerificationLink(this.token);
 
         // Check status account.
-        const result: UserDatabase | null = await this.database.get(res._id, new GetUser);
+        const result: UserDatabase | null = await this.database.get(new GetUser(res._id));
         if (result?.verified_email) throw createHttpError(403, "Tu correo electronico ya ha sido verificado.");
 
         // Update status user.
         await this.database.update(new UpdateStatusEmail({ key: res._id, value: true }));
 
         // Get fields user.
-        const data: UserDatabase | null = await this.database.get(res._id, new GetUser);
+        const data: UserDatabase | null = await this.database.get(new GetUser(res._id));
 
         if (!data || !data.verified_email) throw createHttpError(403, "Ha ocurrido un error durante la operacion", {
             name: "ErrorExecution"

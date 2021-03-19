@@ -6,8 +6,10 @@ import { Event } from "../../models/Event";
 
 // Imports repositories
 import { DatabaseRepository } from "../../repositories/DatabaseRepository";
+const database = new DatabaseRepository<Event>();
+
+// Import repository actions.
 import { ListEvents } from "../../repositories/events/read.events";
-const database = new DatabaseRepository<string, Event>();
 
 export class EventsController {
     async list(req: Request, res: Response): Promise<void> {

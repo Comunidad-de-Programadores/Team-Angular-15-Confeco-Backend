@@ -6,7 +6,7 @@ import { Workshop } from "../../../models/Workshop";
 
 // Import repository
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
-const database = new DatabaseRepository<string, Workshop>();
+const database = new DatabaseRepository<Workshop>();
 
 // Import reposotory actions.
 import { ListWorkshopsByKnowledgeArea } from "../../../repositories/workshops/read.workshops";

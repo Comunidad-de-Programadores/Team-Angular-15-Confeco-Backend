@@ -6,11 +6,13 @@ import createHttpError from "http-errors";
 import { Community } from "../../models/Community";
 
 // Imports repositories.
-import { GetComunity, ListCommuties } from "../../repositories/communities/read.communities";
 import { DatabaseRepository } from "../../repositories/DatabaseRepository";
 
+// Import repository actions.
+import { GetComunity, ListCommuties } from "../../repositories/communities/read.communities";
+
 export class CommunitiesPostman {
-    private database: DatabaseRepository<string, Community>;
+    private database: DatabaseRepository<Community>;
 
     constructor() {
         this.database = new DatabaseRepository;
@@ -20,7 +22,7 @@ export class CommunitiesPostman {
         const { communityId } = req.params;
 
         if (communityId) {
-            const community: Community | null = await this.database.get(communityId, new GetComunity);
+            const community: Community | null = await this.database.get(new GetComunity(communityId));
             if (!community) throw createHttpError(404, "El recurso solicitado no existe.", {
                 name: "ResourceNotFound"
             });

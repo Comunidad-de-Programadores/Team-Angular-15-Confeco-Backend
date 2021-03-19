@@ -21,14 +21,16 @@ import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVer
 
 // Imports databases.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+
+// Import repository actions.
 import { CreateUser } from "../../../repositories/user/write.user";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
 import { BadgeUser } from "../../../models/badges/BadgeUser";
 import { WinBadge } from "../../../repositories/badges/write.badge";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
-    private database: DatabaseRepository<string, UserDatabase>;
-    private databaseBadge: DatabaseRepository<string, BadgeUser>;
+    private database: DatabaseRepository<UserDatabase>;
+    private databaseBadge: DatabaseRepository<BadgeUser>;
     private jwt: JwtFacade;
     private mail: Mail;
 
@@ -42,7 +44,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
     async auth(): Promise<IEmailVerificacionToken> {
         // Check if the user exists.
         let params: IRegisterParams = Object.assign({}, this.data);
-        const result = await this.database.get(params.email, new GetUserByEmail);
+        const result = await this.database.get(new GetUserByEmail(params.email));
 
         if (result) throw createError(403, "Este email ya se encuentra en uso.", {
             name: "EmailAlreadyExist"
@@ -55,7 +57,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         await this.database.create({ _id: uuid(), ...params }, new CreateUser);
 
         // Get fields user.
-        const data: UserDatabase | null = await this.database.get(params.email, new GetUserByEmail);
+        const data: UserDatabase | null = await this.database.get(new GetUserByEmail(params.email));
         if (!data) throw createError(400, "Sucedio un error durante autenticacion.", {
             name: "AuthenticationError"
         });

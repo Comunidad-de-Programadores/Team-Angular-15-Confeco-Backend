@@ -21,8 +21,8 @@ import { WinBadge } from "../../../repositories/badges/write.badge";
 import { environments } from "../../../config/environments";
 
 export class RegisterFacebook implements IAuth<IAuthRes> {
-    private databaseBadge: DatabaseRepository<string, BadgeUser>;
-    private database: DatabaseRepository<string, UserDatabase>;
+    private databaseBadge: DatabaseRepository<BadgeUser>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
     
     constructor(private data: { last_name: string, email: string | undefined }) {
@@ -46,7 +46,7 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
         }, new CreateUser);
 
         // Get fields user.
-        const user: UserDatabase | null = await this.database.get(_id, new GetUser);
+        const user: UserDatabase | null = await this.database.get(new GetUser(_id));
 
         if (!user) throw createHttpError(401, "Ha sucedido un error durante la operacion.", {
             name: "AuthenticationError"

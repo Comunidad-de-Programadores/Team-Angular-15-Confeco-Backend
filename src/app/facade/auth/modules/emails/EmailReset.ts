@@ -20,7 +20,7 @@ import { DatabaseRepository } from "../../../../repositories/DatabaseRepository"
 import { UpdateEmail } from "../../../../repositories/user/write.user";
 
 export class EmailReset implements IAuth<void> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
     private mail: Mail;
 

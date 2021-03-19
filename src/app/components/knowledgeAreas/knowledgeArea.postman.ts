@@ -2,15 +2,17 @@
 import { Request } from "express";
 import createHttpError from "http-errors";
 
-// Imports models.
+// Import model.
 import { KnowledgeArea } from "../../models/KnowledgeArea";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../repositories/DatabaseRepository";
+
+// Import repository actions.
 import { GetKnowledgeArea, ListKnowledgeArea } from "../../repositories/knowledgeArea/read.knowledgeArea";
 
 export class KnowledgeAreaPostman {
-    private database: DatabaseRepository<string, KnowledgeArea>;
+    private database: DatabaseRepository<KnowledgeArea>;
     
     constructor() {
         this.database = new DatabaseRepository;
@@ -19,7 +21,7 @@ export class KnowledgeAreaPostman {
     async get(req: Request): Promise<KnowledgeArea | KnowledgeArea[]> {
         const { id } = req.params;
         if (id) {
-            const entity: KnowledgeArea | null = await this.database.get(id, new GetKnowledgeArea);
+            const entity: KnowledgeArea | null = await this.database.get(new GetKnowledgeArea(id));
             if (!entity) throw createHttpError(404, "El recurso solicitado no existe.", {
                 name: "ResourceNotFound"
             });

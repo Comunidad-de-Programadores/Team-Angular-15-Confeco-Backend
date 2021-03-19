@@ -8,9 +8,11 @@ import { Get, List } from "../interfaces/repository.interfaces";
 import { Badge } from "../../models/badges/Badge";
 import { BadgeUser } from "../../models/badges/BadgeUser";
 
-export class GetBadge implements Get<string, Badge> {
-    async get(badgeId: string): Promise<Badge | null> {
-        return await models.Badge.findById(badgeId) as any;
+export class GetBadge implements Get<Badge> {
+    constructor(private badgeId: string) {}
+
+    async get(): Promise<Badge | null> {
+        return await models.Badge.findById(this.badgeId) as any;
     }
 }
 
@@ -28,10 +30,11 @@ export class GetBadgesByUserId implements List<BadgeUser> {
     }
 }
 
-export class GetBadgeByIdAndUserId implements Get<string, BadgeUser> {
-    constructor(private userId: string) {}
+export class GetBadgeByIdAndUserId implements Get<BadgeUser> {
+    constructor(private data: { badgeId: string; userId: string }) {}
 
-    async get(badgeId: string): Promise<BadgeUser | null> {
-        return await models.BadgeUser.findOne({ badgeId, userId: this.userId }) as any;
+    async get(): Promise<BadgeUser | null> {
+        const { badgeId, userId } = this.data;
+        return await models.BadgeUser.findOne({ badgeId, userId }) as any;
     }
 }

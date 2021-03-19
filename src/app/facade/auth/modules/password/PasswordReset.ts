@@ -16,7 +16,7 @@ import { GetUser } from "../../../../repositories/user/read.user";
 import { UpdatePassword, UpdatePasswordResetToken } from "../../../../repositories/user/write.user";
 
 export class PasswordReset implements IAuth<void> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
 
     constructor(private encrypt: IEncrypt, private data: IPasswordReset) {
@@ -29,7 +29,7 @@ export class PasswordReset implements IAuth<void> {
         const payload: IPayloadJwt = this.jwt.checkPasswordResetToken(this.data.token);
 
         // Check if the token exists.
-        const user: UserDatabase | null = await this.database.get(payload._id, new GetUser);
+        const user: UserDatabase | null = await this.database.get(new GetUser(payload._id));
         if (!user?.passwordResetToken) throw createHttpError(403, "El token ya ha sido utilizado.");
 
         // Generate new password.

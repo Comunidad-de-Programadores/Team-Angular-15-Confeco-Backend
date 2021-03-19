@@ -5,16 +5,20 @@ import { models } from "../../database/mongo";
 import { UserDatabase } from "../interfaces/entities.interfaces";
 import { Get } from "../interfaces/repository.interfaces";
 
-export class GetUser implements Get<string, UserDatabase> {
-    async get(userId: string): Promise<UserDatabase | null> {
-        const user: any = await models.User.findById(userId);
-        return user;
+export class GetUser implements Get<UserDatabase> {
+    constructor(private userId: string) {}
+
+    async get(): Promise<UserDatabase | null> {
+        return await models.User.findById(this.userId) as any;
     }
 }
 
-export class GetUserByEmail implements Get<string, UserDatabase> {
-    async get(email: string): Promise<UserDatabase | null> {
-        const user: any = await models.User.findOne({ email });
-        return user;
+export class GetUserByEmail implements Get<UserDatabase> {
+    constructor(private email: string) {}
+
+    async get(): Promise<UserDatabase | null> {
+        return await models.User.findOne({
+            email: this.email
+        }) as any;
     }
 }

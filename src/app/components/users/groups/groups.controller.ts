@@ -6,8 +6,10 @@ import { Group } from "../../../models/Group";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+const database = new DatabaseRepository<Group>();
+
+// Import repository actions.
 import { ListGroupsByMemberId } from "../../../repositories/groups/read.groups";
-const database = new DatabaseRepository<string, Group>();
 
 export class UsersGroupsController {
     async list(req: Request, res: Response): Promise<void> {

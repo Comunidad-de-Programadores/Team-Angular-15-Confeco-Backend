@@ -24,7 +24,7 @@ import { GetUserByEmail } from "../../../../repositories/user/read.user";
 import { UpdatePasswordResetToken } from "../../../../repositories/user/write.user";
 
 export class ForgotPassword implements IAuth<void> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private mail: Mail;
     private jwt: JwtFacade;
 
@@ -35,7 +35,7 @@ export class ForgotPassword implements IAuth<void> {
     }
 
     async auth(): Promise<void> {
-        const data: UserDatabase | null = await this.database.get(this.email, new GetUserByEmail);
+        const data: UserDatabase | null = await this.database.get(new GetUserByEmail(this.email));
 
         if (!data) throw createHttpError(403, "El email no existe.", {
             name: "NonExistentEmail"

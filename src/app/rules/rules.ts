@@ -15,7 +15,7 @@ import { rules } from "../config/rules";
 import { DatabaseRepository } from "../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../repositories/user/read.user";
 
-const database = new DatabaseRepository<string, UserDatabase>();
+const database = new DatabaseRepository<UserDatabase>();
 
 export const email = body("email").isEmail().withMessage("El email es invalido");
 
@@ -80,7 +80,7 @@ export async function checkFieldsResetEmail(req: Request, res: Response, next: N
         res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
     }
 
-    const user: UserDatabase | null = await database.get(email, new GetUserByEmail);
+    const user: UserDatabase | null = await database.get(new GetUserByEmail(email));
     if (user) {
         req.flash("message", "El email que ingresaste ya se encuentra en uso");
         res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);

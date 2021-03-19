@@ -6,7 +6,7 @@ import { Group } from "../../models/Group";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../repositories/DatabaseRepository";
-const database = new DatabaseRepository<string, Group>();
+const database = new DatabaseRepository<Group>();
 
 // Imports repository actions.
 import { ListGroups } from "../../repositories/groups/read.groups";

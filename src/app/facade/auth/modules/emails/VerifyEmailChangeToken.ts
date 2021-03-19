@@ -16,7 +16,7 @@ import { DatabaseRepository } from "../../../../repositories/DatabaseRepository"
 import { GetUser } from "../../../../repositories/user/read.user";
 
 export class VerifyEmailChangeToken implements IAuth<void> {
-    private database: DatabaseRepository<string, UserDatabase>;
+    private database: DatabaseRepository<UserDatabase>;
     private jwt: JwtFacade;
 
     constructor(private token: string) {
@@ -27,7 +27,7 @@ export class VerifyEmailChangeToken implements IAuth<void> {
     async auth(): Promise<void> {
         const payload: User = this.jwt.checkEmailResetToken(this.token);
 
-        const user: UserDatabase | null = await this.database.get(payload._id, new GetUser);
+        const user: UserDatabase | null = await this.database.get(new GetUser(payload._id));
         if (!user) throw createHttpError(404, "El usuario no existe", {
             name: "UserNotFound"
         });
