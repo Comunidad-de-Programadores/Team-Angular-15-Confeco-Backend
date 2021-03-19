@@ -24,3 +24,27 @@ export class AddUserToEvent implements Update {
         );
     }
 }
+
+export class RemoveUserFromEvent implements Update {
+    constructor(private data: { eventId: string; userId: string }) {}
+
+    async update(): Promise<void> {
+        const { eventId, userId } = this.data;
+        await models.Event.updateOne(
+            { _id: eventId },
+            { $pull: { members: userId } }
+        );
+    }
+}
+
+export class BanUser implements Update {
+    constructor(private data: { eventId: string; userId: string; }) {}
+
+    async update() : Promise<void> {
+        const { eventId, userId } = this.data;
+        await models.Event.updateOne(
+            { _id: eventId },
+            { $push: { banned: userId } }
+        );
+    }
+}

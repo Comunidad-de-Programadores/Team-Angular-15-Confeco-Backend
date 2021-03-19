@@ -15,4 +15,14 @@ export class EventsUserController {
             res.status(statusCode || 400).json({ name, message });
         }
     }
+
+    async remove(req: Request, res: Response): Promise<void> {
+        try {
+            const { event } = await postman.remove(req);
+            res.status(200).json({ message: `Has sido baneado del evento ${ event }` });
+        } catch (error) {
+            const { statusCode, name, message } = error;
+            res.status(statusCode || 400).json({ name, message });
+        }
+    }
 }

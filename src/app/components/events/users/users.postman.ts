@@ -11,7 +11,7 @@ import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 
 // Imports action repositories.
 import { GetEvent, GetEventByIdAndBannedUser, GetEventByIdAndMemberId } from "../../../repositories/events/read.events";
-import { AddUserToEvent } from "../../../repositories/events/write.events";
+import { AddUserToEvent, BanUser, RemoveUserFromEvent } from "../../../repositories/events/write.events";
 import { GetUser } from "../../../repositories/user/read.user";
 
 export class EventsUsersPostman {
@@ -53,12 +53,39 @@ export class EventsUsersPostman {
             eventId,
             new GetEventByIdAndBannedUser({ userId })
         );
-        if (banned) throw createHttpError(403, "Has sido baneado de eventp", {
+        if (banned) throw createHttpError(403, `Ya no puedes participar en el evento ${ banned.name }, has sido baneado.`, {
             name: "BannedEvent"
         });
 
         // Add user to event.
         await this.databaseEvent.update(new AddUserToEvent({ eventId, userId }));
         return { event: eventResult.name, user: user.nickname };
+    }
+
+    async remove(req: Request): Promise<{ event: string }> {
+        const { eventId, userId } = req.params;
+        const { user } = req.app.locals;
+
+        // check permissions
+        if (user._id !== userId) throw createHttpError(401, "No tienes los permisos necesarios para realizar esta accion.", {
+            name: "InsufficientPermissions"
+        });
+
+        // Check if the user belongs to the event.
+        const event: Event | null = await this.databaseEvent.get(
+            eventId,
+            new GetEventByIdAndMemberId({ memberId: userId })
+        );
+        if (!event) throw createHttpError(403, "Es posible que el usuario no participe o haya sido baneado del evento.", {
+            name: "Forbidden"
+        });
+
+        // Remove user from group
+        await this.databaseEvent.update(new RemoveUserFromEvent({ eventId, userId }));
+
+        // Ban the user.
+        await this.databaseEvent.update(new BanUser({ eventId, userId }));
+
+        return { event: event.name };
     }
 }
