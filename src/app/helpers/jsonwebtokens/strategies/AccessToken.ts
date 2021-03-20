@@ -18,12 +18,11 @@ export class JwtAccessToken implements IGenerateToken<User>, IVerifyToken<User> 
             expiresIn: payload.expiresIn
         });
 
-        return sign(payload, JWT_ACCESS_TOKEN_KEY as string);
+        return sign(payload.data, JWT_ACCESS_TOKEN_KEY as string);
     }
 
     verify(token: string) {
         const { JWT_ACCESS_TOKEN_KEY } = environments;
-        const data: any = verify(token, JWT_ACCESS_TOKEN_KEY as string);
-        return data;
+        return verify(token, JWT_ACCESS_TOKEN_KEY as string) as any;
     }
 };

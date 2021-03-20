@@ -33,14 +33,18 @@ export class AuthGoogle implements IAuth<IAuthRes> {
             audience: GOOGLE_CLIENT_ID,
             idToken: this.token
         });
-
+        
         const fields = ticket.getPayload();
-        if (!fields) throw createHttpError(403, "No posees los campos necesarios.", {
-            name: "ErrorAuthGoogle"
+        if (!fields) throw createHttpError(403, "Sucedio un error en la autenticacion con Google.", {
+            name: "AuthErrorSocialNetwork"
+        });
+
+        if (!fields.email) throw createHttpError(403, "Necesitas proveer un email para poder registrarte.", {
+            name: "AuthErrorSocialNetwork"
         });
 
         // Get user.
-        const user = await this.database.get(new GetUserByEmail(fields.email || ""));
+        const user = await this.database.get(new GetUserByEmail(fields.email));
 
         // Register with google.
         if (!user) {

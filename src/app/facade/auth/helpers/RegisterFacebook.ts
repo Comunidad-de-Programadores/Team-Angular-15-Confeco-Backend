@@ -2,6 +2,9 @@
 import createHttpError from "http-errors";
 import { v4 as uuid } from "uuid";
 
+// Import environments.
+import { environments } from "../../../config/environments";
+
 // Imports interfaces.
 import { IAuth, IAuthRes } from "../interfaces/auth.interfaces";
 import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
@@ -17,17 +20,18 @@ import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/Refre
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
+
+// Import repository actions.
 import { CreateUser } from "../../../repositories/user/write.user";
 import { GetUser } from "../../../repositories/user/read.user";
 import { WinBadge } from "../../../repositories/badges/write.badge";
-import { environments } from "../../../config/environments";
 
 export class RegisterFacebook implements IAuth<IAuthRes> {
     private databaseBadge: DatabaseRepository<BadgeUser>;
     private database: DatabaseRepository<UserDatabase>;
     private jsonwebtoken: JsonWebToken;
     
-    constructor(private data: { last_name: string, email: string | undefined }) {
+    constructor(private data: { last_name: string, email: string }) {
         this.databaseBadge = new DatabaseRepository;
         this.database = new DatabaseRepository;
         this.jsonwebtoken = new JsonWebToken;
@@ -43,7 +47,7 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
             _id,
             nickname,
             password: "",
-            email: this.data.email || "",
+            email: this.data.email,
             verified_email: !!this.data.email
         }, new CreateUser);
 
