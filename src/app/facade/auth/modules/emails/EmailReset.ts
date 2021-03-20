@@ -42,7 +42,9 @@ export class EmailReset implements IAuth<void> {
         }));
 
         // Generate token.
-        const token: string = this.jsonwebtoken.generate({ data: payload }, new JwtEmailToken);
+        const token: string = this.jsonwebtoken.generate({
+            data: Object.assign({}, new User(payload))
+        }, new JwtEmailToken);
 
         // Generate url
         const url: string = `${ environments.URL }/v1/auth/confirm_email/${ token }`;

@@ -13,6 +13,9 @@ import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/a
 // Import model
 import { User } from "../../../models/User";
 
+// Import helper.
+import { GenerateLink } from "../../../helpers/GenerateLink";
+
 // Imports mails
 import { Mail } from "../../../mails/Mail";
 // import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
@@ -35,12 +38,14 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
     private database: DatabaseRepository<UserDatabase>;
     private databaseBadge: DatabaseRepository<BadgeUser>;
     private jsonwebtokens: JsonWebToken;
+    private generateLink: GenerateLink;
     private mail: Mail;
 
     constructor(private encrypt: IEncrypt, private data: IRegisterParams) {
         this.databaseBadge = new DatabaseRepository;
         this.database = new DatabaseRepository;
         this.jsonwebtokens = new JsonWebToken;
+        this.generateLink = new GenerateLink;
         this.mail = new Mail();
     }
 
@@ -77,7 +82,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         
         // Generate token and confirmation link
         const token: string = this.jsonwebtokens.generate({ data: user }, new JwtEmailToken);
-        const url: string = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
+        const url: string = this.generateLink.confirmEmail(token);
         
         // Send email.
         this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));

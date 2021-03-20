@@ -68,7 +68,7 @@ export async function checkFieldsResetEmail(req: Request, res: Response, next: N
 
     const verifyToken: string | boolean = rules.required(token);
     if (typeof verifyToken !== "boolean") {
-        res.status(400).json({
+        return res.status(400).json({
             name: "BadRequest",
             message: "Necesitas proveer un token para realizar esta accion."
         });
@@ -77,13 +77,13 @@ export async function checkFieldsResetEmail(req: Request, res: Response, next: N
     const verifyEmail: string | boolean = rules.email(email);
     if (typeof verifyEmail !== "boolean") {
         req.flash("message", verifyEmail);
-        res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
+        return res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
     }
 
     const user: UserDatabase | null = await database.get(new GetUserByEmail(email));
     if (user) {
         req.flash("message", "El email que ingresaste ya se encuentra en uso");
-        res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
+        return res.redirect(`${ environments.URL }/v1/auth/email/reset/${ token }`);
     }
     
     next();

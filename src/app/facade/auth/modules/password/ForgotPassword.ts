@@ -1,9 +1,6 @@
 // Imports modules.
 import createHttpError from "http-errors";
 
-// Imports environments.
-import { environments } from "../../../../config/environments";
-
 // Imports interfaces.
 import { IAuth } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../../helpers/encryptors/interfaces/encrypt.interface";
@@ -25,15 +22,18 @@ import { JwtPasswordToken } from "../../../../helpers/jsonwebtokens/strategies/J
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
 import { GetUserByEmail } from "../../../../repositories/user/read.user";
 import { UpdatePasswordResetToken } from "../../../../repositories/user/write.user";
+import { GenerateLink } from "../../../../helpers/GenerateLink";
 
 export class ForgotPassword implements IAuth<void> {
     private database: DatabaseRepository<UserDatabase>;
     private jsonwebtoken: JsonWebToken;
+    private generateLink: GenerateLink;
     private mail: Mail;
 
     constructor(private encryptor: IEncrypt, private email: string) {
         this.database = new DatabaseRepository;
         this.jsonwebtoken = new JsonWebToken;
+        this.generateLink = new GenerateLink;
         this.mail = new Mail();
     }
 
@@ -63,7 +63,7 @@ export class ForgotPassword implements IAuth<void> {
 
         // Send email.
         const { nickname, email } = user;
-        const url: string = `${ environments.URL }/v1/auth/password/reset/${ token }`;
+        const url: string = this.generateLink.resetPassword(token);
         this.mail.send(new MailtrapForgotPassword({ email, nickname, url }));
     }
 };

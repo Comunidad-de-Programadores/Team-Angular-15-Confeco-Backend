@@ -27,6 +27,7 @@ export class VerifyEmailChangeToken implements IAuth<void> {
 
     async auth(): Promise<void> {
         const payload: User = this.jsonwebtoken.verify(this.token, new JwtChangeEmail);
+        console.log(payload);
 
         const user: UserDatabase | null = await this.database.get(new GetUser(payload._id));
         if (!user) throw createHttpError(404, "El usuario no existe", {

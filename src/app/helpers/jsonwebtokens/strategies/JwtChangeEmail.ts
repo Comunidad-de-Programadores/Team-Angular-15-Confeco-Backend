@@ -13,17 +13,16 @@ import { User } from "../../../models/User";
 export class JwtChangeEmail implements IGenerateToken<User>, IVerifyToken<User> {
     generate(payload: PayloadJWT<User>): string {
         const { JWT_CHANGE_EMAIL_KEY } = environments;
-        
+
         if (payload.expiresIn) return sign(payload.data, JWT_CHANGE_EMAIL_KEY as string, {
             expiresIn: payload.expiresIn
         });
 
-        return sign(payload, JWT_CHANGE_EMAIL_KEY as string, { expiresIn: "15m" });
+        return sign(payload.data, JWT_CHANGE_EMAIL_KEY as string, { expiresIn: "15m" });
     }
 
     verify(token: string): User {
         const { JWT_CHANGE_EMAIL_KEY } = environments;
-        const data: any = verify(token, JWT_CHANGE_EMAIL_KEY as string);
-        return data;
+        return verify(token, JWT_CHANGE_EMAIL_KEY as string) as any;
     }
 }
