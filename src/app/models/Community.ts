@@ -4,13 +4,15 @@ export class Community extends Timestamp {
     _id: string;
     title: string;
     description?: string;
+    url: string;
     banner?: string;
 
-    constructor(comunity: Community) {
+    constructor(community: Community) {
         super();
-        this._id = comunity._id;
-        this.title = comunity.title;
-        this.description = comunity.description;
-        this.banner = comunity.banner;
+        this._id = community._id;
+        this.title = community.title;
+        this.url = community.url;
+        this.description = community.description;
+        this.banner = community.banner;
     }
 }
