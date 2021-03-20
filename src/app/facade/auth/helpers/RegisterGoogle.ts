@@ -16,7 +16,9 @@ import { User } from "../../../models/User";
 import { BadgeUser } from "../../../models/badges/BadgeUser";
 
 // Imports jsonwebtokens.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
+import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
@@ -27,12 +29,12 @@ import { WinBadge } from "../../../repositories/badges/write.badge";
 export class RegisterGoogle implements IAuth<IAuthRes> {
     private database: DatabaseRepository<UserDatabase>;
     private databaseBadge: DatabaseRepository<BadgeUser>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
 
     constructor(private data: TokenPayload) {
         this.databaseBadge = new DatabaseRepository;
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<IAuthRes> {
@@ -60,10 +62,12 @@ export class RegisterGoogle implements IAuth<IAuthRes> {
             userId: user._id,
             badgeId: environments.BADGE_GENESIS_ID as string
         }, new WinBadge);
+        const newUser = Object.assign({}, new User(user));
 
         // Generate tokens.
-        const newUser = Object.assign({}, new User(user));
-        const tokens = this.jwt.generateTokens(newUser);
+        const access_token: string = this.jsonwebtoken.generate({ data: newUser }, new JwtAccessToken);
+        const refresh_token: string = this.jsonwebtoken.generate({ data: newUser }, new JwtRefreshToken);
+        const tokens = { access_token, refresh_token }
         return { user: newUser, tokens };
     }
 };

@@ -5,18 +5,21 @@ import createHttpError from "http-errors";
 import { environments } from "../../../../config/environments";
 
 // Imports interfaces.
-import { User } from "../../../../models/User";
 import { IAuth } from "../../interfaces/auth.interfaces";
 import { IEncrypt } from "../../../../helpers/encryptors/interfaces/encrypt.interface";
 import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
+
+// Import model.
+import { User } from "../../../../models/User";
 
 // Imports mails.
 import { Mail } from "../../../../mails/Mail";
 // import { SendgridForgotPassword } from "../../../mails/strategies/SendgridForgotPassword";
 import { MailtrapForgotPassword } from "../../../../mails/strategies/MailtrapForgotPassword";
 
-// Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+// Imports jsonwebtokens.
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtPasswordToken } from "../../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
@@ -25,13 +28,13 @@ import { UpdatePasswordResetToken } from "../../../../repositories/user/write.us
 
 export class ForgotPassword implements IAuth<void> {
     private database: DatabaseRepository<UserDatabase>;
+    private jsonwebtoken: JsonWebToken;
     private mail: Mail;
-    private jwt: JwtFacade;
 
     constructor(private encryptor: IEncrypt, private email: string) {
         this.database = new DatabaseRepository;
+        this.jsonwebtoken = new JsonWebToken;
         this.mail = new Mail();
-        this.jwt = new JwtFacade();
     }
 
     async auth(): Promise<void> {
@@ -47,7 +50,7 @@ export class ForgotPassword implements IAuth<void> {
 
         // Generate tokens.
         const user: User = Object.assign({}, new User(data));
-        const token: string = this.jwt.generatePasswordResetToken(user);
+        const token: string = this.jsonwebtoken.generate({ data: user }, new JwtPasswordToken);
 
         // Encrypt token.
         const tokenEncrypted: string = await this.encryptor.encrypt(token);

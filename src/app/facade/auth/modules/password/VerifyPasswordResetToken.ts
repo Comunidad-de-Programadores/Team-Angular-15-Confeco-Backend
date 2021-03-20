@@ -5,6 +5,9 @@ import createHttpError from "http-errors";
 import { IAuth } from "../../interfaces/auth.interfaces";
 import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 
+// Import model.
+import { User } from "../../../../models/User";
+
 // Imports jsonwebtoken.
 import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
 import { JwtPasswordToken } from "../../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
@@ -24,7 +27,7 @@ export class VerifyPasswordResetToken implements IAuth<void> {
 
     async auth(): Promise<void> {
         // Verify token.
-        const payload = this.jwt.verify(this.token, new JwtPasswordToken);
+        const payload: User = this.jwt.verify(this.token, new JwtPasswordToken);
 
         // Get data
         const data: UserDatabase | null = await this.database.get(new GetUserByEmail(payload.email));

@@ -6,38 +6,41 @@ import { v4 as uuid } from "uuid";
 import { environments } from "../../../config/environments";
 
 // Imports interfaces.
-import { User } from "../../../models/User";
 import { IEncrypt } from "../../../helpers/encryptors/interfaces/encrypt.interface";
 import { UserDatabase } from "../../../repositories/interfaces/entities.interfaces";
 import { IAuth, IEmailVerificacionToken, IRegisterParams } from "../interfaces/auth.interfaces";
 
-// Imports jsonwebtokens.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+// Import model
+import { User } from "../../../models/User";
 
 // Imports mails
 import { Mail } from "../../../mails/Mail";
 // import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
 import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
 
+// Import jsonwebtoken
+import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtEmailToken } from "../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+
 // Imports databases.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
 
 // Import repository actions.
-import { CreateUser } from "../../../repositories/user/write.user";
 import { GetUserByEmail } from "../../../repositories/user/read.user";
-import { BadgeUser } from "../../../models/badges/BadgeUser";
 import { WinBadge } from "../../../repositories/badges/write.badge";
+import { CreateUser } from "../../../repositories/user/write.user";
+import { BadgeUser } from "../../../models/badges/BadgeUser";
 
 export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> {
     private database: DatabaseRepository<UserDatabase>;
     private databaseBadge: DatabaseRepository<BadgeUser>;
-    private jwt: JwtFacade;
+    private jsonwebtokens: JsonWebToken;
     private mail: Mail;
 
     constructor(private encrypt: IEncrypt, private data: IRegisterParams) {
-        this.database = new DatabaseRepository;
         this.databaseBadge = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.database = new DatabaseRepository;
+        this.jsonwebtokens = new JsonWebToken;
         this.mail = new Mail();
     }
 
@@ -69,13 +72,14 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
             badgeId: environments.BADGE_GENESIS_ID as string,
         }), new WinBadge);
 
-        // Generate confirmation link.
         const user = Object.assign({}, new User(data));
         const { nickname, email } = user;
-        const token: string = this.jwt.generateEmailConfirmationLink(user);
+        
+        // Generate token and confirmation link
+        const token: string = this.jsonwebtokens.generate({ data: user }, new JwtEmailToken);
+        const url: string = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
         
         // Send email.
-        const url = `${ environments.URL }/v1/auth/confirm_email/${ token }`;
         this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));
         return { nickname, email, url };
     }

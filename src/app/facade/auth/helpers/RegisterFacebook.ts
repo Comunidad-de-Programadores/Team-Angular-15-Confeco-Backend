@@ -11,7 +11,9 @@ import { User } from "../../../models/User";
 import { BadgeUser } from "../../../models/badges/BadgeUser";
 
 // Imports facades.
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
+import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
@@ -23,12 +25,12 @@ import { environments } from "../../../config/environments";
 export class RegisterFacebook implements IAuth<IAuthRes> {
     private databaseBadge: DatabaseRepository<BadgeUser>;
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
     
     constructor(private data: { last_name: string, email: string | undefined }) {
         this.databaseBadge = new DatabaseRepository;
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<IAuthRes> {
@@ -59,9 +61,12 @@ export class RegisterFacebook implements IAuth<IAuthRes> {
             badgeId: environments.BADGE_GENESIS_ID as string
         }, new WinBadge);
 
-        // Generate tokens.
         const newUser = Object.assign({}, new User(user));
-        const tokens = this.jwt.generateTokens(newUser);
+
+        // Generate tokens.
+        const access_token: string = this.jsonwebtoken.generate({ data: newUser }, new JwtAccessToken);
+        const refresh_token: string = this.jsonwebtoken.generate({ data: newUser }, new JwtRefreshToken);
+        const tokens = { access_token, refresh_token };
         return { user: newUser, tokens };
     }
 };

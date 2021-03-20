@@ -9,7 +9,10 @@ import { UserDatabase } from "../../../../repositories/interfaces/entities.inter
 import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtEmailToken } from "../../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+import { JwtAccessToken } from "../../../../helpers/jsonwebtokens/strategies/AccessToken";
+import { JwtRefreshToken } from "../../../../helpers/jsonwebtokens/strategies/RefreshToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
@@ -18,16 +21,16 @@ import { GetUser } from "../../../../repositories/user/read.user";
 
 export class VerifyEmail implements IAuth<IAuthRes> {
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
 
     constructor(private token: string) {
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<IAuthRes> {
         // Verify email.
-        const res = this.jwt.checkEmailVerificationLink(this.token);
+        const res: User = this.jsonwebtoken.verify(this.token, new JwtEmailToken);
 
         // Check status account.
         const result: UserDatabase | null = await this.database.get(new GetUser(res._id));
@@ -43,9 +46,15 @@ export class VerifyEmail implements IAuth<IAuthRes> {
             name: "ErrorExecution"
         });
 
-        // Generate tokens.
         const user = Object.assign({}, new User(data));
-        const tokens = this.jwt.generateTokens(user);
+        
+        // Generate access_token.
+        const access_token: string = this.jsonwebtoken.generate({ data: user }, new JwtAccessToken);
+
+        // Generate refresh_token
+        const refresh_token: string = this.jsonwebtoken.generate({ data: user }, new JwtRefreshToken);
+        
+        const tokens = { access_token, refresh_token };
         return { user, tokens };
     }
 };

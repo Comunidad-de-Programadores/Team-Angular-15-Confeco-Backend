@@ -9,26 +9,28 @@ import { IAuth } from "../../interfaces/auth.interfaces";
 import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtChangeEmail } from "../../../../helpers/jsonwebtokens/strategies/JwtChangeEmail";
 
 // Imports mails.
 import { Mail } from "../../../../mails/Mail";
 import { MailtrapChangeEmail } from "../../../../mails/strategies/MailtrapChangeEmail";
 
 export class EmailChangeRequest implements IAuth<any> {
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
     private mail: Mail;
 
     constructor(private user: User) {
-        this.jwt = new JwtFacade;
+        this.jsonwebtoken = new JsonWebToken;
         this.mail = new Mail;
     }
 
     async auth(): Promise<IConfirmEmail> {
-        // Generate token.
         const { email, nickname } = this.user;
         const user: User = Object.assign({}, new User(this.user));
-        const token: string = this.jwt.generateEmailChangeToken(user);
+        
+        // Generate token.
+        const token: string = this.jsonwebtoken.generate({ data: user }, new JwtChangeEmail);
 
         // Generate url.
         const url: string = `${ environments.URL }/v1/auth/email/reset/${ token }`;

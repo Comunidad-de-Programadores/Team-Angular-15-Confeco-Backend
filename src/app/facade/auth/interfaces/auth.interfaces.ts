@@ -7,6 +7,7 @@ export interface IAuth<Tval> {
 export interface ICredentials {
     email: string;
     password: string;
+    stayConnected?: boolean;
 }
 
 export interface IRegisterParams {

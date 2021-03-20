@@ -1,15 +1,24 @@
 // Imports modules.
 import { sign, verify } from "jsonwebtoken";
+
+// Import environments
 import { environments } from "../../../config/environments";
-import { User } from "../../../models/User";
 
 // Imports interfaces
-import { IGenerateToken, IVerifyToken } from "../interfaces/jwt.interfaces";
+import { IGenerateToken, IVerifyToken, PayloadJWT } from "../interfaces/jwt.interfaces";
+
+// Import model.
+import { User } from "../../../models/User";
 
 export class JwtRefreshToken implements IGenerateToken<User>, IVerifyToken<User> {
-    generate(data: User): string {
+    generate(payload: PayloadJWT<User>): string {
         const { JWT_REFRESH_TOKEN_KEY } = environments;
-        return sign(data, JWT_REFRESH_TOKEN_KEY as string, { expiresIn: "1d" });
+        
+        if (payload.expiresIn) return sign(payload.data, JWT_REFRESH_TOKEN_KEY as string, {
+            expiresIn: payload.expiresIn
+        });
+        
+        return sign(payload.data, JWT_REFRESH_TOKEN_KEY as string);
     }
 
     verify(token: string) {

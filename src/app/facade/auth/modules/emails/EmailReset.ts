@@ -9,7 +9,9 @@ import { IAuth } from "../../interfaces/auth.interfaces";
 import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtEmailToken } from "../../../../helpers/jsonwebtokens/strategies/JwtEmailToken";
+import { JwtChangeEmail } from "../../../../helpers/jsonwebtokens/strategies/JwtChangeEmail";
 
 // Imports mails.
 import { Mail } from "../../../../mails/Mail";
@@ -21,17 +23,17 @@ import { UpdateEmail } from "../../../../repositories/user/write.user";
 
 export class EmailReset implements IAuth<void> {
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
     private mail: Mail;
 
     constructor(private data: { email: string; token: string }) {
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade;
+        this.jsonwebtoken = new JsonWebToken;
         this.mail = new Mail;
     }
 
     async auth(): Promise<void> {
-        const payload: User = this.jwt.checkEmailResetToken(this.data.token);
+        const payload: User = this.jsonwebtoken.verify(this.data.token, new JwtChangeEmail);
 
         // Update email user.
         await this.database.update(new UpdateEmail({
@@ -40,7 +42,7 @@ export class EmailReset implements IAuth<void> {
         }));
 
         // Generate token.
-        const token = this.jwt.generateEmailConfirmationLink(payload);
+        const token: string = this.jsonwebtoken.generate({ data: payload }, new JwtEmailToken);
 
         // Generate url
         const url: string = `${ environments.URL }/v1/auth/confirm_email/${ token }`;

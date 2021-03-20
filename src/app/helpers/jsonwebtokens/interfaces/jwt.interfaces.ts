@@ -1,5 +1,10 @@
+export interface PayloadJWT<Tval> {
+    data: Tval;
+    expiresIn?: string | number | undefined;
+}
+
 export interface IGenerateToken<Tval> {
-    generate(payload: Tval): string;
+    generate(payload: PayloadJWT<Tval>): string;
 };
 
 export interface IVerifyToken<Tval> {

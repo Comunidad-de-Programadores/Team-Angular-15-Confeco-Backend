@@ -9,7 +9,8 @@ import { UserDatabase } from "../../../../repositories/interfaces/entities.inter
 import { User } from "../../../../models/User";
 
 // Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtChangeEmail } from "../../../../helpers/jsonwebtokens/strategies/JwtChangeEmail";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
@@ -17,15 +18,15 @@ import { GetUser } from "../../../../repositories/user/read.user";
 
 export class VerifyEmailChangeToken implements IAuth<void> {
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
 
     constructor(private token: string) {
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade;
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<void> {
-        const payload: User = this.jwt.checkEmailResetToken(this.token);
+        const payload: User = this.jsonwebtoken.verify(this.token, new JwtChangeEmail);
 
         const user: UserDatabase | null = await this.database.get(new GetUser(payload._id));
         if (!user) throw createHttpError(404, "El usuario no existe", {

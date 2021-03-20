@@ -7,26 +7,29 @@ import { IEncrypt } from "../../../../helpers/encryptors/interfaces/encrypt.inte
 import { UserDatabase } from "../../../../repositories/interfaces/entities.interfaces";
 import { IPayloadJwt } from "../../../../helpers/jsonwebtokens/interfaces/jwt.interfaces";
 
-// Imports facades.
-import { JwtFacade } from "../../../Jwt/JwtFacade";
+// Imports jsonwebtoken.
+import { JsonWebToken } from "../../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtPasswordToken } from "../../../../helpers/jsonwebtokens/strategies/JwtPasswordToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../../repositories/DatabaseRepository";
+
+// Import repository actions.
 import { GetUser } from "../../../../repositories/user/read.user";
 import { UpdatePassword, UpdatePasswordResetToken } from "../../../../repositories/user/write.user";
 
 export class PasswordReset implements IAuth<void> {
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
 
     constructor(private encrypt: IEncrypt, private data: IPasswordReset) {
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<void> {
         // Verify token.
-        const payload: IPayloadJwt = this.jwt.checkPasswordResetToken(this.data.token);
+        const payload: IPayloadJwt = this.jsonwebtoken.verify(this.data.token, new JwtPasswordToken);
 
         // Check if the token exists.
         const user: UserDatabase | null = await this.database.get(new GetUser(payload._id));

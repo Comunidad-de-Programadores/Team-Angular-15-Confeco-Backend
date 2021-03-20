@@ -6,7 +6,9 @@ import { UserDatabase } from "../../../repositories/interfaces/entities.interfac
 import { User } from "../../../models/User";
 
 // Imports jsonwebtokens
-import { JwtFacade } from "../../Jwt/JwtFacade";
+import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
+import { JwtAccessToken } from "../../../helpers/jsonwebtokens/strategies/AccessToken";
+import { JwtRefreshToken } from "../../../helpers/jsonwebtokens/strategies/RefreshToken";
 
 // Imports repositories.
 import { DatabaseRepository } from "../../../repositories/DatabaseRepository";
@@ -14,11 +16,11 @@ import { UpdateStatusEmail } from "../../../repositories/user/write.user";
 
 export class LoginGoogle implements IAuth<IAuthRes> {
     private database: DatabaseRepository<UserDatabase>;
-    private jwt: JwtFacade;
+    private jsonwebtoken: JsonWebToken;
 
     constructor(private user: UserDatabase) {
         this.database = new DatabaseRepository;
-        this.jwt = new JwtFacade();
+        this.jsonwebtoken = new JsonWebToken;
     }
 
     async auth(): Promise<IAuthRes> {
@@ -35,7 +37,11 @@ export class LoginGoogle implements IAuth<IAuthRes> {
             verified_email: { value: true }
         });
         const user = Object.assign({}, new User(data));
-        const tokens = this.jwt.generateTokens(user);
+
+        // Generate tokens
+        const access_token: string = this.jsonwebtoken.generate({ data: user }, new JwtAccessToken);
+        const refresh_token: string = this.jsonwebtoken.generate({ data: user }, new JwtRefreshToken);
+        const tokens = { access_token, refresh_token };
         return { user, tokens };
     }
 };
