@@ -6,6 +6,8 @@ import { environments } from "../../config/environments";
 
 // Imports interfaces.
 import { IConfirmEmail, ISendMail } from "../interfaces/mail.interfaces";
+
+// Import template
 import { confirmEmail } from "../template/confirmEmail";
 
 export class SendgridVerificationEmail implements ISendMail {

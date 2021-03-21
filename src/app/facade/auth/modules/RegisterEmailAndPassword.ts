@@ -18,8 +18,7 @@ import { GenerateLink } from "../../../helpers/GenerateLink";
 
 // Imports mails
 import { Mail } from "../../../mails/Mail";
-// import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
-import { MailtrapVerificacionEmail } from "../../../mails/strategies/MailtrapVerificacionEmail";
+import { SendgridVerificationEmail } from "../../../mails/strategies/SendgridVerificationEmail";
 
 // Import jsonwebtoken
 import { JsonWebToken } from "../../../helpers/jsonwebtokens/JsonWebToken";
@@ -85,7 +84,7 @@ export class RegisterEmailAndPassword implements IAuth<IEmailVerificacionToken> 
         const url: string = this.generateLink.confirmEmail(token);
         
         // Send email.
-        this.mail.send(new MailtrapVerificacionEmail({ url, nickname, email }));
+        this.mail.send(new SendgridVerificationEmail({ url, nickname, email }));
         return { nickname, email, url };
     }
 };

@@ -14,7 +14,7 @@ import { JwtChangeEmail } from "../../../../helpers/jsonwebtokens/strategies/Jwt
 
 // Imports mails.
 import { Mail } from "../../../../mails/Mail";
-import { MailtrapChangeEmail } from "../../../../mails/strategies/MailtrapChangeEmail";
+import { SendgridChangeEmail } from "../../../../mails/strategies/SendgridChangeEmail";
 
 export class EmailChangeRequest implements IAuth<any> {
     private jsonwebtoken: JsonWebToken;
@@ -39,7 +39,7 @@ export class EmailChangeRequest implements IAuth<any> {
         
         // Send email.
         const payload: IConfirmEmail = { nickname, email, url };
-        await this.mail.send(new MailtrapChangeEmail(payload));
+        await this.mail.send(new SendgridChangeEmail(payload));
         return payload;
     }
 }
